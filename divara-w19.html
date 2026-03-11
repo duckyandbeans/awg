@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divara - Unit 13 Grammar</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9fb;
+        }
+        .header {
+            text-align: center;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+        }
+        h1 { color: #5d5dff; }
+        h2 { color: #444; border-bottom: 2px solid #5d5dff; padding-bottom: 10px; }
+        .grammar-box {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #5d5dff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th { background-color: #f2f2ff; }
+        .example { font-style: italic; color: #555; }
+        .practice-section, .workbook-section {
+            background: #fff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
+        }
+        .question-row {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        input[type="text"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 200px;
+        }
+        button {
+            padding: 8px 15px;
+            background-color: #5d5dff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover { background-color: #4848d6; }
+        .answer-key {
+            display: none;
+            color: #28a745;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .watch-out {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #ffeeba;
+            margin-top: 10px;
+        }
+        .grammar-container {
+        font-family: 'Segoe UI', Arial, sans-serif;
+        color: #2d3436;
+        max-width: 850px;
+        margin: 20px auto;
+        line-height: 1.5;
+    }
+    .section-title {
+        background: #5d5dff;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 8px;
+        margin-top: 30px;
+    }
+    .form-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .form-table th {
+        background: #f1f2f6;
+        padding: 12px;
+        text-align: left;
+        border-bottom: 2px solid #dfe4ea;
+    }
+    .form-table td {
+        padding: 12px;
+        border-bottom: 1px solid #f1f2f6;
+        vertical-align: top;
+    }
+    .usage-list {
+        background: #ffffff;
+        padding: 15px 20px;
+        border-radius: 8px;
+        border-left: 5px solid #5d5dff;
+        margin: 15px 0;
+    }
+    .usage-list li {
+        margin-bottom: 10px;
+    }
+    .example-text {
+        color: #57606f;
+        font-style: italic;
+    }
+    .note-box {
+        background: #fff9db;
+        border: 1px solid #ffe066;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+    .note-box h4 {
+        margin-top: 0;
+        color: #f08c00;
+        display: flex;
+        align-items: center;
+    }
+    .hint-box {
+        background: #e7f5ff;
+        border: 1px solid #a5d8ff;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+    }
+    strong { color: #3d3dff; }
+    .workbook-container {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        max-width: 850px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    }
+    .exercise-block {
+        margin-bottom: 40px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #eee;
+    }
+    .exercise-title {
+        color: #5d5dff;
+        font-size: 1.4em;
+        margin-bottom: 15px;
+    }
+    ol li { margin-bottom: 20px; padding-left: 10px; line-height: 1.8; }
+    
+    select, input[type="text"] {
+        padding: 5px 10px;
+        border: 2px solid #d1d1e0;
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 1em;
+        color: #5d5dff;
+        font-weight: bold;
+    }
+    input[type="text"] { width: 180px; }
+    input[type="text"].long { width: 350px; }
+    select:focus, input:focus {
+        outline: none;
+        border-color: #5d5dff;
+        background-color: #f0f0ff;
+    }
+
+    .teacher-section {
+        margin-top: 50px;
+        text-align: center;
+    }
+    .key-btn {
+        background: #f0f0f5;
+        border: 1px solid #d1d1e0;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 0.8em;
+        text-transform: uppercase;
+        color: #777;
+    }
+    .answer-box {
+        display: none;
+        text-align: left;
+        background: #fdfdfd;
+        border: 1px dashed #ccc;
+        padding: 20px;
+        margin-top: 20px;
+        font-size: 0.9em;
+        color: #666;
+        line-height: 1.6;
+    }
+    .vocab-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .vocab-btn {
+            display: inline-block;
+            background-color: #20bf6b;
+            color: white;
+            padding: 15px 30px;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: transform 0.2s, background 0.2s;
+            box-shadow: 0 4px 10px rgba(32, 191, 107, 0.3);
+        }
+        .vocab-btn:hover {
+            background-color: #1ba35b;
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>Hi, Divara! Welcome back ₍₍⚞(˶˃ ꒳ ˂˶)⚟⁾⁾</h1>
+        <p>Today we are going to learn the difference between <strong>WILL</strong> and <strong>BE GOING TO</strong>.</p>
+    </div>
+
+    <section class="explanation">
+        <h2>Grammar Rules</h2>
+        
+        <div class="grammar-container">
+    <h1 style="text-align:center;">will and be going to</h1>
+
+    <h2 class="section-title">will</h2>
+    <p><strong>Form:</strong> <code>will</code> + infinitive without the particle <em>to</em></p>
+    
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>Affirmative</th>
+                <th>Negative</th>
+                <th>Question & Short Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>I / you / he / she / it / we / they<br><strong>will ('ll) work</strong> tomorrow.</td>
+                <td>I / you / he / she / it / we / they<br><strong>will not (won't) work</strong> tomorrow.</td>
+                <td><strong>Will</strong> I / you / he / she / it / we / they <strong>work</strong> tomorrow?<br><br>
+                    Yes, ... <strong>will</strong>.<br>
+                    No, ... <strong>won't</strong>.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="usage-list">
+        <h4>Used to describe:</h4>
+        <ul>
+            <li><strong>Future actions and events:</strong> <span class="example-text">The hotel <strong>will have</strong> ten employees.</span></li>
+            <li><strong>Predictions:</strong> <span class="example-text">It <strong>will be</strong> a great job! You <strong>will enjoy</strong> working there.</span></li>
+            <li><strong>Requests and offers:</strong> <span class="example-text">Will you <strong>help</strong> me? Of course I <strong>will</strong>!</span></li>
+            <li><strong>Spontaneous decisions:</strong> <span class="example-text">Okay. <strong>I'll ask</strong> Mike to help me.</span></li>
+        </ul>
+    </div>
+
+    <div class="note-box">
+        <h4>⚠️ Watch out!</h4>
+        <p>To express a polite offer with the pronouns <strong>I</strong> and <strong>we</strong>, the question form <strong>Shall I (we) ...?</strong> is used.<br>
+        <span class="example-text"><strong>Shall I</strong> tidy the office?</span></p>
+    </div>
+
+    <div class="hint-box">
+        <h4>💡 Helpful hints</h4>
+        <p>The form of the verb <strong>will</strong> remains unchanged for all pronouns:</p>
+        <ul>
+            <li><strong>Will you work</strong> in London? Yes, I <strong>will</strong>.</li>
+            <li>Tom <strong>won't work</strong> in London. He<strong>'ll work</strong> in Vladivostok.</li>
+        </ul>
+    </div>
+
+    <h2 class="section-title" style="background: #20bf6b;">be going to</h2>
+    <p><strong>Form:</strong> <code>be going to</code> + infinitive</p>
+
+    <table class="form-table">
+        <thead>
+            <tr>
+                <th>Affirmative</th>
+                <th>Negative</th>
+                <th>Question & Short Answer</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>I <strong>am ('m) going to work</strong>.</td>
+                <td>I <strong>am not ('m not) going to work</strong>.</td>
+                <td><strong>Am</strong> I <strong>going to work</strong>?<br>Yes, I <strong>am</strong>. / No, I'<strong>m not</strong>.</td>
+            </tr>
+            <tr>
+                <td>He / she / it <strong>is ('s) going to work</strong>.</td>
+                <td>He / she / it <strong>is not (isn't) going to work</strong>.</td>
+                <td><strong>Is</strong> he / she / it <strong>going to work</strong>?<br>Yes, he <strong>is</strong>. / No, he <strong>isn't</strong>.</td>
+            </tr>
+            <tr>
+                <td>You / we / they <strong>are ('re) going to work</strong>.</td>
+                <td>You / we / they <strong>are not (aren't) going to work</strong>.</td>
+                <td><strong>Are</strong> you / we / they <strong>going to work</strong>?<br>Yes, we <strong>are</strong>. / No, we <strong>aren't</strong>.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="usage-list" style="border-left-color: #20bf6b;">
+        <h4>Used to describe:</h4>
+        <ul>
+            <li><strong>Intentions and plans:</strong> <span class="example-text">I <strong>am going to go</strong> to university when I leave school.</span></li>
+            <li><strong>Future actions with evident signs:</strong> <span class="example-text">Greta is still sleeping. She's <strong>going to be</strong> late for work.</span></li>
+            <li><strong>Future actions or events:</strong> <span class="example-text">The hotel <strong>is going to have</strong> ten employees.</span></li>
+        </ul>
+    </div>
+
+    <div class="note-box">
+        <h4>⚠️ Watch out!</h4>
+        <p>Quite often, sentences with <em>will</em> and <em>be going to</em> do not have significant differences:</p>
+        <ul>
+            <li>The hotel <strong>will have</strong> thirty employees. They're <strong>going to be</strong> well-trained.</li>
+            <li>The hotel <strong>is going to have</strong> thirty employees. They'll <strong>be</strong> well-trained.</li>
+        </ul>
+    </div>
+</div>
+    </section>
+
+    <section class="workbook-section">
+        <h2>Workbook Challenge</h2>
+        <p><em>Teacher will reveal the answers for these.</em></p>
+        
+        <h3>Exercise A: Circle the correct variant</h3>
+        <ol>
+            <li>Tomorrow we <select><option value="">-- select --</option><option>are going to visit</option><option>visit</option></select> our grandparents. They invited us last week.</li>
+            <li>Who do you think <select><option value="">-- select --</option><option>will win</option><option>to win</option></select> the match?</li>
+            <li><select><option value="">-- select --</option><option>Are you going</option><option>Will you</option></select> to come to the meeting on Friday?</li>
+            <li>When I get older, I'll <select><option value="">-- select --</option><option>be</option><option>going to be</option></select> rich and famous!</li>
+            <li>Here comes our bus. Hurry up! <select><option value="">-- select --</option><option>We'll</option><option>We're going to</option></select> miss it!</li>
+            <li>In the future, people <select><option value="">-- select --</option><option>won't go</option><option>aren't going to</option></select> to work.</li>
+            <li>Robots <select><option value="">-- select --</option><option>going to</option><option>will</option></select> do all the boring jobs for us.</li>
+            <li><select><option value="">-- select --</option><option>Will people</option><option>Are people going to</option></select> live on other planets? What do you think?</li>
+        </ol>
+
+        <div class="exercise-block">
+        <div class="exercise-title">B. Complete with <em>will</em> or <em>shall</em></div>
+        <ol>
+            <li>My birthday party is on Saturday. <input type="text"> you come?</li>
+            <li><input type="text"> I help you carry those bags? They look heavy.</li>
+            <li>I believe that people <input type="text"> have very different jobs in the future.</li>
+            <li><input type="text"> we go to see the new James Bond film? I've heard it's great!</li>
+            <li>Robots <input type="text"> never do a real teacher's job.</li>
+            <li>Derek and I <input type="text"> study at the same university when we leave school.</li>
+            <li><input type="text"> you teach me some Russian words, please?</li>
+            <li>I'm going to the supermarket. <input type="text"> I buy some bread?</li>
+        </ol>
+        </div>
+        <div class="exercise-block">
+        <div class="exercise-title">C. Multiple Choice (Choose the best reason)</div>
+        <ol>
+            <li>"What are your plans?" <br>
+                'Oh, I <select><option value="">-- select --</option><option>will be</option><option>am</option><option>am going to be</option></select> a teacher. I've already started studying!'
+            </li>
+            <li>'It's so cold and look at those clouds!' <br>
+                'Yes, it <select><option value="">-- select --</option><option>will probably</option><option>is probably going</option><option>shall probably</option></select> to snow soon.'
+            </li>
+            <li>'I think that in the future people <select><option value="">-- select --</option><option>will do</option><option>going to do</option><option>are doing</option></select> very different jobs.'
+            </li>
+            <li>' <input type="text" style="width:80px" placeholder="Shall"> you with your homework? It looks difficult.'
+                <br><small>(A: Will I help / B: Am I going to help / C: Shall I help)</small>
+            </li>
+            <li>'Look at that cat on the tree! What's it doing?' <br>
+                'Oh, no! It's <select><option value="">-- select --</option><option>going to fall</option><option>shall fall</option><option>will fall</option></select>!'
+            </li>
+            <li>'Why are you so sad, Pete?' <br>
+                'My friends are going to a different university and I <select><option value="">-- select --</option><option>am</option><option>will be</option><option>are going to be</option></select> alone.'
+            </li>
+        </ol>
+    </div>
+        <div class="exercise-block">
+            <div class="exercise-title">D. Open brackets using <em>be going to</em></div>
+            <ol>
+                <li>Look at how that man is driving! He <input type="text"> (have) an accident!</li>
+                <li>When <input type="text"> (you / do) your homework? It's getting late!</li>
+                <li>My sister already knows what she <input type="text"> (study) when she leaves school.</li>
+                <li>Sorry, but I <input type="text"> (not / come) with you on the trip. I have too much work.</li>
+                <li>Tomorrow evening, my friends and I <input type="text"> (watch) the new film.</li>
+                <li>Who <input type="text"> (you / invite) to your party? Have you decided yet?</li>
+                <li>Christina <input type="text"> (not / study) architecture. She doesn't want to be an architect.</li>
+                <li>Nigel wants to be an astronaut. That’s why he <input type="text"> (learn) to be a pilot first.</li>
+            </ol>
+        </div>
+
+        <div class="exercise-block">
+            <div class="exercise-title">F. Correct the errors</div>
+            <ol>
+                <li>Look at that man! He's driving too fast. He'll crash! <br><input type="text" class="long"></li>
+                <li>Our team is very good. I think they'll win the match easily! <br><input type="text" class="long"></li>
+                <li>Sit down, please. I tell the boss that you are here. <br><input type="text" class="long"></li>
+                <li>I believe that in the future people will live on different planets. <br><input type="text" class="long"></li>
+                <li>Who do you think will coming first in the race? <br><input type="text" class="long"></li>
+                <li>In fifty years' time, people not do many difficult jobs. <br><input type="text" class="long"></li>
+                <li>Will I help you to move the desk into the office? <br><input type="text" class="long"></li>
+                <li>It's the manager's birthday next week and he to have a party. <br><input type="text" class="long"></li>
+            </ol>
+        </div>
+
+    </div>
+    <div class="vocab-section">
+        <a href="https://miro.com/welcomeonboard/L3BsNldwUjFFUjFibTJIOENaaW5EQk1UazVQZTN5SGNobWtBSktCeVlZaUtPcGMvREtBaWdQaCtUNGFHdDdJL2ppNS9tNEJ4QXp5cFlNbnRhaXFUdzczTXpwSy9WcWtBU2xSZHZSdlVNdi80Qytpd3BCODUvZ3ZPNzBHYVRZL3ZNakdSWkpBejJWRjJhRnhhb1UwcS9BPT0hdjE=?share_link_id=728652906355" target="_blank" class="vocab-btn">
+            📚 Click here for Vocabulary!
+        </a>
+    </div>
+    
+    </section>
+    
+    <script>
+    function toggleKey() {
+        var x = document.getElementById("teacherKey");
+        x.style.display = (x.style.display === "block") ? "none" : "block";
+    }
+</script>
+</body>
+</html>

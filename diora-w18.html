@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diora - Grammar & Vocab Workshop</title>
+    <style>
+        :root {
+    --primary: #6c5ce7;
+    --primary-light: #a29bfe;
+    --secondary: #00b894;
+    --dark: #2d3436;
+    --bg: #f4f7f6;
+    --card-bg: #ffffff;
+    --text: #2d3436;
+    --muted: #636e72;
+    --border: #dfe6e9;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', -apple-system, system-ui, sans-serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Page Management */
+        .page { display: none; padding: 40px 20px; }
+        .page.active { display: block; animation: fadeIn 0.4s ease-out; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container { max-width: 950px; margin: 0 auto; }
+
+        /* Navigation */
+        .page-nav {
+            background: white;
+            padding: 15px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn {
+            margin: 0 10px;
+            padding: 10px 25px;
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Headers */
+        .header-unit {
+            text-align: center;
+            background: linear-gradient(135deg, var(--dark) 0%, #485460 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        /* Section Cards */
+        .workbook-container, .section-card, .exercise-card {
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h2 {
+            color: var(--primary);
+            border-bottom: 2px solid #f1f2f6;
+            padding-bottom: 15px;
+            margin-top: 0;
+        }
+
+        /* Exercise Elements */
+        .exercise-title {
+            color: var(--primary);
+            font-weight: 700;
+            margin: 30px 0 15px;
+            padding-left: 15px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .instruction-text, .instruction {
+            font-style: italic;
+            color: var(--muted);
+            background: #f1f2f6;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        /* Interactive Inputs */
+        select, input[type="text"] {
+            padding: 10px;
+            border: 2px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border 0.2s;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        input[type="text"].gap, .small-gap {
+            width: 100px;
+            text-align: center;
+            border-top: none; border-left: none; border-right: none;
+            border-radius: 0;
+        }
+
+        .full-width { width: 100%; margin-top: 8px; box-sizing: border-box; }
+
+        /* Word Bank Spacing Fix */
+        .word-bank {
+            background: #f1f2ff;
+            border: 2px dashed var(--primary);
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: space-evenly;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .word-bank span {
+            background: white;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        /* Passage Styling */
+        .cloze-passage, .passage-box, .text-passage {
+            background: #f9f9ff;
+            padding: 30px;
+            border-radius: 12px;
+            line-height: 2.5;
+            border: 1px solid #eef0ff;
+            font-size: 1.1em;
+        }
+
+        /* Dropdown Grid for Section A */
+        .dropdown-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .dropdown-item { font-weight: 600; color: var(--muted); }
+
+        /* Images */
+        .exercise-image {
+            width: 100%;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+
+        /* Lists */
+        ol li { margin-bottom: 20px; }
+
+        @media (max-width: 768px) {
+            .nav-btn { margin: 5px; padding: 8px 15px; }
+        }
+        /* Container to keep everything centered */
+        .profile-container {
+            text-align: center;
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .profile-img {
+            max-width: 100%;
+            width: 1000px; 
+            height: auto;
+            display: block;
+            margin: 0 auto;
+            border: 1px solid #dfe6e9;
+            border-radius: 8px; /* Just rounds the corners slightly for a modern look */
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+    </style>
+
+</head>
+<body>
+    <nav class="page-nav" style="text-align:center; margin-bottom:30px;">
+        <button onclick="showPage(1)" class="nav-btn">Grammar</button>
+        <button onclick="showPage(2)" class="nav-btn">Vocab</button>
+        <button onclick="showPage(3)" class="nav-btn">Review</button>
+    </nav>
+
+    <div id="page1" class="page active">
+        <div class="container">
+            <div class="header-unit">
+        <h1>Unit 19 Grammar Mastery</h1>
+        <p>Questions / question tags / indirect questions</p>
+    </div>
+
+    <div class="profile-container">
+        <img src="diora.png" alt="Diora" class="profile-img">
+    </div>
+    
+
+    
+
+    <div class="exercise-title">A. Choose the correct answer</div>
+    <ol>
+        <li>Oh, I'm sorry! <select><option>--?--</option><option>Do I</option><option>Have I</option><option>Should I</option><option>Am I</option></select> disturbing you?</li>
+        <li>Did Dorothy <select><option>--?--</option><option>told</option><option>tell</option><option>has told</option><option>tells</option></select> you about the meeting on Friday?</li>
+        <li><select><option>--?--</option><option>Was it</option><option>It was</option><option>Did it</option><option>It made</option></select> hot when you were in Spain?</li>
+        <li>Tony, <select><option>--?--</option><option>do you have</option><option>you have</option><option>are you</option><option>have you</option></select> got time to call Mrs Roberts?</li>
+        <li>When your boss arrived, <select><option>--?--</option><option>you had</option><option>did you have</option><option>had you</option><option>were you</option></select> finished the report?</li>
+        <li>I know Jane's pretty, but <select><option>--?--</option><option>do you ever</option><option>you have never</option><option>have you ever</option><option>ever have you</option></select> seen someone spend so much time in front of the mirror?</li>
+        <li>It's raining, so <select><option>--?--</option><option>will they</option><option>they will</option><option>do they will</option><option>are they</option></select> cancel the concert?</li>
+        <li><select><option>--?--</option><option>You could</option><option>Are you</option><option>You are</option><option>Could you</option></select> pass me the salt, please?</li>
+        <li>Sir, <select><option>--?--</option><option>do you</option><option>are you</option><option>you</option><option>can you</option></select> repeat the homework is, please?</li>
+        <li><select><option>--?--</option><option>Did</option><option>Have</option><option>Were</option><option>Could</option></select> the couple you met in France last year staying at the same hotel?</li>
+        <li>I know how to pronounce 'controversy', but what <select><option>--?--</option><option>does it mean</option><option>it means</option><option>is it mean</option><option>means it</option></select>?</li>
+        <li>It's a great idea, but <select><option>--?--</option><option>are you think</option><option>do you think</option><option>you think</option><option>you do think</option></select> it will work?</li>
+    </ol>
+
+    <div class="exercise-title">B. Write questions</div>
+    <p class="instruction-text">Use the prompts to form correct questions.</p>
+    <ol>
+        <li>you / wash / your hair / when I rang? <br><input type="text" placeholder="Type answer..."></li>
+        <li>Julie / give / you / her e-mail address / yesterday? <br><input type="text"></li>
+        <li>you / always / have / lunch / this late? <br><input type="text"></li>
+        <li>Jack and Tom / come / to the party / tonight? <br><input type="text"></li>
+        <li>you / can / give / me / a hand / later? <br><input type="text"></li>
+        <li>how / you / spell / your name? <br><input type="text"></li>
+        <li>why / the government / can't / do / something / about the situation? <br><input type="text"></li>
+        <li>where / you / go / for your honeymoon / last year? <br><input type="text"></li>
+        <li>what / your house / look like / when / it is finished? <br><input type="text"></li>
+        <li>which / flavour of ice cream / your favourite / be? <br><input type="text"></li>
+    </ol>
+
+    <div class="exercise-title">C. Complete using the words in the box</div>
+    <div class="word-bank">
+        <span>who</span> • <span>where</span> • <span>which</span> • <span>whose</span> • <span>what</span> • <span>whom</span> • <span>how</span> • <span>when</span> • <span>why</span>
+    </div>
+    <div class="environment-block">
+        <h4 style="text-align:center; font-family:serif;">HELP US HELP THE ENVIRONMENT</h4>
+        <p>
+            (1) <input type="text" style="width:100px;"> responsibility is it to look after the environment? Yours! And 
+            (2) <input type="text" style="width:100px;"> should you start? Right now is the answer! But 
+            (3) <input type="text" style="width:100px;"> is going to help you? We are!
+        </p>
+        <p>
+            (4) <input type="text" style="width:100px;"> me? We all have a responsibility. But 
+            (5) <input type="text" style="width:100px;"> can I make a difference? By recycling!
+        </p>
+        <p>
+            (6) <input type="text" style="width:100px;">'s the first step? Speak to our officers. 
+            (7) <input type="text" style="width:100px;"> other organisations are you connected to? 
+            (8) <input type="text" style="width:100px;"> is GreenWarriors based? Northampton.
+        </p>
+    </div>
+
+    <div class="exercise-title">D. Subject vs. Object Questions</div>
+    <p class="instruction-text">Find the phrase that fits the context of the answer.</p>
+    <ol>
+        <li>'Who <select><option>asked you</option><option>did you ask</option></select> to the party?' | 'Maria, but she couldn't come.'</li>
+        <li>'Who <select><option>saw you</option><option>did you see</option></select> at the supermarket?' | 'Just Ben, but he didn't see me.'</li>
+        <li>'What <select><option>gave you</option><option>did you give</option></select> the impression that Greg was depressed?' | 'Work, really.'</li>
+        <li>'Who <select><option>thought you</option><option>did you think</option></select> had stolen the money?' | 'Jenny, but she believed me.'</li>
+        <li>'Which programme <select><option>taught you</option><option>did you teach</option></select> the most?' | 'Well, I learned a lot from *Extreme History*.'</li>
+        <li>'Who <select><option>borrowed you</option><option>did you borrow</option></select> this book from?' | 'Tracy, and I need to give it back.'</li>
+        <li>'What <select><option>brought you</option><option>did you bring</option></select> to this part of the world?' | 'Just sightseeing.'</li>
+        <li>'Who <select><option>accused George</option><option>did George accuse</option></select> of starting the fight?' | 'He says that John started it.'</li>
+        <li>'Which person <select><option>admires you</option><option>do you admire</option></select> the most?' | 'I would say my grandmother.'</li>
+        <li>'Who <select><option>told Dave</option><option>did Dave tell</option></select> your secret?' | 'I think Simone probably told him.'</li>
+    </ol>
+
+<div class="workbook-container">
+    <div class="exercise-card">
+        <h2>E. Write one word in each gap</h2>
+        <div class="cloze-passage">
+            <strong>Early humans and the weather</strong><br>
+            (1) <input type="text" class="gap"> you think you understand the weather? For early humans, the weather was a constant source of questions. (2) <input type="text" class="gap"> is it raining? What (3) <input type="text" class="gap"> this storm mean? Where (4) <input type="text" class="gap"> the wind go when it blows? People came up with many explanations for the weather, usually involving gods or ancestors. (5) <input type="text" class="gap"> you explain what a rainbow is? The Cherokee people of America believed that it was the hem of the sun god’s coat. <br><br>
+            The weather has also been used to explain other things. What would you say if someone asked you (6) <input type="text" class="gap"> kangaroos come from? You’d probably say Australia, but (7) <input type="text" class="gap"> did the Aborigines explain these strange animals? They told a story about a great storm. A group of Aboriginal hunters watched in amazement as the wind blew large creatures over their heads. (8) <input type="text" class="gap"> could they be? Finally, the wind died down and the kangaroos landed on the ground.
+        </div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>F. Match to make sentences</h2>
+        <div class="matching-row">1. You've sent that letter I gave you, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">2. You catch the bus to school, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">3. You won't tell anyone about this, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">4. You're a friend of Charlie's, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">5. You were living in Hong Kong then, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">6. You never work more than you have to, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">7. You made no effort to make friends with Darren, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <div class="matching-row">8. You got Jimmy a cap for his birthday, <select><option>-</option><option>A</option><option>B</option><option>C</option><option>D</option><option>E</option><option>F</option><option>G</option><option>H</option></select></div>
+        <p><small>A: don't you? | B: didn't you? | C: will you? | D: haven't you? | E: do you? | F: did you? | G: weren't you? | H: aren't you?</small></p>
+    </div>
+
+    <div class="exercise-card">
+        <h2>G. Complete the question tags</h2>
+        <ol>
+            <li>Get me some chewing gum when you go to the shop, <input type="text" class="gap"> you?</li>
+            <li>Let's watch that new DVD you bought today, <input type="text" class="gap"> we?</li>
+            <li>There's not really much point waiting, <input type="text" class="gap"> there?</li>
+            <li>Tonia will put us up for the weekend, <input type="text" class="gap"> she?</li>
+            <li>Nobody seems to like Jessica, <input type="text" class="gap"> they?</li>
+            <li>I'm not making much sense now, <input type="text" class="gap"> I?</li>
+            <li>Let's go because it's getting late, <input type="text" class="gap"> it?</li>
+            <li>If you borrow my coat, don't get it dirty, <input type="text" class="gap"> you?</li>
+            <li>Bill should be here by now, <input type="text" class="gap"> he?</li>
+            <li>I'm making you feel uncomfortable, <input type="text" class="gap"> I?</li>
+            <li>Someone left the door open, <input type="text" class="gap"> they?</li>
+            <li>Nobody knows about this, <input type="text" class="gap"> they?</li>
+        </ol>
+    </div>
+
+    
+    <div class="exercise-card">
+        <h2>H. Rewrite the sentences correctly</h2>
+        <ol>
+            <li>I wonder if you could tell me what time does the plane from Frankfurt arrive?<br><input type="text" class="full-width"></li>
+            <li>Could you let me know when would you like me to come for an interview?<br><input type="text" class="full-width"></li>
+            <li>I wonder if you know what bus should I catch for the town centre.<br><input type="text" class="full-width"></li>
+            <li>Do you think you could tell me how do you work this ticket machine?<br><input type="text" class="full-width"></li>
+            <li>I wonder you have seen George?<br><input type="text" class="full-width"></li>
+            <li>I would like to know do you have any double rooms?<br><input type="text" class="full-width"></li>
+            <li>Can you tell me what were you doing in my office?<br><input type="text" class="full-width"></li>
+            <li>Do you know where is this address?<br><input type="text" class="full-width"></li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>I. Sentence Transformation</h2>
+        <ol>
+            <li>When does Tina get back from Berlin? (know)<br>Do <input type="text" style="width: 250px;"> back from Berlin?</li>
+            <li>What time does the film start tonight? (starts)<br>Could you tell me <input type="text" style="width: 250px;"> tonight?</li>
+            <li>Is service included in the price? (know)<br>I would like to <input type="text" style="width: 250px;"> in the price.</li>
+            <li>What is the salary? (let)<br>Could you <input type="text" style="width: 250px;"> the salary is?</li>
+            <li>Have you been to Brussels before? (wonder)<br>I <input type="text" style="width: 250px;"> to Brussels before.</li>
+            <li>Did Gail pass her exam? (passed)<br>Do you know <input type="text" style="width: 250px;"> her exam?</li>
+            <li>I wonder if you know where Mary went after the party last night. (go)<br>Where <input type="text" style="width: 250px;"> after the party last night?</li>
+            <li>I would like to know how many days holiday we get each year. (given)<br>How many days holiday <input type="text" style="width: 250px;"> each year?</li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>J. Find the extra word</h2>
+        <ol>
+            <li>Do you have much free time these days or are you be quite busy? <input type="text" class="gap"></li>
+            <li>I would like to know it when I can expect my order to be delivered. <input type="text" class="gap"></li>
+            <li>Do you think whether you could possibly let me know how soon you will have the work finished? <input type="text" class="gap"></li>
+            <li>I wonder if you know who it is responsible for cleaning the building. <input type="text" class="gap"></li>
+            <li>Tell Roger who did you saw when you were at the police station the other day. <input type="text" class="gap"></li>
+            <li>Did Dad mention who he sold him the car to? <input type="text" class="gap"></li>
+            <li>You shouldn't leave your homework to the very last minute if you want to get a good mark, should not you? <input type="text" class="gap"></li>
+            <li>I wonder it if you know where I can buy something to eat. <input type="text" class="gap"></li>
+        </ol>
+    </div>
+
+    
+</div>  <!-- close container for page1 -->
+</div> <!-- close page1 -->
+</div>
+    
+
+
+<script>
+    function toggleKey() {
+        var x = document.getElementById("answerKey");
+        x.style.display = (x.style.display === "none") ? "block" : "none";
+    }
+</script>
+
+    <div id="page2" class="page">
+        <div class="container">
+            <div class="header-unit" style="background: linear-gradient(135deg, #00b894 0%, #009432 100%);">
+                <h1>Phase 2: Vocabulary & Phrasals</h1>
+                <p>Unit 20: Weather and the Environment</p>
+            </div>
+            <div class="profile-container">
+                <img src="diora-vocab.png" alt="Diora" class="profile-img">
+            </div>
+            <div class="section-card">
+        <h2>A. Find the correct word</h2>
+        <img src="a.png" alt="Local News in Brief" class="exercise-image">
+        
+        <div class="dropdown-grid">
+            <div class="dropdown-item">1. <select><option>--?--</option><option>puddle</option><option>reservoir</option></select></div>
+            <div class="dropdown-item">2. <select><option>--?--</option><option>flooding</option><option>pouring</option></select></div>
+            <div class="dropdown-item">3. <select><option>--?--</option><option>rural</option><option>urban</option></select></div>
+            <div class="dropdown-item">4. <select><option>--?--</option><option>lightning</option><option>thunder</option></select></div>
+            <div class="dropdown-item">5. <select><option>--?--</option><option>plains</option><option>fields</option></select></div>
+            <div class="dropdown-item">6. <select><option>--?--</option><option>drizzling</option><option>showering</option></select></div>
+            <div class="dropdown-item">7. <select><option>--?--</option><option>prediction</option><option>forecast</option></select></div>
+            <div class="dropdown-item">8. <select><option>--?--</option><option>waste</option><option>litter</option></select></div>
+            <div class="dropdown-item">9. <select><option>--?--</option><option>suburban</option><option>surrounding</option></select></div>
+            <div class="dropdown-item">10. <select><option>--?--</option><option>reuse</option><option>repeat</option></select></div>
+            <div class="dropdown-item">11. <select><option>--?--</option><option>global</option><option>worldwide</option></select></div>
+            <div class="dropdown-item">12. <select><option>--?--</option><option>weather</option><option>environment</option></select></div>
+            <div class="dropdown-item">13. <select><option>--?--</option><option>land</option><option>climate</option></select></div>
+            <div class="dropdown-item">14. <select><option>--?--</option><option>extinct</option><option>endangered</option></select></div>
+            <div class="dropdown-item">15. <select><option>--?--</option><option>smoke</option><option>fog</option></select></div>
+            <div class="dropdown-item">16. <select><option>--?--</option><option>air</option><option>wind</option></select></div>
+            <div class="dropdown-item">17. <select><option>--?--</option><option>cleaner</option><option>clearer</option></select></div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>B. Phrasal Verbs</h2>
+        <div class="word-bank">
+            <span>call for</span> <span>call off</span> <span>clear up</span> <span>cut off</span>
+            <span>die down</span> <span>do up</span> <span>face up to</span> <span>put out</span>
+        </div>
+        <ol>
+            <li>The weather should have <input type="text" placeholder="..."> by this evening.</li>
+            <li>Do you think the wind has <input type="text" placeholder="..."> enough to go sailing?</li>
+            <li>Environmentalists are <input type="text" placeholder="..."> stricter controls.</li>
+            <li>Why can't they <input type="text" placeholder="..."> the fact that products are bad?</li>
+            <li>Firefighters managed to <input type="text" placeholder="..."> the forest fire.</li>
+            <li>We'll have to <input type="text" placeholder="..."> the demonstration if it rains.</li>
+            <li>The town was totally <input type="text" placeholder="..."> for three days.</li>
+            <li>It didn't take us long to <input type="text" placeholder="..."> the old barn.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>C. Phrasal Verbs (Gap Fill)</h2>
+        <p class="instruction">Write one word in each gap.</p>
+        <ol>
+            <li>Don't throw those batteries <input type="text" class="short-input">. They're not biodegradable!</li>
+            <li>Rainy days always <input type="text" class="short-input"> me down.</li>
+            <li>Could you tell me what the letters 'CJD' stand <input type="text" class="short-input">?</li>
+            <li>They're planning to tear <input type="text" class="short-input"> the old cinema and build a shopping centre.</li>
+            <li>I think the rain's set <input type="text" class="short-input"> for the day, don't you?</li>
+            <li>Some scientists put the extinction of the dinosaurs down <input type="text" class="short-input"> changes in the world's climate.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>D. Phrases and Collocations</h2>
+        <p class="instruction">Complete using the word given (2-5 words).</p>
+        <ol>
+            <li>Josh isn't feeling very well today. **weather** <br> Josh is feeling a bit <input type="text" class="full-input"> today.</li>
+            <li>CFC's have badly affected the ozone layer. **effect** <br> CFC's have <input type="text" class="full-input"> the ozone layer.</li>
+            <li>Would you mind quickly looking at the engine? **look** <br> Would you mind <input type="text" class="full-input"> the engine?</li>
+            <li>Cleaning the beach took ages. **long** <br> It <input type="text" class="full-input"> clean the beach.</li>
+            <li>It's Carl's job to read the barometer every morning. **responsibility** <br> Carl <input type="text" class="full-input"> the barometer every morning.</li>
+            <li>There's no point trying to persuade him to recycle. **waste** <br> It <input type="text" class="full-input"> trying to persuade him to recycle.</li>
+            <li>We'll soon be able to see land, won't we? **sight** <br> We'll soon be <input type="text" class="full-input"> land, won't we?</li>
+            <li>I couldn't steer the boat because the waves were so high. **control** <br> I <input type="text" class="full-input"> the boat because the waves were so high.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>E. Find the correct word</h2>
+        <ol>
+            <li>The days of Athens being one of the most polluted cities have <select><option>come</option><option>gone</option></select> to an end.</li>
+            <li>Their office is <select><option>at</option><option>on</option></select> the fifteenth floor.</li>
+            <li>The government's <select><option>made</option><option>done</option></select> a complete mess of its policy.</li>
+            <li>It's so hot, I think I'm going to <select><option>do</option><option>have</option></select> a cold shower.</li>
+            <li>As usual, nature lovers are <select><option>making</option><option>taking</option></select> a fuss about nothing.</li>
+            <li>I can't believe there's anyone in the <select><option>complete</option><option>whole</option></select> world who wants the hole to get bigger.</li>
+            <li>It looks <select><option>like</option><option>as</option></select> a large number of species will become extinct.</li>
+            <li>You used to believe there was a pot of gold <select><option>at</option><option>in</option></select> the end of every rainbow.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-card">
+        <h2>F. Word Patterns: San Francisco</h2>
+        <div class="text-passage">
+            Tourists to San Francisco are rarely disappointed (1) <input type="text" class="short-input"> the famous range of attractions. But SF is more famous (2) <input type="text" class="short-input"> being on the San Andreas fault. It's hard (3) <input type="text" class="short-input"> imagine why anyone would want to live in such a dangerous area. They are all familiar (4) <input type="text" class="short-input"> the faultline, and are aware (5) <input type="text" class="short-input"> the potential danger. Yet nothing, it seems, will prevent people (6) <input type="text" class="short-input"> building in SF. A quick glance (7) <input type="text" class="short-input"> a photo shows many skyscrapers completely covered (8) <input type="text" class="short-input"> glass. Seismologists are constantly warning residents (9) <input type="text" class="short-input"> the possibility of 'the next big quake'. They expect it (10) <input type="text" class="short-input"> happen sooner rather than later. SF are not short (11) <input type="text" class="short-input"> courage. Except (12) <input type="text" class="short-input"> making doubly sure buildings are built to safety standards, they carry on.
+        </div>
+    </div>
+
+    <div class="exercise-card">
+        <h2>G. Word Formation</h2>
+        <ol>
+            <li>Most scientists accept that <b>globe</b> warming is a reality. <br> <input type="text"></li>
+            <li>The weather was <b>freeze</b>. <br> <input type="text"></li>
+            <li>What can we do to protect <b>danger</b> species? <br> <input type="text"></li>
+            <li>Meteorologists forecast weather with incredible <b>accurate</b>. <br> <input type="text"></li>
+            <li><b>Develop</b> are planning to build a water park. <br> <input type="text"></li>
+            <li>All our products are <b>environment</b> friendly. <br> <input type="text"></li>
+            <li>Everyone should be <b>extreme</b> worried about the ozone layer. <br> <input type="text"></li>
+            <li>We live in a <b>resident</b> area twenty minutes from town. <br> <input type="text"></li>
+            <li>There's not much <b>likely</b> of groups stopping the factory. <br> <input type="text"></li>
+            <li>This snake is completely <b>harm</b>. <br> <input type="text"></li>
+            <li>Let's go outside and enjoy the <b>sunny</b> while it lasts. <br> <input type="text"></li>
+            <li>What kind of <b>neighbour</b> did you grow up in? <br> <input type="text"></li>
+            <li>I hope they don't <b>low</b> the price of petrol. <br> <input type="text"></li>
+            <li>The <b>great</b> of solar power lies in its simplicity. <br> <input type="text"></li>
+            <li>A number of different <b>pollute</b> in the river killed the fish. <br> <input type="text"></li>
+            <li>It's <b>nature</b> dark for this time of day. <br> <input type="text"></li>
+        </ol>
+    </div>
+
+    </div> <!-- close container for page2 -->
+</div> <!-- close page2 -->
+
+    <div id="page3" class="page">
+        <div class="container">
+            <div class="section-card">
+        <h2>A. Spot the Extra Word</h2>
+        <p class="instruction">If a line is correct, put a tick (✓). If there is an extra word, write it in the box.</p>
+        <div class="passage-box">
+            1. <input type="text" class="short"> Forecasts might warn to us about threats...<br>
+            2. <input type="text" class="short"> but imagine if we could take out control...<br>
+            3. <input type="text" class="short"> prevent dangerous weather conditions from in the first place.<br>
+            4. <input type="text" class="short"> Controlling the weather may be the biggest technological...<br>
+            5. <input type="text" class="short"> challenge we face. For a long of time, scientists...<br>
+            6. <input type="text" class="short"> of creating artificial clouds to bring rain to areas hit by drought,<br>
+            7. <input type="text" class="short"> but it's much harder to do than they expected that. The global...<br>
+            8. <input type="text" class="short"> weather system is very complicated, with each part having an...<br>
+            9. <input type="text" class="short"> effect taken on all the others. The scientists may feel they are...<br>
+            10. <input type="text" class="short"> wasting up their time, but success could save millions of lives.
+        </div>
+    </div>
+
+    <div class="section-card">
+        <h2>B. Word Formation</h2>
+        <ol start="11">
+            <li>There was a high <input type="text" placeholder="LIKELY"> of rain this weekend.</li>
+            <li>Using our cars causes <input type="text" placeholder="POLLUTE">.</li>
+            <li>Forecasting the weather <input type="text" placeholder="ACCURATE"> takes training.</li>
+            <li>Litter is often a problem in <input type="text" placeholder="RESIDENT"> areas.</li>
+            <li>According to <input type="text" placeholder="ENVIRONMENT">, we could face a crisis.</li>
+            <li>It was a wonderfully <input type="text" placeholder="SUN"> day.</li>
+            <li>The giant panda is <input type="text" placeholder="DANGER"> because its habitat is being destroyed.</li>
+            <li>It was absolutely <input type="text" placeholder="FREEZE">!</li>
+        </ol>
+    </div>
+
+        <div class="section-card">
+        <h2>C. Sentence Transformations</h2>
+        <ol start="19">
+            <li>Did you see the documentary about the ozone layer? (saw)<br>I wonder <input type="text" class="full-width"> the documentary.</li>
+            <li>I saw a badger for a moment before it disappeared. (sight)<br>I <input type="text" class="full-width"> a badger before it disappeared.</li>
+            <li>I hope the weather gets better for our trip. (up)<br>I hope <input type="text" class="full-width"> for our trip.</li>
+            <li>Did you hear that the greenhouse had been demolished? (torn)<br>Did you hear that they <input type="text" class="full-width"> the greenhouse?</li>
+            <li>Everything we do affects the environment in one way or another. (effect)<br>Everything we do <input type="text" class="full-width"> the environment.</li>
+            <li>I don't really know a lot about the work Greenpeace does. (familiar)<br>I <input type="text" class="full-width"> the work that Greenpeace does.</li>
+            <li>The builders have spoiled our garden. (mess)<br>The builders have <input type="text" class="full-width"> our garden.</li>
+            <li>Dr Trent said the problems were caused by rubbish. (put)<br>Dr Trent <input type="text" class="full-width"> rubbish in the streets.</li>
+            <li>Most people know that wasting water causes problems. (aware)<br>Most people <input type="text" class="full-width"> the problems caused by wasting water.</li>
+        </ol>
+    </div>
+
+    <div class="section-card">
+        <h2>D & E. Multiple Choice</h2>
+        <ol start="28">
+            <li>No one seems to care about the environment, <select><option>does he</option><option>are they</option><option>is he</option><option>do they</option></select>?</li>
+            <li>Do you know where <select><option>can I find</option><option>I find</option><option>I can find</option><option>do I find</option></select> a book?</li>
+            <li>The law prevents people <select><option>to leave</option><option>from leaving</option><option>of leaving</option><option>leave</option></select> rubbish here.</li>
+            <li>Let's walk to the shops instead, <select><option>shall we</option><option>don't we</option><option>will we</option><option>won't we</option></select>?</li>
+            <li>There isn't much point in trying to save electricity, <select><option>is it</option><option>isn't there</option><option>isn't it</option><option>is there</option></select>?</li>
+            <li>Don't drop your sweet wrapper on the floor, <select><option>do you</option><option>aren't you</option><option>will you</option><option>won't you</option></select>?</li>
+            <li>'I went to the exhibition.' 'Oh, yes? What <select><option>saw you</option><option>you did see</option><option>you saw</option><option>did you see</option></select> there?'</li>
+            <li>There's been a <select><option>flood</option><option>drizzle</option><option>shower</option><option>smog</option></select> in Germany and a village was destroyed.</li>
+            <li>Do you know what CFC <select><option>sets in</option><option>does up</option><option>stands for</option><option>gets down</option></select>?</li>
+            <li>Dinosaurs have been <select><option>endangered</option><option>extinct</option><option>threatened</option><option>disappeared</option></select> for millions of years.</li>
+            <li>It's sunny, but there's a very cold <select><option>blowing</option><option>air</option><option>wind</option><option>gas</option></select>.</li>
+            <li>If you ask me, <select><option>industrial</option><option>business</option><option>working</option><option>employer</option></select> waste is a bigger problem.</li>
+            <li>As towns grow, they tend to destroy the <select><option>urban</option><option>commercial</option><option>land</option><option>rural</option></select> areas.</li>
+            <li>Jill put her wellington boots on and played in the <select><option>reservoirs</option><option>lakes</option><option>puddles</option><option>ponds</option></select>.</li>
+        </ol>
+    </div>
+    </div>
+
+    <script>
+        function showPage(pageNumber) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            // Show selected page
+            document.getElementById('page' + pageNumber).classList.add('active');
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
