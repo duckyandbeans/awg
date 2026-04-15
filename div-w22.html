@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grammar, Vocabulary & Review Workbook</title>
+    <title>Interactive Grammar & Vocabulary Workbook</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             color: #333;
-            line-height: 1.5;
+            line-height: 1.6;
             margin: 0;
             padding: 20px;
             background-color: #f4f4f4;
@@ -196,24 +196,46 @@
             margin-bottom: 10px;
             line-height: 1.8;
         }
-        .blank {
-            display: inline-block;
+        
+        /* Interactive Input Styles */
+        input[type="text"] {
+            border: none;
             border-bottom: 1px solid #333;
-            min-width: 100px;
+            background-color: transparent;
+            font-family: inherit;
+            font-size: 15px;
+            padding: 2px 5px;
             margin: 0 5px;
+            text-align: center;
+            transition: border-color 0.2s;
         }
-        .blank-short {
-            min-width: 50px;
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom: 2px solid #0056b3;
+            background-color: #f0f8ff;
         }
-        .blank-long {
-            min-width: 200px;
+        .input-short { width: 40px; }
+        .input-medium { width: 120px; }
+        .input-long { width: 220px; }
+        
+        select.inline-select {
+            font-family: inherit;
+            font-size: 14px;
+            padding: 2px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #fff;
+            cursor: pointer;
         }
-        .bold-text {
-            font-weight: bold;
+        select.inline-select:focus {
+            outline: none;
+            border-color: #0056b3;
         }
+
         .mcq-options {
             display: flex;
-            gap: 20px;
+            gap: 25px;
             margin-top: 5px;
             list-style: none;
             padding: 0;
@@ -221,15 +243,19 @@
         .mcq-options li {
             margin-bottom: 0;
         }
-        .mcq-options strong {
-            margin-right: 5px;
+        .mcq-options label {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
+
         .text-box {
             background-color: #f9f9f9;
             border: 1px solid #ddd;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 20px;
-            line-height: 1.8;
+            line-height: 2;
         }
 
         /* Review specific */
@@ -254,6 +280,7 @@
         .flex-item {
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         .points-note {
             text-align: right;
@@ -400,14 +427,14 @@
         be • catch • don't do • don't forget • play • run • throw • try
     </div>
     <ol class="exercise-list">
-        <li><span class="blank"></span> faster! You can win the race if you try!</li>
-        <li><span class="blank"></span> the ball as hard as you can!</li>
-        <li><span class="blank"></span> as well as you can and we have a good chance.</li>
-        <li><span class="blank"></span> that – it's against the rules!</li>
-        <li><span class="blank"></span> to bring your running shoes tomorrow.</li>
-        <li><span class="blank"></span> careful! You might fall off your bicycle!</li>
-        <li>Always <span class="blank"></span> your best when you enter a race.</li>
-        <li><span class="blank"></span> the ball by holding your hands.</li>
+        <li><input type="text" class="input-medium"> faster! You can win the race if you try!</li>
+        <li><input type="text" class="input-medium"> the ball as hard as you can!</li>
+        <li><input type="text" class="input-medium"> as well as you can and we have a good chance.</li>
+        <li><input type="text" class="input-medium"> that – it's against the rules!</li>
+        <li><input type="text" class="input-medium"> to bring your running shoes tomorrow.</li>
+        <li><input type="text" class="input-medium"> careful! You might fall off your bicycle!</li>
+        <li>Always <input type="text" class="input-medium"> your best when you enter a race.</li>
+        <li><input type="text" class="input-medium"> the ball by holding your hands.</li>
     </ol>
 
     <div class="exercise-header">
@@ -415,17 +442,77 @@
         <div class="instruction">Open the brackets, using the verbs in the infinitive or the -ing form.</div>
     </div>
     <div class="text-box">
-        The two schools planned <b>(1)</b> <span class="blank"></span> <b>(play)</b> the match on a Saturday night. But some girls were unhappy about the time for different reasons. One player wanted <b>(2)</b> <span class="blank"></span> <b>(go)</b> out with her friends, one player had promised <b>(3)</b> <span class="blank"></span> <b>(have)</b> a meal with her aunt, and another said she hated <b>(4)</b> <span class="blank"></span> <b>(play)</b> in the dark.<br><br>
-        One coach suggested <b>(5)</b> <span class="blank"></span> <b>(arrange)</b> the game on the Friday, but the other coach refused <b>(6)</b> <span class="blank"></span> <b>(do)</b> it because she had another game to go to. One player, who didn't like <b>(7)</b> <span class="blank"></span> <b>(argue)</b>, said they should stop <b>(8)</b> <span class="blank"></span> <b>(disagree)</b>. She said they should decide <b>(9)</b> <span class="blank"></span> <b>(cancel)</b> the game, but nobody seemed <b>(10)</b> <span class="blank"></span> <b>(be)</b> happy about that.<br><br>
-        Finally, the two teams agreed <b>(11)</b> <span class="blank"></span> <b>(meet)</b> on the Saturday because they all loved <b>(12)</b> <span class="blank"></span> <b>(play)</b> basketball.
+        The two schools planned <b>(1)</b> <input type="text" class="input-medium" placeholder="(play)"> the match on a Saturday night. But some girls were unhappy about the time for different reasons. One player wanted <b>(2)</b> <input type="text" class="input-medium" placeholder="(go)"> out with her friends, one player had promised <b>(3)</b> <input type="text" class="input-medium" placeholder="(have)"> a meal with her aunt, and another said she hated <b>(4)</b> <input type="text" class="input-medium" placeholder="(play)"> in the dark.<br><br>
+        One coach suggested <b>(5)</b> <input type="text" class="input-medium" placeholder="(arrange)"> the game on the Friday, but the other coach refused <b>(6)</b> <input type="text" class="input-medium" placeholder="(do)"> it because she had another game to go to. One player, who didn't like <b>(7)</b> <input type="text" class="input-medium" placeholder="(argue)">, said they should stop <b>(8)</b> <input type="text" class="input-medium" placeholder="(disagree)">. She said they should decide <b>(9)</b> <input type="text" class="input-medium" placeholder="(cancel)"> the game, but nobody seemed <b>(10)</b> <input type="text" class="input-medium" placeholder="(be)"> happy about that.<br><br>
+        Finally, the two teams agreed <b>(11)</b> <input type="text" class="input-medium" placeholder="(meet)"> on the Saturday because they all loved <b>(12)</b> <input type="text" class="input-medium" placeholder="(play)"> basketball.
     </div>
 
     <div class="exercise-header">
         <div class="letter-box">C</div>
-        <div class="instruction">Circle the correct option.</div>
+        <div class="instruction">Select the correct option from the drop-down.</div>
     </div>
     <div class="text-box">
-        "The rules are very simple, you all know that. But Chris, please don't <b>(1) pick / to pick</b> up the ball – only the goalkeeper does that. So remember <b>(2) kick / to kick</b> the ball! I know everyone likes <b>(3) score / scoring</b> goals, but sometimes it's better to pass the ball to someone else. So, <b>(4) looking / look</b> for your team-mates! Everyone wants <b>(5) being / to be</b> a winner, and nobody enjoys <b>(6) losing / to lose</b>, so please <b>(7) be taking / take</b> my advice. <b>(8) Doing / Do</b> your best and you might win. I'm asking you <b>(9) to get / getting</b> out there and <b>(10) winning / win</b>!"
+        "The rules are very simple, you all know that. But Chris, please don't <b>(1)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="pick">pick</option>
+            <option value="to pick">to pick</option>
+        </select> 
+        up the ball – only the goalkeeper does that. So remember <b>(2)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="kick">kick</option>
+            <option value="to kick">to kick</option>
+        </select>
+        the ball! I know everyone likes <b>(3)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="score">score</option>
+            <option value="scoring">scoring</option>
+        </select>
+        goals, but sometimes it's better to pass the ball to someone else. So, <b>(4)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="looking">looking</option>
+            <option value="look">look</option>
+        </select>
+        for your team-mates! Everyone wants <b>(5)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="being">being</option>
+            <option value="to be">to be</option>
+        </select>
+        a winner, and nobody enjoys <b>(6)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="losing">losing</option>
+            <option value="to lose">to lose</option>
+        </select>
+        , so please <b>(7)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="be taking">be taking</option>
+            <option value="take">take</option>
+        </select>
+        my advice. <b>(8)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="Doing">Doing</option>
+            <option value="Do">Do</option>
+        </select>
+        your best and you might win. I'm asking you <b>(9)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="to get">to get</option>
+            <option value="getting">getting</option>
+        </select>
+        out there and <b>(10)</b>
+        <select class="inline-select">
+            <option value=""></option>
+            <option value="winning">winning</option>
+            <option value="win">win</option>
+        </select>
+        !"
     </div>
 
     <div class="exercise-header">
@@ -434,67 +521,67 @@
     </div>
     <ol class="exercise-list">
         <li>
-            What sport do you enjoy <span class="blank-short"></span> the most?
+            What sport do you enjoy the most?
             <ul class="mcq-options">
-                <li><strong>A</strong> watch</li>
-                <li><strong>B</strong> to watch</li>
-                <li><strong>C</strong> watching</li>
+                <li><label><input type="radio" name="u8d1" value="A"> <strong>A</strong> watch</label></li>
+                <li><label><input type="radio" name="u8d1" value="B"> <strong>B</strong> to watch</label></li>
+                <li><label><input type="radio" name="u8d1" value="C"> <strong>C</strong> watching</label></li>
             </ul>
         </li>
         <li>
-            He was listening to the teacher <span class="blank-short"></span> , but he didn't understand anything.
+            He was listening to the teacher, but he didn't understand anything.
             <ul class="mcq-options">
-                <li><strong>A</strong> talking</li>
-                <li><strong>B</strong> to talk</li>
-                <li><strong>C</strong> to talking</li>
+                <li><label><input type="radio" name="u8d2" value="A"> <strong>A</strong> talking</label></li>
+                <li><label><input type="radio" name="u8d2" value="B"> <strong>B</strong> to talk</label></li>
+                <li><label><input type="radio" name="u8d2" value="C"> <strong>C</strong> to talking</label></li>
             </ul>
         </li>
         <li>
-            I saw the car <span class="blank-short"></span> and jumped out of the way at the last minute.
+            I saw the car and jumped out of the way at the last minute.
             <ul class="mcq-options">
-                <li><strong>A</strong> to come</li>
-                <li><strong>B</strong> coming</li>
-                <li><strong>C</strong> come</li>
+                <li><label><input type="radio" name="u8d3" value="A"> <strong>A</strong> to come</label></li>
+                <li><label><input type="radio" name="u8d3" value="B"> <strong>B</strong> coming</label></li>
+                <li><label><input type="radio" name="u8d3" value="C"> <strong>C</strong> come</label></li>
             </ul>
         </li>
         <li>
-            When did you begin <span class="blank-short"></span> the piano?
+            When did you begin the piano?
             <ul class="mcq-options">
-                <li><strong>A</strong> to play</li>
-                <li><strong>B</strong> to playing</li>
-                <li><strong>C</strong> play</li>
+                <li><label><input type="radio" name="u8d4" value="A"> <strong>A</strong> to play</label></li>
+                <li><label><input type="radio" name="u8d4" value="B"> <strong>B</strong> to playing</label></li>
+                <li><label><input type="radio" name="u8d4" value="C"> <strong>C</strong> play</label></li>
             </ul>
         </li>
         <li>
-            The noise from my neighbour's party is starting <span class="blank-short"></span> me.
+            The noise from my neighbour's party is starting me.
             <ul class="mcq-options">
-                <li><strong>A</strong> annoying</li>
-                <li><strong>B</strong> annoy</li>
-                <li><strong>C</strong> to annoy</li>
+                <li><label><input type="radio" name="u8d5" value="A"> <strong>A</strong> annoying</label></li>
+                <li><label><input type="radio" name="u8d5" value="B"> <strong>B</strong> annoy</label></li>
+                <li><label><input type="radio" name="u8d5" value="C"> <strong>C</strong> to annoy</label></li>
             </ul>
         </li>
         <li>
-            When you get to the theatre, just <span class="blank-short"></span> for me outside.
+            When you get to the theatre, just for me outside.
             <ul class="mcq-options">
-                <li><strong>A</strong> be wait</li>
-                <li><strong>B</strong> waiting</li>
-                <li><strong>C</strong> wait</li>
+                <li><label><input type="radio" name="u8d6" value="A"> <strong>A</strong> be wait</label></li>
+                <li><label><input type="radio" name="u8d6" value="B"> <strong>B</strong> waiting</label></li>
+                <li><label><input type="radio" name="u8d6" value="C"> <strong>C</strong> wait</label></li>
             </ul>
         </li>
         <li>
-            Oh, I forgot <span class="blank-short"></span> you – I won the chess match on Friday.
+            Oh, I forgot you – I won the chess match on Friday.
             <ul class="mcq-options">
-                <li><strong>A</strong> tell</li>
-                <li><strong>B</strong> telling</li>
-                <li><strong>C</strong> to tell</li>
+                <li><label><input type="radio" name="u8d7" value="A"> <strong>A</strong> tell</label></li>
+                <li><label><input type="radio" name="u8d7" value="B"> <strong>B</strong> telling</label></li>
+                <li><label><input type="radio" name="u8d7" value="C"> <strong>C</strong> to tell</label></li>
             </ul>
         </li>
         <li>
-            I can hear my brother <span class="blank-short"></span> his drums upstairs! I'm trying to watch a film!
+            I can hear my brother his drums upstairs! I'm trying to watch a film!
             <ul class="mcq-options">
-                <li><strong>A</strong> to play</li>
-                <li><strong>B</strong> playing</li>
-                <li><strong>C</strong> play</li>
+                <li><label><input type="radio" name="u8d8" value="A"> <strong>A</strong> to play</label></li>
+                <li><label><input type="radio" name="u8d8" value="B"> <strong>B</strong> playing</label></li>
+                <li><label><input type="radio" name="u8d8" value="C"> <strong>C</strong> play</label></li>
             </ul>
         </li>
     </ol>
@@ -507,25 +594,25 @@
         eat • find • go • rain • say • see
     </div>
     <ol class="exercise-list">
-        <li>When it started <span class="blank"></span>, the tennis players went indoors.</li>
-        <li>Did you notice the man trying <span class="blank"></span> his golf ball in the long grass?</li>
-        <li>I remember <span class="blank"></span> to the cinema to see that film last year.</li>
-        <li>I hope <span class="blank"></span> you when you get back from your trip.</li>
-        <li>Don't <span class="blank"></span> that! The coach is listening.</li>
-        <li>After we have finished <span class="blank"></span> lunch, let's go.</li>
+        <li>When it started <input type="text" class="input-medium">, the tennis players went indoors.</li>
+        <li>Did you notice the man trying <input type="text" class="input-medium"> his golf ball in the long grass?</li>
+        <li>I remember <input type="text" class="input-medium"> to the cinema to see that film last year.</li>
+        <li>I hope <input type="text" class="input-medium"> you when you get back from your trip.</li>
+        <li>Don't <input type="text" class="input-medium"> that! The coach is listening.</li>
+        <li>After we have finished <input type="text" class="input-medium"> lunch, let's go.</li>
     </ol>
 
     <div class="exercise-header">
         <div class="letter-box">F</div>
-        <div class="instruction">Every sentence contains a mistake. Underline it and write the correct variant.</div>
+        <div class="instruction">Every sentence contains a mistake. Type the correct variant.</div>
     </div>
     <ol class="exercise-list">
-        <li>I heard my dad to shout and I ran downstairs to see what was happening. <span class="blank-long" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 10px;">In the summer, I miss to go to skiing lessons. <span class="blank-long" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 10px;">The team manager offered give our class free tickets for the match. <span class="blank-long" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 10px;">The coach asked the players play harder. <span class="blank-long" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 10px;">The World Cup continues being a popular sporting event. <span class="blank-long" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 10px;">I watched the whole race, so I saw the swimmer wins his medal. <span class="blank-long" style="float: right;"></span></li>
+        <li>I heard my dad <u>to shout</u> and I ran downstairs to see what was happening. <input type="text" class="input-long" style="float: right;"></li>
+        <li style="clear: both; padding-top: 10px;">In the summer, I miss <u>to go</u> to skiing lessons. <input type="text" class="input-long" style="float: right;"></li>
+        <li style="clear: both; padding-top: 10px;">The team manager offered <u>give</u> our class free tickets for the match. <input type="text" class="input-long" style="float: right;"></li>
+        <li style="clear: both; padding-top: 10px;">The coach asked the players <u>play</u> harder. <input type="text" class="input-long" style="float: right;"></li>
+        <li style="clear: both; padding-top: 10px;">The World Cup continues <u>being</u> a popular sporting event. <input type="text" class="input-long" style="float: right;"></li>
+        <li style="clear: both; padding-top: 10px;">I watched the whole race, so I saw the swimmer <u>wins</u> his medal. <input type="text" class="input-long" style="float: right;"></li>
     </ol>
 </div>
 
@@ -653,15 +740,56 @@
     <div class="section-title">Nouns</div>
     <div class="exercise-header" style="margin-top: 10px;">
         <div class="letter-box">A</div>
-        <div class="instruction">Circle the correct option.</div>
+        <div class="instruction">Select the correct option from the drop-down.</div>
     </div>
     <ol class="exercise-list">
-        <li>The basketball <b>coach / fan</b> was really excited about getting tickets for the match.</li>
-        <li>Come to hockey <b>practice / competition</b> with us at 8 pm.</li>
-        <li>The football player scored an amazing <b>prize / goal</b>.</li>
-        <li>The fans in the <b>stadium / gym</b> were cheering loudly when the match ended.</li>
-        <li>Jack is the <b>captain / player</b> of his school football team.</li>
-        <li>I like playing <b>snowboarding / table tennis</b> in my free time.</li>
+        <li>The basketball 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="coach">coach</option>
+                <option value="fan">fan</option>
+            </select>
+            was really excited about getting tickets for the match.
+        </li>
+        <li>Come to hockey 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="practice">practice</option>
+                <option value="competition">competition</option>
+            </select>
+            with us at 8 pm.
+        </li>
+        <li>The football player scored an amazing 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="prize">prize</option>
+                <option value="goal">goal</option>
+            </select>.
+        </li>
+        <li>The fans in the 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="stadium">stadium</option>
+                <option value="gym">gym</option>
+            </select>
+            were cheering loudly when the match ended.
+        </li>
+        <li>Jack is the 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="captain">captain</option>
+                <option value="player">player</option>
+            </select>
+            of his school football team.
+        </li>
+        <li>I like playing 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="snowboarding">snowboarding</option>
+                <option value="table tennis">table tennis</option>
+            </select>
+            in my free time.
+        </li>
     </ol>
 
     <div class="exercise-header">
@@ -672,12 +800,12 @@
         race • racket • skiing • sports centre • swimming • team
     </div>
     <ol class="exercise-list">
-        <li>The tennis player's <span class="blank"></span> broke while he was hitting the ball.</li>
-        <li>Let's go <span class="blank"></span> at the open-air pool.</li>
-        <li><span class="blank"></span> is my favourite winter sport.</li>
-        <li>He came first in the <span class="blank"></span> because he's a fast runner.</li>
-        <li>Which <span class="blank"></span> do you want to win the competition?</li>
-        <li>We hope to go ice skating at the new <span class="blank"></span> today.</li>
+        <li>The tennis player's <input type="text" class="input-medium"> broke while he was hitting the ball.</li>
+        <li>Let's go <input type="text" class="input-medium"> at the open-air pool.</li>
+        <li><input type="text" class="input-medium"> is my favourite winter sport.</li>
+        <li>He came first in the <input type="text" class="input-medium"> because he's a fast runner.</li>
+        <li>Which <input type="text" class="input-medium"> do you want to win the competition?</li>
+        <li>We hope to go ice skating at the new <input type="text" class="input-medium"> today.</li>
     </ol>
 
     <div class="section-title">Verbs</div>
@@ -687,75 +815,67 @@
     </div>
     <ol class="exercise-list">
         <li>
-            They <span class="blank-short"></span> down the road on their bikes when it started to rain.
+            They down the road on their bikes when it started to rain.
             <ul class="mcq-options">
-                <li><strong>A</strong> were rolling</li>
-                <li><strong>B</strong> were skating</li>
-                <li><strong>C</strong> were cycling</li>
+                <li><label><input type="radio" name="u9c1" value="A"> <strong>A</strong> were rolling</label></li>
+                <li><label><input type="radio" name="u9c1" value="B"> <strong>B</strong> were skating</label></li>
+                <li><label><input type="radio" name="u9c1" value="C"> <strong>C</strong> were cycling</label></li>
             </ul>
         </li>
         <li>
-            Let's <span class="blank-short"></span> the match at the café tonight.
+            Let's the match at the café tonight.
             <ul class="mcq-options">
-                <li><strong>A</strong> watch</li>
-                <li><strong>B</strong> catch</li>
-                <li><strong>C</strong> select</li>
+                <li><label><input type="radio" name="u9c2" value="A"> <strong>A</strong> watch</label></li>
+                <li><label><input type="radio" name="u9c2" value="B"> <strong>B</strong> catch</label></li>
+                <li><label><input type="radio" name="u9c2" value="C"> <strong>C</strong> select</label></li>
             </ul>
         </li>
         <li>
-            We were hoping <span class="blank-short"></span> more people to join the club.
+            We were hoping more people to join the club.
             <ul class="mcq-options">
-                <li><strong>A</strong> to deserve</li>
-                <li><strong>B</strong> to encourage</li>
-                <li><strong>C</strong> to reach</li>
+                <li><label><input type="radio" name="u9c3" value="A"> <strong>A</strong> to deserve</label></li>
+                <li><label><input type="radio" name="u9c3" value="B"> <strong>B</strong> to encourage</label></li>
+                <li><label><input type="radio" name="u9c3" value="C"> <strong>C</strong> to reach</label></li>
             </ul>
         </li>
         <li>
-            I love <span class="blank-short"></span> goals for my team when we play.
+            I love goals for my team when we play.
             <ul class="mcq-options">
-                <li><strong>A</strong> pushing</li>
-                <li><strong>B</strong> throwing</li>
-                <li><strong>C</strong> scoring</li>
+                <li><label><input type="radio" name="u9c4" value="A"> <strong>A</strong> pushing</label></li>
+                <li><label><input type="radio" name="u9c4" value="B"> <strong>B</strong> throwing</label></li>
+                <li><label><input type="radio" name="u9c4" value="C"> <strong>C</strong> scoring</label></li>
             </ul>
         </li>
         <li>
-            They decided to <span class="blank-short"></span> the match at the last minute.
+            They decided to the match at the last minute.
             <ul class="mcq-options">
-                <li><strong>A</strong> to drop</li>
-                <li><strong>B</strong> to cancel</li>
-                <li><strong>C</strong> to touch</li>
+                <li><label><input type="radio" name="u9c5" value="A"> <strong>A</strong> to drop</label></li>
+                <li><label><input type="radio" name="u9c5" value="B"> <strong>B</strong> to cancel</label></li>
+                <li><label><input type="radio" name="u9c5" value="C"> <strong>C</strong> to touch</label></li>
             </ul>
         </li>
         <li>
-            I want you to <span class="blank-short"></span> the ball and then throw it back to me.
+            I want you to the ball and then throw it back to me.
             <ul class="mcq-options">
-                <li><strong>A</strong> ride</li>
-                <li><strong>B</strong> enter</li>
-                <li><strong>C</strong> catch</li>
+                <li><label><input type="radio" name="u9c6" value="A"> <strong>A</strong> ride</label></li>
+                <li><label><input type="radio" name="u9c6" value="B"> <strong>B</strong> enter</label></li>
+                <li><label><input type="radio" name="u9c6" value="C"> <strong>C</strong> catch</label></li>
             </ul>
         </li>
     </ol>
 
     <div class="exercise-header">
         <div class="letter-box">D</div>
-        <div class="instruction">Match the two parts of the sentence.</div>
+        <div class="instruction">Match the two parts of the sentence (Type the letter a-f).</div>
     </div>
     <div style="display: flex; gap: 40px; padding-left: 20px;">
         <div style="flex: 1;">
-            1 &nbsp; Everyone agreed that they played well and<br>
-            2 &nbsp; The goal keeper dropped the ball<br>
-            3 &nbsp; The coach promised to select him for the team<br>
-            4 &nbsp; It's bad luck for players to touch the winner's cup<br>
-            5 &nbsp; Wear a good hat and leather boots when<br>
-            6 &nbsp; The players were pushing and shoving<br>
-        </div>
-        <div>
-            ___<br>
-            ___<br>
-            ___<br>
-            ___<br>
-            ___<br>
-            ___<br>
+            1 &nbsp; Everyone agreed that they played well and <input type="text" class="input-short" maxlength="1"><br>
+            2 &nbsp; The goal keeper dropped the ball <input type="text" class="input-short" maxlength="1"><br>
+            3 &nbsp; The coach promised to select him for the team <input type="text" class="input-short" maxlength="1"><br>
+            4 &nbsp; It's bad luck for players to touch the winner's cup <input type="text" class="input-short" maxlength="1"><br>
+            5 &nbsp; Wear a good hat and leather boots when <input type="text" class="input-short" maxlength="1"><br>
+            6 &nbsp; The players were pushing and shoving <input type="text" class="input-short" maxlength="1"><br>
         </div>
     </div>
     <div style="padding-left: 20px; margin-top: 15px;">
@@ -770,31 +890,98 @@
     <div class="section-title">Phrases</div>
     <div class="exercise-header" style="margin-top: 10px;">
         <div class="letter-box">E</div>
-        <div class="instruction">Circle the correct option.</div>
+        <div class="instruction">Select the correct option from the drop-down.</div>
     </div>
     <ol class="exercise-list">
-        <li>Anyone taking part <b>on / in</b> the match needs to wear football <b>boots / shoes</b>.</li>
-        <li>We were watching the game <b>to / on</b> TV when the electricity went off.</li>
-        <li><b>On / In</b> the end, we decided to <b>do / go</b> snowboarding.</li>
-        <li>They don't like <b>losing / taking</b> a match at all.</li>
-        <li>Go on. Congratulate him <b>on / in</b> winning the race!</li>
-        <li>Were you <b>doing / playing</b> judo when you hurt your leg?</li>
-        <li>First, you need to <b>win / take</b> part the competition and then you can say you're the best!</li>
-        <li>We were planning to <b>play / go</b> golf this weekend.</li>
+        <li>Anyone taking part 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="on">on</option>
+                <option value="in">in</option>
+            </select>
+            the match needs to wear football 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="boots">boots</option>
+                <option value="shoes">shoes</option>
+            </select>.
+        </li>
+        <li>We were watching the game 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="to">to</option>
+                <option value="on">on</option>
+            </select>
+            TV when the electricity went off.
+        </li>
+        <li>
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="On">On</option>
+                <option value="In">In</option>
+            </select>
+            the end, we decided to 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="do">do</option>
+                <option value="go">go</option>
+            </select>
+            snowboarding.
+        </li>
+        <li>They don't like 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="losing">losing</option>
+                <option value="taking">taking</option>
+            </select>
+            a match at all.
+        </li>
+        <li>Go on. Congratulate him 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="on">on</option>
+                <option value="in">in</option>
+            </select>
+            winning the race!
+        </li>
+        <li>Were you 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="doing">doing</option>
+                <option value="playing">playing</option>
+            </select>
+            judo when you hurt your leg?
+        </li>
+        <li>First, you need to 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="win">win</option>
+                <option value="take">take</option>
+            </select>
+            part the competition and then you can say you're the best!
+        </li>
+        <li>We were planning to 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="play">play</option>
+                <option value="go">go</option>
+            </select>
+            golf this weekend.
+        </li>
     </ol>
 
     <div class="section-title">Adjectives and adverbs</div>
     <div class="exercise-header" style="margin-top: 10px;">
         <div class="letter-box">F</div>
-        <div class="instruction">Swap the bold words so that the sentences make sense.</div>
+        <div class="instruction">Swap the bold words so that the sentences make sense. Type the correct word.</div>
     </div>
     <ol class="exercise-list">
-        <li>I prefer playing <b>last</b> games to indoor ones. <span class="blank" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 5px;">The match was <b>well</b> and the atmosphere was fantastic. <span class="blank" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 5px;">He can't run fast and he came <b>strong</b>. <span class="blank" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 5px;">Cricket is a very <b>outdoor</b> sport in India. <span class="blank" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 5px;">How <b>popular</b> do you have to be to lift those weights? <span class="blank" style="float: right;"></span></li>
-        <li style="clear: both; padding-top: 5px;">The team played <b>exciting</b> but still lost. <span class="blank" style="float: right;"></span></li>
+        <li>I prefer playing <b>last</b> games to indoor ones. <input type="text" class="input-medium" style="float: right;"></li>
+        <li style="clear: both; padding-top: 5px;">The match was <b>well</b> and the atmosphere was fantastic. <input type="text" class="input-medium" style="float: right;"></li>
+        <li style="clear: both; padding-top: 5px;">He can't run fast and he came <b>strong</b>. <input type="text" class="input-medium" style="float: right;"></li>
+        <li style="clear: both; padding-top: 5px;">Cricket is a very <b>outdoor</b> sport in India. <input type="text" class="input-medium" style="float: right;"></li>
+        <li style="clear: both; padding-top: 5px;">How <b>popular</b> do you have to be to lift those weights? <input type="text" class="input-medium" style="float: right;"></li>
+        <li style="clear: both; padding-top: 5px;">The team played <b>exciting</b> but still lost. <input type="text" class="input-medium" style="float: right;"></li>
     </ol>
 
     <div class="exercise-header" style="margin-top: 40px;">
@@ -802,12 +989,12 @@
         <div class="instruction">Fill in the blanks with words. The first letters of the words are given.</div>
     </div>
     <ol class="exercise-list">
-        <li>Ice skating is just <b>f</b><span class="blank"></span>! I go every week and I love it.</li>
-        <li>Table tennis is my favourite <b>i</b><span class="blank"></span> sport.</li>
-        <li>Basketball is very <b>p</b><span class="blank"></span> in my country – everybody plays it.</li>
-        <li>You need to be <b>s</b><span class="blank"></span> to play tennis.</li>
-        <li>Our team played really <b>w</b><span class="blank"></span> on Saturday.</li>
-        <li>I came <b>l</b><span class="blank"></span> in the race today. I must train harder if I want to do better.</li>
+        <li>Ice skating is just <b>f</b><input type="text" class="input-medium">! I go every week and I love it.</li>
+        <li>Table tennis is my favourite <b>i</b><input type="text" class="input-medium"> sport.</li>
+        <li>Basketball is very <b>p</b><input type="text" class="input-medium"> in my country – everybody plays it.</li>
+        <li>You need to be <b>s</b><input type="text" class="input-medium"> to play tennis.</li>
+        <li>Our team played really <b>w</b><input type="text" class="input-medium"> on Saturday.</li>
+        <li>I came <b>l</b><input type="text" class="input-medium"> in the race today. I must train harder if I want to do better.</li>
     </ol>
 
     <div class="section-title">Word formation</div>
@@ -816,15 +1003,15 @@
         <div class="instruction">Fill in the blanks, transforming the bold words so that they lexically and grammatically match the meaning of the text.</div>
     </div>
     <div style="padding-left: 20px; line-height: 2;">
-        <div class="flex-item"><span>From a very young age I wanted to be a football <b>(1)</b> <span class="blank"></span> .</span> <b>PLAY</b></div>
+        <div class="flex-item"><span>From a very young age I wanted to be a football <b>(1)</b> <input type="text" class="input-medium"> .</span> <b>PLAY</b></div>
         <div class="flex-item"><span>So, last year I started training every night after school and I tried</span> </div>
-        <div class="flex-item"><span>to <b>(2)</b> <span class="blank"></span> in the park with my friends at weekends too.</span> <b>PRACTICE</b></div>
-        <div class="flex-item"><span>Imagine my <b>(3)</b> <span class="blank"></span> when a coach from the local youth</span> <b>EXCITE</b></div>
+        <div class="flex-item"><span>to <b>(2)</b> <input type="text" class="input-medium"> in the park with my friends at weekends too.</span> <b>PRACTICE</b></div>
+        <div class="flex-item"><span>Imagine my <b>(3)</b> <input type="text" class="input-medium"> when a coach from the local youth</span> <b>EXCITE</b></div>
         <div class="flex-item"><span>team came to watch me play in a school match. I soon started</span></div>
-        <div class="flex-item"><span>to dream about becoming as <b>(4)</b> <span class="blank"></span> as all my favourite</span> <b>FAME</b></div>
-        <div class="flex-item"><span>stars. But I know it's <b>(5)</b> <span class="blank"></span> to think you can succeed</span> <b>DANGER</b></div>
+        <div class="flex-item"><span>to dream about becoming as <b>(4)</b> <input type="text" class="input-medium"> as all my favourite</span> <b>FAME</b></div>
+        <div class="flex-item"><span>stars. But I know it's <b>(5)</b> <input type="text" class="input-medium"> to think you can succeed</span> <b>DANGER</b></div>
         <div class="flex-item"><span>before you are really ready. You need to work hard to be</span></div>
-        <div class="flex-item"><span>a <b>(6)</b> <span class="blank"></span> and that means trying to play as well as you can.</span> <b>WIN</b></div>
+        <div class="flex-item"><span>a <b>(6)</b> <input type="text" class="input-medium"> and that means trying to play as well as you can.</span> <b>WIN</b></div>
         <div class="flex-item"><span>One day I hope I'll make it to the top.</span></div>
     </div>
 
@@ -833,14 +1020,14 @@
         <div class="instruction">Fill in the blanks, transforming the bold words so that they lexically and grammatically match the sentences.</div>
     </div>
     <ol class="exercise-list">
-        <li class="flex-item"><span>The <span class="blank"></span> looked very angry when they left the field.</span> <b>LOSE</b></li>
-        <li class="flex-item"><span>I was bored because the game wasn't very <span class="blank"></span> .</span> <b>EXCITE</b></li>
-        <li class="flex-item"><span><span class="blank"></span> on winning the school sports cup!</span> <b>CONGRATULATE</b></li>
-        <li class="flex-item"><span>The fans cheered when the players <span class="blank"></span> the stadium.</span> <b>ENTER</b></li>
-        <li class="flex-item"><span>He is the <span class="blank"></span> of the youth team at the local sports centre.</span> <b>TRAIN</b></li>
-        <li class="flex-item"><span>I really want to go <span class="blank"></span> next winter.</span> <b>SKI</b></li>
-        <li class="flex-item"><span>He injured his knee badly in <span class="blank"></span> .</span> <b>TRAIN</b></li>
-        <li class="flex-item"><span>I was so <span class="blank"></span> I couldn't sleep.</span> <b>EXCITE</b></li>
+        <li class="flex-item"><span>The <input type="text" class="input-medium"> looked very angry when they left the field.</span> <b>LOSE</b></li>
+        <li class="flex-item"><span>I was bored because the game wasn't very <input type="text" class="input-medium"> .</span> <b>EXCITE</b></li>
+        <li class="flex-item"><span><input type="text" class="input-medium"> on winning the school sports cup!</span> <b>CONGRATULATE</b></li>
+        <li class="flex-item"><span>The fans cheered when the players <input type="text" class="input-medium"> the stadium.</span> <b>ENTER</b></li>
+        <li class="flex-item"><span>He is the <input type="text" class="input-medium"> of the youth team at the local sports centre.</span> <b>TRAIN</b></li>
+        <li class="flex-item"><span>I really want to go <input type="text" class="input-medium"> next winter.</span> <b>SKI</b></li>
+        <li class="flex-item"><span>He injured his knee badly in <input type="text" class="input-medium"> .</span> <b>TRAIN</b></li>
+        <li class="flex-item"><span>I was so <input type="text" class="input-medium"> I couldn't sleep.</span> <b>EXCITE</b></li>
     </ol>
 </div>
 
@@ -855,15 +1042,15 @@
         <div class="instruction">Read the text below. Transform the words printed in capital letters at the end of the lines so that they grammatically and lexically match the content of the text. Fill in the blanks with the resulting words.</div>
     </div>
     <ol class="exercise-list">
-        <li class="flex-item"><span>Ice hockey is a very <span class="blank"></span> game to watch and Anatoli Tarasov was its father</span> <b>EXCITE</b></li>
+        <li class="flex-item"><span>Ice hockey is a very <input type="text" class="input-medium"> game to watch and Anatoli Tarasov was its father</span> <b>EXCITE</b></li>
         <li class="flex-item" style="padding-bottom: 10px;"><span>in Russia.</span></li>
-        <li class="flex-item"><span>He started an ice hockey programme in 1946. He was a very clever <span class="blank"></span> .</span> <b>TRAIN</b></li>
-        <li class="flex-item"><span>Tarasov became <span class="blank"></span> for his training techniques.</span> <b>FAME</b></li>
+        <li class="flex-item"><span>He started an ice hockey programme in 1946. He was a very clever <input type="text" class="input-medium"> .</span> <b>TRAIN</b></li>
+        <li class="flex-item"><span>Tarasov became <input type="text" class="input-medium"> for his training techniques.</span> <b>FAME</b></li>
         <li class="flex-item"><span>He thought that passing the puck was very important and he made his team</span> </li>
-        <li class="flex-item"><span><span class="blank"></span> very hard to do that.</span> <b>PRACTICE</b></li>
-        <li class="flex-item"><span>Vladislav Tretiak became one of the best <span class="blank"></span> in ice hockey history</span> <b>PLAY</b></li>
+        <li class="flex-item"><span><input type="text" class="input-medium"> very hard to do that.</span> <b>PRACTICE</b></li>
+        <li class="flex-item"><span>Vladislav Tretiak became one of the best <input type="text" class="input-medium"> in ice hockey history</span> <b>PLAY</b></li>
         <li class="flex-item" style="padding-bottom: 10px;"><span>because of Anatoli Tarasov!</span></li>
-        <li class="flex-item"><span>While he was the coach, the Soviet national team were the <span class="blank"></span> of three</span> <b>WIN</b></li>
+        <li class="flex-item"><span>While he was the coach, the Soviet national team were the <input type="text" class="input-medium"> of three</span> <b>WIN</b></li>
         <li class="flex-item"><span>Olympic gold medals!</span></li>
     </ol>
     <div class="points-note">(1 point for each correct answer)</div>
@@ -876,12 +1063,12 @@
         fan • practice • prize • racket • score • ticket
     </div>
     <ol class="exercise-list" start="7">
-        <li>We have an extra <span class="blank"></span> for tomorrow's final. Do you want to come with us?</li>
-        <li>I'm a great <span class="blank"></span> of Novak Djokovic.</li>
-        <li>The <span class="blank"></span> was 3–2 when the referee stopped the match.</li>
-        <li>The <span class="blank"></span> for the first place in the competition is a trip to Brazil!</li>
-        <li>I've lost my tennis <span class="blank"></span> . Have you seen it?</li>
-        <li>Sorry, I can't come with you. I've got judo <span class="blank"></span> at three o'clock.</li>
+        <li>We have an extra <input type="text" class="input-medium"> for tomorrow's final. Do you want to come with us?</li>
+        <li>I'm a great <input type="text" class="input-medium"> of Novak Djokovic.</li>
+        <li>The <input type="text" class="input-medium"> was 3–2 when the referee stopped the match.</li>
+        <li>The <input type="text" class="input-medium"> for the first place in the competition is a trip to Brazil!</li>
+        <li>I've lost my tennis <input type="text" class="input-medium"> . Have you seen it?</li>
+        <li>Sorry, I can't come with you. I've got judo <input type="text" class="input-medium"> at three o'clock.</li>
     </ol>
     <div class="points-note">(1 point for each correct answer)</div>
 
@@ -890,30 +1077,100 @@
         <div class="instruction">Complete each second sentence so that it means the same as the first sentence. Use between two and five words, including the word given.</div>
     </div>
     <ol class="exercise-list" start="13">
-        <li class="flex-item"><span>Sarah, did you have a kick boxing lesson last week?<br>Sarah, <span class="blank-long"></span> kick boxing last week?</span> <b>DO</b></li>
-        <li class="flex-item" style="margin-top: 15px;"><span>Bob lost the match and he was very unhappy.<br>Bob <span class="blank-long"></span> the match and he was very unhappy.</span> <b>NOT</b></li>
-        <li class="flex-item" style="margin-top: 15px;"><span>David decided to enter the Marathon race next month.<br>David decided to <span class="blank-long"></span> the Marathon race next month.</span> <b>PART</b></li>
-        <li class="flex-item" style="margin-top: 15px;"><span>I trained very hard, but finally I lost.<br>I trained very hard, but <span class="blank-long"></span> . I lost.</span> <b>END</b></li>
-        <li class="flex-item" style="margin-top: 15px;"><span>The TV showed a fantastic snowboarding competition last night.<br>There was a fantastic snowboarding competition <span class="blank-long"></span> last night.</span> <b>ON</b></li>
-        <li class="flex-item" style="margin-top: 15px;"><span>Last Saturday, it was raining heavily, so the referee decided not to start the football match.<br>The referee decided to <span class="blank-long"></span> because it was raining heavily.</span> <b>CANCEL</b></li>
+        <li class="flex-item"><span>Sarah, did you have a kick boxing lesson last week?<br>Sarah, <input type="text" class="input-long"> kick boxing last week?</span> <b>DO</b></li>
+        <li class="flex-item" style="margin-top: 15px;"><span>Bob lost the match and he was very unhappy.<br>Bob <input type="text" class="input-long"> the match and he was very unhappy.</span> <b>NOT</b></li>
+        <li class="flex-item" style="margin-top: 15px;"><span>David decided to enter the Marathon race next month.<br>David decided to <input type="text" class="input-long"> the Marathon race next month.</span> <b>PART</b></li>
+        <li class="flex-item" style="margin-top: 15px;"><span>I trained very hard, but finally I lost.<br>I trained very hard, but <input type="text" class="input-long"> . I lost.</span> <b>END</b></li>
+        <li class="flex-item" style="margin-top: 15px;"><span>The TV showed a fantastic snowboarding competition last night.<br>There was a fantastic snowboarding competition <input type="text" class="input-long"> last night.</span> <b>ON</b></li>
+        <li class="flex-item" style="margin-top: 15px;"><span>Last Saturday, it was raining heavily, so the referee decided not to start the football match.<br>The referee decided to <input type="text" class="input-long"> because it was raining heavily.</span> <b>CANCEL</b></li>
     </ol>
     <div class="points-note">(2 points for each correct answer)</div>
 
     <div class="exercise-header">
         <div class="letter-box">D</div>
-        <div class="instruction">Circle the correct option.</div>
+        <div class="instruction">Select the correct option.</div>
     </div>
     <ol class="exercise-list" start="19">
-        <li>Tatiana agreed <b>coming / to come</b> to the stadium with me.</li>
-        <li>The coach forgot <b>to tell / tell</b> us how many rounds to run!</li>
-        <li>When we heard the referee <b>blow / to blow</b> the whistle, we stopped playing.</li>
-        <li>Rebecca <b>was practising / practised</b> her shots when it started raining.</li>
-        <li><b>Don't pass / Pass not</b> the ball to Terry.</li>
-        <li><b>Aren't / Don't be</b> late for the match!</li>
-        <li>While Jamila was cycling, she <b>met / was meeting</b> a friend.</li>
-        <li>They <b>rode / were riding</b> their horses when it started snowing.</li>
-        <li>She trained very hard and the coach <b>selected / was selecting</b> her for the national team.</li>
-        <li>My friend suggested <b>to go / going</b> to the stadium.</li>
+        <li>Tatiana agreed 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="coming">coming</option>
+                <option value="to come">to come</option>
+            </select>
+            to the stadium with me.
+        </li>
+        <li>The coach forgot 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="to tell">to tell</option>
+                <option value="tell">tell</option>
+            </select>
+            us how many rounds to run!
+        </li>
+        <li>When we heard the referee 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="blow">blow</option>
+                <option value="to blow">to blow</option>
+            </select>
+            the whistle, we stopped playing.
+        </li>
+        <li>Rebecca 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="was practising">was practising</option>
+                <option value="practised">practised</option>
+            </select>
+            her shots when it started raining.
+        </li>
+        <li>
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="Don't pass">Don't pass</option>
+                <option value="Pass not">Pass not</option>
+            </select>
+            the ball to Terry.
+        </li>
+        <li>
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="Aren't">Aren't</option>
+                <option value="Don't be">Don't be</option>
+            </select>
+            late for the match!
+        </li>
+        <li>While Jamila was cycling, she 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="met">met</option>
+                <option value="was meeting">was meeting</option>
+            </select>
+            a friend.
+        </li>
+        <li>They 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="rode">rode</option>
+                <option value="were riding">were riding</option>
+            </select>
+            their horses when it started snowing.
+        </li>
+        <li>She trained very hard and the coach 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="selected">selected</option>
+                <option value="was selecting">was selecting</option>
+            </select>
+            her for the national team.
+        </li>
+        <li>My friend suggested 
+            <select class="inline-select">
+                <option value=""></option>
+                <option value="to go">to go</option>
+                <option value="going">going</option>
+            </select>
+            to the stadium.
+        </li>
     </ol>
     <div class="points-note">(1 point for each correct answer)</div>
 
@@ -923,67 +1180,67 @@
     </div>
     <ol class="exercise-list" start="29">
         <li>
-            The coach asked us <span class="blank-short"></span> up all the tennis balls.
+            The coach asked us up all the tennis balls.
             <ul class="mcq-options">
-                <li><strong>A</strong> to pick</li>
-                <li><strong>B</strong> pick</li>
-                <li><strong>C</strong> picking</li>
+                <li><label><input type="radio" name="re3e29" value="A"> <strong>A</strong> to pick</label></li>
+                <li><label><input type="radio" name="re3e29" value="B"> <strong>B</strong> pick</label></li>
+                <li><label><input type="radio" name="re3e29" value="C"> <strong>C</strong> picking</label></li>
             </ul>
         </li>
         <li>
-            Grandpa, do you remember <span class="blank-short"></span> first prize in the marathon? How did you feel?
+            Grandpa, do you remember first prize in the marathon? How did you feel?
             <ul class="mcq-options">
-                <li><strong>A</strong> to win</li>
-                <li><strong>B</strong> win</li>
-                <li><strong>C</strong> winning</li>
+                <li><label><input type="radio" name="re3e30" value="A"> <strong>A</strong> to win</label></li>
+                <li><label><input type="radio" name="re3e30" value="B"> <strong>B</strong> win</label></li>
+                <li><label><input type="radio" name="re3e30" value="C"> <strong>C</strong> winning</label></li>
             </ul>
         </li>
         <li>
-            <span class="blank-short"></span> those tennis rackets!
+            those tennis rackets!
             <ul class="mcq-options">
-                <li><strong>A</strong> Not touch</li>
-                <li><strong>B</strong> Don't touch</li>
-                <li><strong>C</strong> Don't touching</li>
+                <li><label><input type="radio" name="re3e31" value="A"> <strong>A</strong> Not touch</label></li>
+                <li><label><input type="radio" name="re3e31" value="B"> <strong>B</strong> Don't touch</label></li>
+                <li><label><input type="radio" name="re3e31" value="C"> <strong>C</strong> Don't touching</label></li>
             </ul>
         </li>
         <li>
-            We watched Roger Federer <span class="blank-short"></span> for two hours before his match against Nadal.
+            We watched Roger Federer for two hours before his match against Nadal.
             <ul class="mcq-options">
-                <li><strong>A</strong> train</li>
-                <li><strong>B</strong> to train</li>
-                <li><strong>C</strong> to training</li>
+                <li><label><input type="radio" name="re3e32" value="A"> <strong>A</strong> train</label></li>
+                <li><label><input type="radio" name="re3e32" value="B"> <strong>B</strong> to train</label></li>
+                <li><label><input type="radio" name="re3e32" value="C"> <strong>C</strong> to training</label></li>
             </ul>
         </li>
         <li>
-            I heard Mira <span class="blank-short"></span> in the other room, but I didn't go in.
+            I heard Mira in the other room, but I didn't go in.
             <ul class="mcq-options">
-                <li><strong>A</strong> talking</li>
-                <li><strong>B</strong> to talk</li>
-                <li><strong>C</strong> talk</li>
+                <li><label><input type="radio" name="re3e33" value="A"> <strong>A</strong> talking</label></li>
+                <li><label><input type="radio" name="re3e33" value="B"> <strong>B</strong> to talk</label></li>
+                <li><label><input type="radio" name="re3e33" value="C"> <strong>C</strong> talk</label></li>
             </ul>
         </li>
         <li>
-            While we <span class="blank-short"></span> table tennis at the sports centre, our coach prepared some exercises for us.
+            While we table tennis at the sports centre, our coach prepared some exercises for us.
             <ul class="mcq-options">
-                <li><strong>A</strong> played</li>
-                <li><strong>B</strong> were playing</li>
-                <li><strong>C</strong> playing</li>
+                <li><label><input type="radio" name="re3e34" value="A"> <strong>A</strong> played</label></li>
+                <li><label><input type="radio" name="re3e34" value="B"> <strong>B</strong> were playing</label></li>
+                <li><label><input type="radio" name="re3e34" value="C"> <strong>C</strong> playing</label></li>
             </ul>
         </li>
         <li>
-            My sister offered <span class="blank-short"></span> me practise before the final.
+            My sister offered me practise before the final.
             <ul class="mcq-options">
-                <li><strong>A</strong> to help</li>
-                <li><strong>B</strong> helping</li>
-                <li><strong>C</strong> help</li>
+                <li><label><input type="radio" name="re3e35" value="A"> <strong>A</strong> to help</label></li>
+                <li><label><input type="radio" name="re3e35" value="B"> <strong>B</strong> helping</label></li>
+                <li><label><input type="radio" name="re3e35" value="C"> <strong>C</strong> help</label></li>
             </ul>
         </li>
         <li>
-            When we saw someone <span class="blank-short"></span> the neighbour's car, we started shouting and the thief left.
+            When we saw someone the neighbour's car, we started shouting and the thief left.
             <ul class="mcq-options">
-                <li><strong>A</strong> to steal</li>
-                <li><strong>B</strong> steal</li>
-                <li><strong>C</strong> stealing</li>
+                <li><label><input type="radio" name="re3e36" value="A"> <strong>A</strong> to steal</label></li>
+                <li><label><input type="radio" name="re3e36" value="B"> <strong>B</strong> steal</label></li>
+                <li><label><input type="radio" name="re3e36" value="C"> <strong>C</strong> stealing</label></li>
             </ul>
         </li>
     </ol>
@@ -994,11 +1251,11 @@
         <div class="instruction">Open the brackets, putting the verbs in the appropriate form.</div>
     </div>
     <div class="text-box">
-        "(<b>37</b>) <span class="blank"></span> <b>(not / forget)</b> to buy some milk on the way back from the gym," said my mum.<br>
-        I (<b>38</b>) <span class="blank"></span> <b>(go)</b> to the sports centre and I was in a hurry because I don't like to be late. When I (<b>39</b>) <span class="blank"></span> <b>(arrive)</b> there, the captain of the team (<b>40</b>) <span class="blank"></span> <b>(throw)</b> the ball in the basket and some of the other players (<b>41</b>) <span class="blank"></span> <b>(run)</b> around the court. I (<b>42</b>) <span class="blank"></span> <b>(not / have)</b> much time to put on my training shoes before the training session. Then our coach told us (<b>43</b>) <span class="blank"></span> <b>(get)</b> into two teams and start (<b>44</b>) <span class="blank"></span> <b>(play)</b> a friendly match.
+        "(<b>37</b>) <input type="text" class="input-medium" placeholder="(not / forget)"> to buy some milk on the way back from the gym," said my mum.<br>
+        I (<b>38</b>) <input type="text" class="input-medium" placeholder="(go)"> to the sports centre and I was in a hurry because I don't like to be late. When I (<b>39</b>) <input type="text" class="input-medium" placeholder="(arrive)"> there, the captain of the team (<b>40</b>) <input type="text" class="input-medium" placeholder="(throw)"> the ball in the basket and some of the other players (<b>41</b>) <input type="text" class="input-medium" placeholder="(run)"> around the court. I (<b>42</b>) <input type="text" class="input-medium" placeholder="(not / have)"> much time to put on my training shoes before the training session. Then our coach told us (<b>43</b>) <input type="text" class="input-medium" placeholder="(get)"> into two teams and start (<b>44</b>) <input type="text" class="input-medium" placeholder="(play)"> a friendly match.
     </div>
     <div class="points-note" style="margin-bottom: 10px;">(1 point for each correct answer)</div>
-    <div style="text-align: right; font-weight: bold; font-size: 16px;">Total score: ___ / 50</div>
+    <div style="text-align: right; font-weight: bold; font-size: 16px;">Total score: <input type="text" class="input-short" style="text-align: center;"> / 50</div>
 </div>
 
 </body>
