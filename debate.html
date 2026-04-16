@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High School Debate Motion Generator & Shuffler</title>
+    <style>
+        :root {
+            --primary-color: #2563eb;
+            --primary-hover: #1d4ed8;
+            --secondary-color: #475569;
+            --secondary-hover: #334155;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --gov-bg: #dbeafe;
+            --gov-text: #1e40af;
+            --opp-bg: #fee2e2;
+            --opp-text: #991b1b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            max-width: 600px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+        }
+
+        .motion-display {
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        #motion-text {
+            font-size: 1.75rem;
+            font-weight: 700;
+            line-height: 1.4;
+            color: var(--text-main);
+            margin: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .category-badge {
+            display: inline-block;
+            background-color: #e2e8f0;
+            color: #475569;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: opacity 0.3s ease;
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease;
+            width: 100%;
+            max-width: 250px;
+            margin: 0 10px;
+        }
+
+        button:hover {
+            background-color: var(--primary-hover);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--secondary-hover);
+        }
+
+        .divider {
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        /* Shuffler Styles */
+        .teams-container {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .team-box {
+            flex: 1;
+            padding: 20px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .team-box.gov {
+            background-color: var(--gov-bg);
+            color: var(--gov-text);
+            border: 1px solid #bfdbfe;
+        }
+
+        .team-box.opp {
+            background-color: var(--opp-bg);
+            color: var(--opp-text);
+            border: 1px solid #fecaca;
+        }
+
+        .role-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .team-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            transition: opacity 0.2s ease;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        @media (max-width: 480px) {
+            #motion-text {
+                font-size: 1.25rem;
+            }
+            .container {
+                padding: 24px;
+            }
+            .teams-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Debate Motion Generator</h1>
+        <div id="category-badge" class="category-badge">Category</div>
+        <div class="motion-display">
+            <p id="motion-text">Loading motion...</p>
+        </div>
+        
+        <div class="divider"></div>
+
+        <h2>Side Shuffler</h2>
+        <div class="teams-container">
+            <div class="team-box gov">
+                <div class="role-title">Government</div>
+                <div id="gov-team" class="team-name">Team A</div>
+            </div>
+            <div class="team-box opp">
+                <div class="role-title">Opposition</div>
+                <div id="opp-team" class="team-name">Team B</div>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button id="generate-btn">Generate Motion</button>
+            <button id="shuffle-btn" class="btn-secondary">Shuffle Sides</button>
+        </div>
+    </div>
+
+    <script>
+        // --- MOTION GENERATOR LOGIC ---
+        const motions = [
+            { text: "This House would ban homework.", category: "Education" },
+            { text: "This House believes that social media does more harm than good for teenagers.", category: "Technology & Society" },
+            { text: "This House supports the use of school uniforms.", category: "Education" },
+            { text: "This House believes that the voting age should be lowered to 16.", category: "Politics" },
+            { text: "This House would abolish standardized testing.", category: "Education" },
+            { text: "This House would ban the sale of energy drinks to minors.", category: "Health" },
+            { text: "This House believes that physical education should be optional in high school.", category: "Education" },
+            { text: "This House would require all citizens to complete one year of national community service.", category: "Society" },
+            { text: "This House believes that animal testing should be globally banned.", category: "Ethics & Environment" },
+            { text: "This House would implement a four-day work/school week.", category: "Economy & Society" },
+            { text: "This House believes that college education should be free for everyone.", category: "Education" },
+            { text: "This House would heavily tax fast food and sugary drinks.", category: "Health & Economy" },
+            { text: "This House believes that censorship of the internet is never justified.", category: "Technology & Rights" },
+            { text: "This House would prioritize funding for space exploration over ocean exploration.", category: "Science" },
+            { text: "This House believes that artificial intelligence poses a threat to humanity.", category: "Technology" }
+        ];
+
+        let currentMotionIndex = -1;
+
+        const motionTextElement = document.getElementById('motion-text');
+        const categoryBadgeElement = document.getElementById('category-badge');
+        const generateBtn = document.getElementById('generate-btn');
+
+        function generateMotion() {
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * motions.length);
+            } while (randomIndex === currentMotionIndex && motions.length > 1);
+            
+            currentMotionIndex = randomIndex;
+            const selectedMotion = motions[currentMotionIndex];
+
+            // Fade out
+            motionTextElement.style.opacity = 0;
+            categoryBadgeElement.style.opacity = 0;
+            
+            setTimeout(() => {
+                // Change text
+                motionTextElement.textContent = selectedMotion.text;
+                categoryBadgeElement.textContent = selectedMotion.category;
+                
+                // Fade in
+                motionTextElement.style.opacity = 1;
+                categoryBadgeElement.style.opacity = 1;
+            }, 300);
+        }
+
+        // --- SIDE SHUFFLER LOGIC ---
+        const shuffleBtn = document.getElementById('shuffle-btn');
+        const govTeamElement = document.getElementById('gov-team');
+        const oppTeamElement = document.getElementById('opp-team');
+
+        function shuffleSides() {
+            // Fade out
+            govTeamElement.style.opacity = 0;
+            oppTeamElement.style.opacity = 0;
+
+            setTimeout(() => {
+                // 50% chance to flip teams
+                const isTeamAGov = Math.random() > 0.5;
+                
+                if (isTeamAGov) {
+                    govTeamElement.textContent = "Team A";
+                    oppTeamElement.textContent = "Team B";
+                } else {
+                    govTeamElement.textContent = "Team B";
+                    oppTeamElement.textContent = "Team A";
+                }
+
+                // Fade in
+                govTeamElement.style.opacity = 1;
+                oppTeamElement.style.opacity = 1;
+            }, 200);
+        }
+
+        // Initialize both features on load
+        window.onload = () => {
+            generateMotion();
+            shuffleSides();
+        };
+
+        // Event Listeners
+        generateBtn.addEventListener('click', generateMotion);
+        shuffleBtn.addEventListener('click', shuffleSides);
+    </script>
+
+</body>
+</html>
