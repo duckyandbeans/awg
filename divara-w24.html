@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Grammar & Vocabulary Workbook</title>
+    <style>
+        :root {
+            --primary-color: #2b6cb0;
+            --light-bg: #ebf8ff;
+            --border-color: #cbd5e1;
+            --text-color: #334155;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-color);
+            line-height: 1.5;
+            margin: 0;
+            padding: 20px;
+            background-color: #e2e8f0;
+        }
+        .page-container {
+            max-width: 950px;
+            margin: 0 auto 40px auto;
+            background: #fff;
+            padding: 40px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border-radius: 8px;
+        }
+        
+        /* Headers */
+        .unit-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 4px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+        .unit-title-container {
+            display: flex;
+            align-items: baseline;
+            gap: 15px;
+        }
+        .unit-title-container h1 {
+            margin: 0;
+            font-size: 30px;
+            color: var(--primary-color);
+        }
+        .unit-title-container h2 {
+            margin: 0;
+            font-size: 20px;
+            font-weight: normal;
+        }
+        .unit-badge {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            font-size: 22px;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+        h2.section-heading {
+            font-size: 20px;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        h3.sub-heading {
+            font-size: 16px;
+            color: var(--primary-color);
+            background-color: var(--light-bg);
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 15px;
+            border: 1px solid var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+        th {
+            background-color: var(--light-bg);
+            color: var(--primary-color);
+        }
+
+        /* Watch Out Boxes */
+        .watch-out, .hints-box {
+            display: flex;
+            align-items: flex-start;
+            margin: 15px 0;
+            background: #fff;
+            padding: 15px;
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+        }
+        .watch-out-icon, .hints-icon {
+            font-weight: bold;
+            color: white;
+            background: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 50%;
+            font-size: 12px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            text-align: center;
+        }
+        
+        /* Exercises */
+        .exercise-header {
+            font-weight: bold;
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-top: 30px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .letter-box {
+            background-color: var(--primary-color);
+            color: white;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            border-radius: 4px;
+        }
+        .exercise-list {
+            margin: 0;
+            padding-left: 20px;
+            list-style-type: decimal;
+        }
+        .exercise-list li { margin-bottom: 12px; }
+        .word-bank {
+            border: 2px solid var(--primary-color);
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background-color: var(--light-bg);
+            border-radius: 6px;
+            word-spacing: 12px;
+        }
+        .text-box {
+            background-color: #f8fafc;
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            margin-bottom: 20px;
+            line-height: 2;
+            border-radius: 8px;
+        }
+
+        /* Interactive Inputs */
+        input[type="text"] {
+            border: none;
+            border-bottom: 1px solid #64748b;
+            background-color: transparent;
+            font-family: inherit;
+            font-size: 14px;
+            padding: 2px 5px;
+            margin: 0 5px;
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom: 2px solid var(--primary-color);
+            background-color: var(--light-bg);
+        }
+        .input-short { width: 50px; }
+        .input-medium { width: 140px; }
+        .input-long { width: 250px; }
+        .input-full { width: 90%; text-align: left; }
+        
+        select.inline-select {
+            font-family: inherit;
+            font-size: 14px;
+            padding: 2px;
+            margin: 0 5px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .two-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+
+        .submit-container { text-align: center; margin: 40px 0; }
+        .submit-btn {
+            background-color: var(--primary-color);
+            color: #fff;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .submit-btn:hover { background-color: #1e40af; }
+    </style>
+</head>
+<body>
+
+<form id="workbookForm">
+
+    <div class="page-container">
+        <div class="unit-header">
+            <div class="unit-title-container">
+                <div class="unit-badge">Unit 10</div>
+                <div>
+                    <h1>Grammar</h1>
+                    <h2>Present perfect 1</h2>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="sub-heading">Present perfect</h3>
+        <table>
+            <tr>
+                <td rowspan="3" style="writing-mode: vertical-rl; text-align: center; font-weight: bold; background: #888; color: white; width: 30px;">Form</td>
+                <th>Affirmative form</th>
+                <th>Negative form</th>
+                <th>Interrogative form & short answer</th>
+            </tr>
+            <tr>
+                <td><i>I / you / we / they <b>have ('ve) taken</b> the book.</i></td>
+                <td><i>I / you / we / they <b>have not (haven't) taken</b> the book.</i></td>
+                <td><i><b>Have</b> I / you / we / they <b>taken</b> the book?</i><br><i>Yes, I / you / we / they <b>have</b>.</i><br><i>No, I / you / we / they <b>haven't</b>.</i></td>
+            </tr>
+            <tr>
+                <td><i>He / she / it <b>has ('s) taken</b> the book.</i></td>
+                <td><i>He / she / it <b>has not (hasn't) taken</b> the book.</i></td>
+                <td><i><b>Has</b> he / she / it <b>taken</b> the book?</i><br><i>Yes, he / she / it <b>has</b>.</i><br><i>No, he / she / it <b>hasn't</b>.</i></td>
+            </tr>
+        </table>
+
+        <div class="watch-out">
+            <div class="watch-out-icon">Watch out!</div>
+            <div>
+                To form the present perfect, we use the verb <i>to have</i> in the present tense and the past participle of the main verb. The past participle of regular verbs ends in <i>-ed</i>. The past participle forms of irregular verbs must be learned by heart.<br><br>
+                <b>Irregular Verbs (Examples):</b><br>
+                be &rarr; been | become &rarr; become | begin &rarr; begun | buy &rarr; bought | come &rarr; come | do &rarr; done | give &rarr; given | know &rarr; known | make &rarr; made | put &rarr; put | read &rarr; read | speak &rarr; spoken | take &rarr; taken | teach &rarr; taught | understand &rarr; understood | write &rarr; written
+            </div>
+        </div>
+
+        <table>
+            <tr><th>Used for describing:</th><th>Examples</th></tr>
+            <tr>
+                <td>actions without stating the (exact) time of their completion<br>the result of an action<br>questions about acquired experience in the past and answers to them</td>
+                <td><i>I'<b>ve finished</b> my school history project.</i><br><i>David <b>has lost</b> his school bag.</i><br><i><b>Have</b> you ever <b>cheated</b> in a test? No, I'<b>ve</b> never <b>cheated</b> in a test.</i></td>
+            </tr>
+            <tr>
+                <td>actions or states which started in the past and continue to the present moment</td>
+                <td><i>We'<b>ve been</b> at school for 6 hours.</i><br><i>Mrs Clark <b>has worked</b> at this school since 2012.</i></td>
+            </tr>
+        </table>
+
+        <div class="hints-box">
+            <div class="hints-icon">Helpful hints</div>
+            <div>
+                Present perfect is usually used with:<br>
+                &bull; <b>yet</b>: <i>We haven't checked the answers <b>yet</b>.</i><br>
+                &bull; <b>already</b>: <i>We have <b>already</b> done this exercise.</i><br>
+                &bull; <b>just</b>: <i>We have <b>just</b> done this exercise.</i><br>
+                &bull; <b>since</b> (last week / 2013, etc.): <i>Mr Gray has taught English here <b>since</b> 2013.</i><br>
+                &bull; <b>for</b> (a year / two days, etc.): <i>She's taught French here <b>for</b> a year.</i><br>
+                &bull; <b>ever</b>: <i>Have you <b>ever</b> had guitar lessons?</i><br>
+                &bull; <b>never</b>: <i>I've <b>never</b> understood why they give us so much homework!</i>
+            </div>
+        </div>
+
+        
+    <div class="page-container">
+        <div class="unit-header">
+            <div class="unit-title-container">
+                <div class="unit-badge">Unit 11</div>
+                <div>
+                    <h1>Grammar</h1>
+                    <h2>Present perfect 2</h2>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="sub-heading">Present perfect and past simple</h3>
+        <table>
+            <tr>
+                <th>Tense</th>
+                <th>Used for:</th>
+                <th>Example</th>
+            </tr>
+            <tr>
+                <td>present perfect</td>
+                <td>describing the result of a completed action</td>
+                <td><i>She'<b>s taken</b> photos for her geography project.</i><br>(She now has photos which she can use in her project.)</td>
+            </tr>
+            <tr>
+                <td>past simple</td>
+                <td>describing a completed action in the past</td>
+                <td><i>She <b>took</b> photos for her geography project.</i><br>(The action is complete, but the result is unknown to us. For example, we don't know if these photos exist now.)</td>
+            </tr>
+            <tr>
+                <td>present perfect</td>
+                <td>describing an action, the completion time of which is unknown or unstated</td>
+                <td><i>She'<b>s finished</b> her geography project.</i></td>
+            </tr>
+            <tr>
+                <td>past simple</td>
+                <td>describing an action, the completion time of which is known or stated</td>
+                <td><i>She <b>finished</b> her geography project last night.</i></td>
+            </tr>
+        </table>
+
+        <div class="hints-box">
+            <div class="hints-icon">Helpful hints</div>
+            <div>
+                There are time markers that hint at which grammatical tense should be used.<br><br>
+                <b>Past simple</b><br>
+                &bull; ago: <i>Robert took his driving test a year <b>ago</b>.</i><br>
+                &bull; yesterday: <i>We had our biology test <b>yesterday</b>.</i><br>
+                &bull; last week: <i>Jack started guitar lessons <b>last week</b>.</i><br>
+                &bull; a few days ago: <i>I saw the new documentary <b>a few days ago</b>.</i><br>
+                &bull; on Sunday: <i>Tom did his English homework <b>on Sunday</b>.</i><br>
+                &bull; at eight o'clock: <i>They arrived at school <b>at eight o'clock</b>.</i><br>
+                &bull; in 2013: <i>She started teaching <b>in 2013</b>.</i><br><br>
+                <b>Present perfect</b><br>
+                &bull; already: <i>We have <b>already</b> done this exercise.</i><br>
+                &bull; ever: <i>Have you <b>ever</b> had guitar lessons?</i><br>
+                &bull; for: <i>She has taught German here <b>for</b> over five years.</i><br>
+                &bull; just: <i>We have <b>just</b> done this exercise.</i><br>
+                &bull; never: <i>I have <b>never</b> understood why they give us so much homework.</i><br>
+                &bull; since: <i>Mr Gray has taught French here <b>since</b> 2006.</i><br>
+                &bull; yet: <i>We haven't checked the answers <b>yet</b>.</i>
+            </div>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">A</div><div>Circle the correct answer.</div></div>
+        <ol class="exercise-list">
+            <li><select name="u11_A_1" class="inline-select"><option value=""></option><option value="Have you met">Have you met</option><option value="Did you meet">Did you meet</option></select> the new maths teacher yet?</li>
+            <li>When <select name="u11_A_2" class="inline-select"><option value=""></option><option value="did you learn">did you learn</option><option value="have you learnt">have you learnt</option></select> to ski?</li>
+            <li>He <select name="u11_A_3" class="inline-select"><option value=""></option><option value="has taken">has taken</option><option value="have taken">have taken</option></select> lots of photographs today.</li>
+            <li>We <select name="u11_A_4" class="inline-select"><option value=""></option><option value="haven't had">haven't had</option><option value="didn't have">didn't have</option></select> an exam last week.</li>
+            <li>When you went on the school trip, <select name="u11_A_5" class="inline-select"><option value=""></option><option value="have you visited">have you visited</option><option value="did you visit">did you visit</option></select> the museum?</li>
+            <li>I <select name="u11_A_6" class="inline-select"><option value=""></option><option value="never did">never did</option><option value="have never done">have never done</option></select> a chemistry experiment before.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">B</div><div>Choose the correct answer.</div></div>
+        <div class="two-cols">
+            <ol class="exercise-list">
+                <li>Have you <select name="u11_B_1" class="inline-select"><option value=""></option><option value="A">A yet</option><option value="B">B already</option><option value="C">C ever</option></select> been to France?</li>
+                <li>When <select name="u11_B_2" class="inline-select"><option value=""></option><option value="A">A have you finished</option><option value="B">B did you finish</option><option value="C">C you finished</option></select> your project?</li>
+                <li>He hasn't been to school <select name="u11_B_3" class="inline-select"><option value=""></option><option value="A">A since</option><option value="B">B for</option><option value="C">C before</option></select> a week.</li>
+            </ol>
+            <ol class="exercise-list" start="4">
+                <li>You're late. The maths lesson has <select name="u11_B_4" class="inline-select"><option value=""></option><option value="A">A already</option><option value="B">B yet</option><option value="C">C since</option></select> started.</li>
+                <li>The teacher <select name="u11_B_5" class="inline-select"><option value=""></option><option value="A">A haven't given</option><option value="B">B gave</option><option value="C">C hasn't given</option></select> us any homework for tonight.</li>
+                <li>Two days <select name="u11_B_6" class="inline-select"><option value=""></option><option value="A">A since</option><option value="B">B ago</option><option value="C">C before</option></select>, Rob started guitar lessons.</li>
+            </ol>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">C</div><div>Make sentences in the present perfect or past simple.</div></div>
+        <ol class="exercise-list">
+            <li>Harry / not leave / for his holidays / yet<br><input type="text" name="u11_C_1" class="input-full"></li>
+            <li>I / never / study German / before<br><input type="text" name="u11_C_2" class="input-full"></li>
+            <li>they / not finish / building the new gymnasium / yet<br><input type="text" name="u11_C_3" class="input-full"></li>
+            <li>she / finish / her project / already / because she / work / all night<br><input type="text" name="u11_C_4" class="input-full"></li>
+            <li>you / go / to the party / last night?<br><input type="text" name="u11_C_5" class="input-full"></li>
+            <li>Sasha / take / her driving test / a year ago<br><input type="text" name="u11_C_6" class="input-full"></li>
+            <li>I / not / see / you / for ages<br><input type="text" name="u11_C_7" class="input-full"></li>
+            <li>the teacher / just / come / into the classroom<br><input type="text" name="u11_C_8" class="input-full"></li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">D</div><div>Open the brackets, putting the verbs in the present perfect or past simple.</div></div>
+        <ol class="exercise-list">
+            <li>She isn't here. She <input type="text" name="u11_D_1" class="input-medium" placeholder="(go)"> to her evening class.</li>
+            <li>Sylvia <input type="text" name="u11_D_2" class="input-medium" placeholder="(write)"> a history test yesterday.</li>
+            <li>He <input type="text" name="u11_D_3" class="input-medium" placeholder="(be)"> a teacher here for twenty years.</li>
+            <li>Angela <input type="text" name="u11_D_4" class="input-medium" placeholder="(live)"> in London since 2003.</li>
+            <li><input type="text" name="u11_D_5a" class="input-medium" placeholder="(you)"> you <input type="text" name="u11_D_5b" class="input-medium" placeholder="(see)"> the basketball match on TV last night?</li>
+            <li>How many emails <input type="text" name="u11_D_6" class="input-medium" placeholder="(get)"> on your birthday?</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">E</div><div>Open the brackets, putting the verbs in the present perfect or past simple.</div></div>
+        <div class="text-box">
+            Hi Terry,<br>
+            I want your opinion about something. I <b>(1)</b> <input type="text" name="u11_E_1" class="input-medium" placeholder="(decide)"> to go to summer school in London to learn English. One reason I <b>(2)</b> <input type="text" name="u11_E_2" class="input-medium" placeholder="(make)"> this decision is because this year I <b>(3)</b> <input type="text" name="u11_E_3" class="input-medium" placeholder="(do)"> really badly in all my English exams. I need to improve my English - and fast!<br>
+            I <b>(4)</b> <input type="text" name="u11_E_4" class="input-medium" placeholder="(not choose)"> a school yet and I <b>(5)</b> <input type="text" name="u11_E_5" class="input-medium" placeholder="(want)"> to ask you about your experience. You <b>(6)</b> <input type="text" name="u11_E_6" class="input-medium" placeholder="(go)"> on a language course in England last year, didn't you?<br>
+            <b>(7)</b> <input type="text" name="u11_E_7" class="input-long" placeholder="(you / have)"> a good time there? <b>(8)</b> <input type="text" name="u11_E_8" class="input-medium" placeholder="(be)"> the teachers good? What was the name of the language school? Please send me some information so that I can make the right decision! Thanks.<br>
+            All the best,<br>
+            Sam
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">F</div><div>Complete each second sentence so that it means the same as the first sentence. Use between two and five words, including the word given.</div></div>
+        <ol class="exercise-list">
+            <li>He left the house a few minutes ago. <b>JUST</b><br>
+                He <input type="text" name="u11_F_1" class="input-long"> the house.
+            </li>
+            <li>I was a child the last time I went to a museum. <b>SINCE</b><br>
+                I haven't <input type="text" name="u11_F_2" class="input-long"> I was a child.
+            </li>
+            <li>I've never tasted borscht before. <b>EVER</b><br>
+                This is the first time I <input type="text" name="u11_F_3" class="input-long"> borscht.
+            </li>
+            <li>She lied to her parents about her exam results. <b>TELL</b><br>
+                She <input type="text" name="u11_F_4" class="input-long"> parents about her exam results.
+            </li>
+            <li>When was the last time you went to the dentist? <b>AGO</b><br>
+                How long <input type="text" name="u11_F_5" class="input-long"> to the dentist?
+            </li>
+            <li>Is this your first visit to Moscow? <b>BEFORE</b><br>
+                Have you <input type="text" name="u11_F_6" class="input-long"> ?
+            </li>
+        </ol>
+    </div>
+
+    <div class="page-container">
+        <div class="unit-header">
+            <div class="unit-title-container">
+                <div class="unit-badge">Unit 12</div>
+                <div>
+                    <h1>Vocabulary</h1>
+                    <h2>School</h2>
+                </div>
+            </div>
+        </div>
+
+        <h3 class="sub-heading">Nouns</h3>
+        <table>
+            <tr>
+                <td>board<br>class(room)<br>desk<br>dictionary<br>exam<br>head teacher<br>homework</td>
+                <td>IWB (interactive white board)<br>language<br>lesson<br>library<br>notebook<br>project<br>pupil</td>
+                <td>report<br>ring<br>school trip<br>school uniform<br>student<br>subjects: Art / Biology / Chemistry / Geography /</td>
+                <td>History / IT (Information Technology) / Literature / Maths / Music / PE (Physical Education) / Physics / RE (Religious Education) / Social Science<br>term<br>timetable</td>
+            </tr>
+        </table>
+
+        <h3 class="sub-heading">Verbs</h3>
+        <table>
+            <tr>
+                <td>answer<br>fail<br>know<br>learn</td>
+                <td>mark<br>match<br>mean<br>pass</td>
+                <td>read<br>remember<br>teach<br>tick</td>
+                <td>understand<br>write</td>
+            </tr>
+        </table>
+
+        <h3 class="sub-heading">Phrasal verbs</h3>
+        <table>
+            <tr>
+                <td>cross out<br>give / hand in<br>give / hand out</td>
+                <td>put up (your hand)<br>rub out<br>write down</td>
+            </tr>
+        </table>
+
+        <h3 class="sub-heading">Phrases</h3>
+        <table>
+            <tr>
+                <td>arrive at school<br>at breaktime<br>correct / make a mistake<br>do homework<br>do your best<br>drive (someone) to school</td>
+                <td>get a good / bad mark<br>get to school<br>have a break / lesson<br>in ink / pencil<br>pay attention<br>take the register</td>
+            </tr>
+        </table>
+
+        <h3 class="sub-heading">Adjectives and adverbs</h3>
+        <table>
+            <tr>
+                <th>Adjectives</th>
+                <th></th>
+                <th></th>
+                <th>Adverbs</th>
+            </tr>
+            <tr>
+                <td>absent<br>complicated</td>
+                <td>favourite<br>important<br>intelligent</td>
+                <td>right<br>serious<br>wrong</td>
+                <td>right<br>wrong</td>
+            </tr>
+        </table>
+
+        <h3 class="sub-heading">Word formation</h3>
+        <table>
+            <tr><th>Noun</th><th>Verb</th><th>Adjective</th><th>Adverb</th></tr>
+            <tr><td>apology</td><td>apologise</td><td></td><td></td></tr>
+            <tr><td>beginner<br>beginning</td><td>begin</td><td></td><td></td></tr>
+            <tr><td>correction</td><td>correct</td><td>correct<br>incorrect</td><td>correctly<br>incorrectly</td></tr>
+            <tr><td>education</td><td>educate</td><td>educational</td><td></td></tr>
+            <tr><td>encouragement</td><td>encourage</td><td>encouraging</td><td></td></tr>
+            <tr><td>importance</td><td></td><td>important<br>unimportant</td><td></td></tr>
+            <tr><td>meaning</td><td>mean</td><td></td><td></td></tr>
+            <tr><td>spelling</td><td>spell</td><td></td><td></td></tr>
+            <tr><td>student<br>studies</td><td>study</td><td></td><td></td></tr>
+            <tr><td>teacher</td><td>teach</td><td></td><td></td></tr>
+        </table>
+
+        <div class="exercise-header"><div class="letter-box">A</div><div>Fill in the blanks using the words given in the box.</div></div>
+        <div class="word-bank">dictionary &bull; exams &bull; homework &bull; language &bull; lessons &bull; notebooks &bull; report &bull; term &bull; timetable</div>
+        <ol class="exercise-list">
+            <li>I got a good <input type="text" name="u12_A_1" class="input-medium"> at the end of the last school year.</li>
+            <li>Use your <input type="text" name="u12_A_2" class="input-medium"> when you don't know the meaning of a word.</li>
+            <li>The new <input type="text" name="u12_A_3" class="input-medium"> is on the notice board. We've got PE three times a week.</li>
+            <li>At the end of the summer <input type="text" name="u12_A_4" class="input-medium">, we usually have <input type="text" name="u12_A_4b" class="input-medium"> in all our subjects.</li>
+            <li>My favourite <input type="text" name="u12_A_5" class="input-medium"> are Chemistry and Physics, but I don't like Biology.</li>
+            <li>I'm not going out tonight; I've got a lot of Geography <input type="text" name="u12_A_6" class="input-medium"> to do.</li>
+            <li>I would like to do Spanish as my second <input type="text" name="u12_A_7" class="input-medium"> this year.</li>
+            <li>The teacher told us to write everything down in our Literature <input type="text" name="u12_A_8" class="input-medium"> .</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">B</div><div>Circle the correct answer.</div></div>
+        <ol class="exercise-list">
+            <li>My brother is a <select name="u12_B_1" class="inline-select"><option value=""></option><option value="pupil">pupil</option><option value="student">student</option></select> at the university.</li>
+            <li>On our school <select name="u12_B_2" class="inline-select"><option value=""></option><option value="timetable">timetable</option><option value="trip">trip</option></select> we went to Rome and saw the Colosseum.</li>
+            <li>I've got a History <select name="u12_B_3" class="inline-select"><option value=""></option><option value="project">project</option><option value="lesson">lesson</option></select> to do, so I'm going to the library.</li>
+            <li>I had to see the <select name="u12_B_4" class="inline-select"><option value=""></option><option value="head teacher">head teacher</option><option value="student">student</option></select> because my report was so bad.</li>
+            <li>Our <select name="u12_B_5" class="inline-select"><option value=""></option><option value="lesson">lesson</option><option value="classroom">classroom</option></select> is on the first floor and has an interactive white board.</li>
+            <li>Our school <select name="u12_B_6" class="inline-select"><option value=""></option><option value="clothes">clothes</option><option value="uniform">uniform</option></select> is a blue jacket with grey trousers.</li>
+            <li>In <select name="u12_B_7" class="inline-select"><option value=""></option><option value="PE">PE</option><option value="RE">RE</option></select>, we do things like gymnastics and basketball.</li>
+            <li>We're learning about computer programming in <select name="u12_B_8" class="inline-select"><option value=""></option><option value="IWB">IWB</option><option value="IT">IT</option></select> at the moment.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">C</div><div>Choose the correct answer.</div></div>
+        <div class="two-cols">
+            <ol class="exercise-list">
+                <li>What did you <select name="u12_C_1" class="inline-select"><option value=""></option><option value="A">A learn</option><option value="B">B remember</option><option value="C">C pass</option></select> in your Music lesson?</li>
+                <li>Don't forget to <select name="u12_C_2" class="inline-select"><option value=""></option><option value="A">A hand out</option><option value="B">B put up</option><option value="C">C write down</option></select> what the teacher says in your notebook.</li>
+                <li>The teacher <select name="u12_C_3" class="inline-select"><option value=""></option><option value="A">A crossed out</option><option value="B">B ticked</option><option value="C">C passed</option></select> all the correct answers.</li>
+            </ol>
+            <ol class="exercise-list" start="4">
+                <li>Look up what the word <select name="u12_C_4" class="inline-select"><option value=""></option><option value="A">A matches</option><option value="B">B means</option><option value="C">C knows</option></select> in a dictionary.</li>
+                <li>I didn't do any work, so I <select name="u12_C_5" class="inline-select"><option value=""></option><option value="A">A failed</option><option value="B">B answered</option><option value="C">C wrote</option></select> the exam.</li>
+                <li>History <select name="u12_C_6" class="inline-select"><option value=""></option><option value="A">A learns</option><option value="B">B writes</option><option value="C">C teaches</option></select> you about great events in the past.</li>
+            </ol>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">D</div><div>Fill in the blanks using the words given in the box. There are two extra words in the box.</div></div>
+        <div class="word-bank">cross out &bull; give out &bull; hand in &bull; marked &bull; put up &bull; read &bull; remember &bull; rubbed out &bull; understand</div>
+        <ol class="exercise-list">
+            <li>I didn't <input type="text" name="u12_D_1" class="input-medium"> the question the teacher asked.</li>
+            <li>The teacher has <input type="text" name="u12_D_2" class="input-medium"> our biology tests and I passed!</li>
+            <li>For homework we have to <input type="text" name="u12_D_3" class="input-medium"> two chapters of our RE book.</li>
+            <li>Someone has <input type="text" name="u12_D_4" class="input-medium"> what the teacher wrote on the board.</li>
+            <li>Don't forget to <input type="text" name="u12_D_5" class="input-medium"> all your papers at the end of the exam - put them on my desk please.</li>
+            <li>Basil <input type="text" name="u12_D_6" class="input-medium"> his hand because he knew the answer.</li>
+            <li>You have to <input type="text" name="u12_D_7" class="input-medium"> the names of all these countries for the Geography test.</li>
+            <li>Dan, here are the exam papers. Can you <input type="text" name="u12_D_8" class="input-medium"> one to each person, please?</li>
+            <li>When you make a mistake, just <input type="text" name="u12_D_9" class="input-medium"> it out neatly.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">E</div><div>Circle the correct answer.</div></div>
+        <div class="two-cols">
+            <ol class="exercise-list">
+                <li>Did you <select name="u12_E_1" class="inline-select"><option value=""></option><option value="arrive to">arrive to</option><option value="at school">at school</option></select> before the bell rang?</li>
+                <li>When you <select name="u12_E_2" class="inline-select"><option value=""></option><option value="do">do</option><option value="make">make</option></select> a mistake, just cross it out.</li>
+                <li>How do you <select name="u12_E_3" class="inline-select"><option value=""></option><option value="arrive">arrive</option><option value="get">get</option></select> to school every morning?</li>
+                <li>The teacher always <select name="u12_E_4" class="inline-select"><option value=""></option><option value="takes">takes</option><option value="does">does</option></select> the register at the beginning of class.</li>
+            </ol>
+            <ol class="exercise-list" start="5">
+                <li>Remember to write all your answers <select name="u12_E_5" class="inline-select"><option value=""></option><option value="with">with</option><option value="in ink">in ink</option></select>.</li>
+                <li>We usually have a drink and a snack <select name="u12_E_6" class="inline-select"><option value=""></option><option value="in">in</option><option value="at break time">at break time</option></select>.</li>
+                <li>Don't forget to <select name="u12_E_7" class="inline-select"><option value=""></option><option value="make">make</option><option value="do">do</option></select> your homework this evening.</li>
+                <li>Just do your <select name="u12_E_8" class="inline-select"><option value=""></option><option value="best">best</option><option value="good">good</option></select> in the test. That's all you can do.</li>
+            </ol>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">F</div><div>The highlighted words are used incorrectly. Correct them.</div></div>
+        <ol class="exercise-list">
+            <li>Timothy is unhappy about <b>having</b> a bad mark in Geography. <input type="text" name="u12_F_1" class="input-medium" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">At two o'clock I <b>take</b> an Information Technology lesson. <input type="text" name="u12_F_2" class="input-medium" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">I always <b>have</b> attention in class. <input type="text" name="u12_F_3" class="input-medium" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">My parents said just <b>be</b> your best - you don't have to come top of the class. <input type="text" name="u12_F_4" class="input-medium" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">At about eleven o'clock we usually <b>make</b> a short break. <input type="text" name="u12_F_5" class="input-medium" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">My dad drives me <b>at</b> school every morning. <input type="text" name="u12_F_6" class="input-medium" style="float: right;"></li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">G</div><div>Fill in the blanks with words. The first letters of the words are given.</div></div>
+        <ol class="exercise-list">
+            <li>When a student is very clever, we say they are <b>i</b><input type="text" name="u12_G_1" class="input-medium"> .</li>
+            <li>When a pupil is not in class, we say they are <b>a</b><input type="text" name="u12_G_2" class="input-medium"> .</li>
+            <li>You call the subject you like best your <b>f</b><input type="text" name="u12_G_3" class="input-medium"> subject.</li>
+            <li>When you are not joking or being funny, you are being <b>s</b><input type="text" name="u12_G_4" class="input-medium"> .</li>
+            <li>If a problem is difficult or confusing we say it is <b>c</b><input type="text" name="u12_G_5" class="input-medium"> .</li>
+            <li>Choosing a career is a very <b>i</b><input type="text" name="u12_G_6" class="input-medium"> decision to make.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">H</div><div>Fill in the blanks with the given words.</div></div>
+        <div class="word-bank">absent &bull; complicated &bull; favourite &bull; important &bull; intelligent &bull; right (x2) &bull; serious &bull; wrong (x2)</div>
+        <div class="text-box">
+            My friend Ben is very <b>(1)</b> <input type="text" name="u12_H_1" class="input-medium"> and is top of the class in all the science subjects, but his <b>(2)</b> <input type="text" name="u12_H_2" class="input-medium"> is Maths. He loves doing all those <b>(3)</b> <input type="text" name="u12_H_3" class="input-medium"> problems we get in Maths, and he always gets them <b>(4)</b> <input type="text" name="u12_H_4" class="input-medium"> . I'm really bad at Maths and before I met Ben I was always getting the <b>(5)</b> <input type="text" name="u12_H_5" class="input-medium"> answers to the questions the teacher gave us. He helps me to understand, but he thinks I don't have the <b>(6)</b> <input type="text" name="u12_H_6" class="input-medium"> kind of mind to be good at science. He's not here today, though, and the teacher asked me why he was <b>(7)</b> <input type="text" name="u12_H_7" class="input-medium"> . I told him that Ben had a(n) <b>(8)</b> <input type="text" name="u12_H_8" class="input-medium"> appointment with the dentist because he has a <b>(9)</b> <input type="text" name="u12_H_9" class="input-medium"> problem with his teeth. I know it's <b>(10)</b> <input type="text" name="u12_H_10" class="input-medium"> to tell a lie, but Ben is my best friend.
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">I</div><div>Fill in the blanks, transforming the highlighted words so that they grammatically and lexically match the meaning of the sentences.</div></div>
+        <ol class="exercise-list">
+            <li>He answered most of the questions <input type="text" name="u12_I_1" class="input-medium"> , so he failed the exam. <b>(CORRECT)</b></li>
+            <li>You get a very good <input type="text" name="u12_I_2" class="input-medium"> at this school. <b>(EDUCATE)</b></li>
+            <li>Dad accepted my <input type="text" name="u12_I_3" class="input-medium"> for breaking the window. <b>(APOLOGISE)</b></li>
+            <li><input type="text" name="u12_I_4" class="input-medium"> don't have to wear school uniforms in their final year. <b>(STUDY)</b></li>
+            <li>He's the best Social Science <input type="text" name="u12_I_5" class="input-medium"> I've ever had. <b>(TEACH)</b></li>
+            <li>At the <input type="text" name="u12_I_6" class="input-medium"> of each school year I make a lot of new friends. <b>(BEGIN)</b></li>
+            <li>She's good at Art but needs some <input type="text" name="u12_I_7" class="input-medium"> to help her improve. <b>(ENCOURAGE)</b></li>
+            <li>The <input type="text" name="u12_I_8" class="input-medium"> of some English words is very strange. <b>(SPELL)</b></li>
+            <li>I don't understand the <input type="text" name="u12_I_9" class="input-medium"> of this poem. <b>(MEAN)</b></li>
+            <li>She doesn't care if she passes or fails. It's <input type="text" name="u12_I_10" class="input-medium"> to her. <b>(IMPORTANT)</b></li>
+        </ol>
+    </div>
+
+    <div class="page-container">
+        <div class="unit-header">
+            <div class="unit-title-container">
+                <div class="unit-badge">Review 4</div>
+                <h1>Units 10, 11 and 12</h1>
+            </div>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">A</div><div>Open the brackets, putting the verbs in the present perfect.</div></div>
+        <ol class="exercise-list">
+            <li>I <input type="text" name="r4_A_1" class="input-medium" placeholder="(not answer)"> all the questions yet.</li>
+            <li><input type="text" name="r4_A_2a" class="input-short" placeholder="(you)"> you <input type="text" name="r4_A_2b" class="input-medium" placeholder="(remember)"> where you put your pencil?</li>
+            <li>Damien <input type="text" name="r4_A_3" class="input-medium" placeholder="(pass)"> all his exams with top marks.</li>
+            <li>I got the right answer, but the teacher <input type="text" name="r4_A_4" class="input-medium" placeholder="(not tick)"> it.</li>
+            <li>Terry <input type="text" name="r4_A_5" class="input-medium" placeholder="(learn)"> so much this year.</li>
+            <li>You <input type="text" name="r4_A_6" class="input-medium" placeholder="(match)"> the wrong sentences!</li>
+            <li>He <input type="text" name="r4_A_7" class="input-medium" placeholder="(mark)"> twenty exam papers this morning.</li>
+            <li>They <input type="text" name="r4_A_8" class="input-medium" placeholder="(never apologise)"> for being so rude.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">B</div><div>Open the brackets, putting the verbs in the present perfect or past simple.</div></div>
+        <ol class="exercise-list" start="9">
+            <li>James <input type="text" name="r4_B_9" class="input-medium" placeholder="(not / arrive)"> at school yet.</li>
+            <li>William <input type="text" name="r4_B_10" class="input-medium" placeholder="(study)"> a lot of new things since last year.</li>
+            <li>I'm worried because Julie <input type="text" name="r4_B_11" class="input-medium" placeholder="(never / be)"> absent before.</li>
+            <li><input type="text" name="r4_B_12a" class="input-short" placeholder="(you)"> you <input type="text" name="r4_B_12b" class="input-medium" placeholder="(do)"> your homework last night?</li>
+            <li>We <input type="text" name="r4_B_13" class="input-medium" placeholder="(have / already)"> three maths lessons this week.</li>
+            <li>The teacher <input type="text" name="r4_B_14" class="input-medium" placeholder="(take)"> the register for the first time with his new class last week.</li>
+            <li>The good news is that nobody <input type="text" name="r4_B_15" class="input-medium" placeholder="(fail)"> a test in this class since the beginning of the year.</li>
+            <li>The bus <input type="text" name="r4_B_16" class="input-medium" placeholder="(be)"> late again this morning.</li>
+            <li>William <input type="text" name="r4_B_17" class="input-medium" placeholder="(go)"> to university last year after passing all his exams.</li>
+            <li>The teacher <input type="text" name="r4_B_18" class="input-medium" placeholder="(not / tell)"> us about the test until today!</li>
+            <li>You <input type="text" name="r4_B_19" class="input-medium" placeholder="(not / do)"> your homework for three weeks.</li>
+            <li><input type="text" name="r4_B_20a" class="input-short" placeholder="(you)"> you <input type="text" name="r4_B_20b" class="input-medium" placeholder="(read)"> this book yet?</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">C</div><div>Choose the correct answer.</div></div>
+        <div class="two-cols">
+            <ol class="exercise-list" start="21">
+                <li>The teacher wrote the homework on the <select name="r4_C_21" class="inline-select"><option value=""></option><option value="A board">A board</option><option value="B desk">B desk</option><option value="C library">C library</option></select> .</li>
+                <li>When you hear the bell <select name="r4_C_22" class="inline-select"><option value=""></option><option value="A term">A term</option><option value="B ring">B ring</option><option value="C exam">C exam</option></select> it's time for a break.</li>
+                <li>I don't know what this word means so I need to use the <select name="r4_C_23" class="inline-select"><option value=""></option><option value="A timetable">A timetable</option><option value="B report">B report</option><option value="C dictionary">C dictionary</option></select> .</li>
+                <li>Where are they going on the <select name="r4_C_24" class="inline-select"><option value=""></option><option value="A project">A project</option><option value="B lesson">B lesson</option><option value="C school trip">C school trip</option></select> this year?</li>
+            </ol>
+            <ol class="exercise-list" start="25">
+                <li>Why don't you <select name="r4_C_25" class="inline-select"><option value=""></option><option value="A pay">A pay</option><option value="B give">B give</option><option value="C correct">C correct</option></select> attention?</li>
+                <li>Maria is probably the most <select name="r4_C_26" class="inline-select"><option value=""></option><option value="A favourite">A favourite</option><option value="B complicated">B complicated</option><option value="C intelligent">C intelligent</option></select> pupil in the class.</li>
+                <li>Our <select name="r4_C_27" class="inline-select"><option value=""></option><option value="A head teacher">A head teacher</option><option value="B school uniform">B school uniform</option><option value="C IWB">C IWB</option></select> is a really horrible colour.</li>
+            </ol>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">D</div><div>Fill in the blanks with the words given in the box.</div></div>
+        <div class="word-bank">begin &bull; know &bull; pay &bull; read &bull; spell &bull; teach &bull; understand &bull; write</div>
+        <ol class="exercise-list" start="28">
+            <li>I was worried that I might not <input type="text" name="r4_D_28" class="input-medium"> the answer to some of the questions.</li>
+            <li>She asked her dad to <input type="text" name="r4_D_29" class="input-medium"> her to drive.</li>
+            <li>You must <input type="text" name="r4_D_30" class="input-medium"> attention to the teacher.</li>
+            <li>How old was Diana when she learned to <input type="text" name="r4_D_31" class="input-medium"> ?</li>
+            <li>Please <input type="text" name="r4_D_32" class="input-medium"> your name at the top of the page.</li>
+            <li>I can't remember how to <input type="text" name="r4_D_33" class="input-medium"> that word. Is it with one 'r' or two?</li>
+            <li>I don't speak very much German but I can <input type="text" name="r4_D_34" class="input-medium"> what you are saying.</li>
+            <li>I'd like to <input type="text" name="r4_D_35" class="input-medium"> the lesson with a discussion, today.</li>
+        </ol>
+
+        <div class="exercise-header"><div class="letter-box">E</div><div>Match the two parts of the sentences.</div></div>
+        <div class="two-cols">
+            <div>
+                <ol class="exercise-list" start="36">
+                    <li>Meet me at <input type="text" name="r4_E_36" class="input-short" maxlength="1"></li>
+                    <li>My dad drove me <input type="text" name="r4_E_37" class="input-short" maxlength="1"></li>
+                    <li>What time do we have <input type="text" name="r4_E_38" class="input-short" maxlength="1"></li>
+                    <li>He crossed <input type="text" name="r4_E_39" class="input-short" maxlength="1"></li>
+                    <li>I knew the answer so I put <input type="text" name="r4_E_40" class="input-short" maxlength="1"></li>
+                    <li>I borrowed a rubber <input type="text" name="r4_E_41" class="input-short" maxlength="1"></li>
+                    <li>Write this <input type="text" name="r4_E_42" class="input-short" maxlength="1"></li>
+                </ol>
+            </div>
+            <div>
+                <ul style="list-style-type: none; padding: 0; line-height: 1.8;">
+                    <li><b>a</b> up my hand.</li>
+                    <li><b>b</b> down in your notebooks, everyone.</li>
+                    <li><b>c</b> break-time and I'll tell you a secret!</li>
+                    <li><b>d</b> out his answer and wrote a better one.</li>
+                    <li><b>e</b> to school this morning because it was raining.</li>
+                    <li><b>f</b> to rub something out.</li>
+                    <li><b>g</b> a break today?</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="exercise-header"><div class="letter-box">F</div><div>Read the text below. Transform the words printed in capital letters at the end of the lines so that they grammatically and lexically match the content of the text. Fill in the blanks with the resulting words.</div></div>
+        <ol class="exercise-list" start="43">
+            <li>What makes a successful lesson? In a new class, it is important that there is a good relationship between everyone right from the <input type="text" name="r4_F_43" class="input-medium"> . <b>(BEGIN)</b></li>
+            <li>Learning to work with and learn from other people is a big part of the <input type="text" name="r4_F_44" class="input-medium"> process. <b>(EDUCATE)</b></li>
+            <li>It is not just the relationships between the children, but also between them and their <input type="text" name="r4_F_45" class="input-medium"> . <b>(TEACH)</b></li>
+            <li>He or she should try to be very <input type="text" name="r4_F_46" class="input-medium"> all the time. <b>(ENCOURAGE)</b></li>
+            <li>When a <input type="text" name="r4_F_47" class="input-medium"> makes a mistake, for example, they might need some help. <b>(STUDY)</b></li>
+            <li>Sometimes a pupil might spell something <input type="text" name="r4_F_48" class="input-medium"> , so they need a lot of spelling practice. <b>(CORRECT)</b></li>
+            <li>Perhaps a schoolchild doesn't know the <input type="text" name="r4_F_49" class="input-medium"> of a word and needs a clear and simple explanation. <b>(MEAN)</b></li>
+            <li>So it is easy to see the <input type="text" name="r4_F_50" class="input-medium"> of good relationships in the classroom. <b>(IMPORTANT)</b></li>
+        </ol>
+
+    </div>
+</form>
+
+<script>
+    document.getElementById('workbookForm').addEventListener('submit', function(e) {
+        e.preventDefault(); 
+        
+        const formData = new FormData(this);
+        const answers = Object.fromEntries(formData.entries());
+        
+        console.log("Student Answers Captured:", answers);
+        alert("Success! Your answers have been recorded. (Check the developer console to view the data).");
+    });
+</script>
+
+</body>
+</html>
