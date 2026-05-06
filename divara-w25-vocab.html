@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divara's Vocab Adventure: Places!</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;900&family=Fredoka+One&display=swap');
+
+        :root {
+            --bg-color: #fdf4ff;
+            --container-bg: #ffffff;
+            --text-main: #334155;
+            --text-light: #64748b;
+            --primary: #a855f7;
+            --primary-light: #e9d5ff;
+            --secondary: #ec4899;
+            --accent-noun: #3b82f6;
+            --accent-verb: #10b981;
+            --accent-adj: #f59e0b;
+            --accent-adv: #8b5cf6;
+            --correct-bg: #dcfce7;
+            --correct-border: #22c55e;
+            --wrong-bg: #fee2e2;
+            --wrong-border: #ef4444;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#e9d5ff 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--container-bg);
+            width: 100%;
+            max-width: 950px;
+            border-radius: 24px;
+            box-shadow: 0 15px 30px rgba(168, 85, 247, 0.15);
+            border: 4px solid white;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+
+        header h1 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2.8rem;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+        }
+
+        .content-section {
+            padding: 30px 40px;
+            border-bottom: 3px dashed var(--primary-light);
+        }
+        .content-section:last-child { border-bottom: none; }
+
+        /* --- Intro & Table Styles --- */
+        .teacher-note {
+            background: #fef08a;
+            border-left: 6px solid #eab308;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #854d0e;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .vocab-card {
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 15px;
+        }
+
+        .vocab-card h3 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 5px;
+        }
+
+        .vocab-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-weight: 700;
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        /* --- General Exercise Styles --- */
+        .exercise-title {
+            font-family: 'Fredoka One', cursive;
+            color: var(--secondary);
+            font-size: 1.8rem;
+            margin: 0 0 5px 0;
+            display: inline-block;
+            background: #fce7f3;
+            padding: 5px 15px;
+            border-radius: 20px;
+        }
+
+        .exercise-instruction {
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .sentence-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sentence-list li {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            line-height: 2;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .story-box {
+            font-size: 1.25rem;
+            line-height: 2;
+            background: #f8fafc;
+            padding: 25px;
+            border-radius: 16px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .root-word, .clue-word {
+            font-weight: 900;
+            color: var(--primary);
+            background: var(--primary-light);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        .word-bank {
+            background: white;
+            border: 2px dashed var(--accent-noun);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+        }
+
+        /* --- Inputs & Buttons --- */
+        input[type="text"], select {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            padding: 8px 12px;
+            border: 3px solid #cbd5e1;
+            border-radius: 8px;
+            outline: none;
+            text-align: center;
+            transition: all 0.2s;
+            margin: 0 5px;
+            background: white;
+            color: var(--text-main);
+        }
+
+        select { cursor: pointer; }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.2);
+        }
+
+        .correct {
+            background-color: var(--correct-bg) !important;
+            border-color: var(--correct-border) !important;
+            color: #166534 !important;
+        }
+
+        .wrong {
+            background-color: var(--wrong-bg) !important;
+            border-color: var(--wrong-border) !important;
+            color: #991b1b !important;
+        }
+
+        .check-btn {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.3rem;
+            padding: 15px 30px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #7e22ce;
+            transition: all 0.1s;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .check-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 #7e22ce;
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-top: 15px;
+            display: none;
+        }
+
+        /* --- Word Formation Styles --- */
+        .teaching-box {
+            background: #fdf4ff;
+            border: 3px solid #fbcfe8;
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .teaching-box h2 {
+            font-family: 'Fredoka One', cursive;
+            color: var(--secondary);
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+
+        .word-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .type-card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 5px solid;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .type-noun { border-color: var(--accent-noun); }
+        .type-verb { border-color: var(--accent-verb); }
+        .type-adj { border-color: var(--accent-adj); }
+        .type-adv { border-color: var(--accent-adv); }
+
+        .type-card h3 { margin: 0 0 5px 0; font-size: 1.2rem; }
+        .type-noun h3 { color: var(--accent-noun); }
+        .type-verb h3 { color: var(--accent-verb); }
+        .type-adj h3 { color: var(--accent-adj); }
+        .type-adv h3 { color: var(--accent-adv); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>Unit 27: Places 🏙️</h1>
+            <p>Vocabulary & Word Formation</p>
+        </header>
+
+        <!-- Section 1: Vocabulary List -->
+        <div class="content-section">
+            <div class="teacher-note">
+                👩‍🏫 Teacher's Note: Write down any words you don't know in your notebook! Then, listen carefully and repeat the pronunciation after me.
+            </div>
+
+            <div class="vocab-grid">
+                <div class="vocab-card">
+                    <h3>🟢 Nouns</h3>
+                    <ul class="vocab-list">
+                        <li>art gallery, bank, building</li>
+                        <li>station (bus/metro/police/train)</li>
+                        <li>car park, castle, centre</li>
+                        <li>cottage, countryside, flat</li>
+                        <li>guesthouse, museum, square</li>
+                        <li>office block, population</li>
+                        <li>post office, shopping centre</li>
+                        <li>variety, village</li>
+                    </ul>
+                </div>
+                <div class="vocab-card">
+                    <h3>🔴 Verbs</h3>
+                    <ul class="vocab-list">
+                        <li>cover, cross, discover</li>
+                        <li>divide, doubt, excuse</li>
+                        <li>hear, hurry, notice</li>
+                        <li>offer, park, pass</li>
+                        <li>recognise, recommend</li>
+                        <li>refuse, rent</li>
+                    </ul>
+                </div>
+                <div class="vocab-card">
+                    <h3>🟠 Phrasal & Phrases</h3>
+                    <ul class="vocab-list">
+                        <li>find out, knock down</li>
+                        <li>bad / good weather</li>
+                        <li>block of flats</li>
+                        <li>go straight ahead / past</li>
+                        <li>in a hurry</li>
+                        <li>on the right / left</li>
+                        <li>one-way street, turn right</li>
+                    </ul>
+                </div>
+                <div class="vocab-card">
+                    <h3>🟣 Adj & Adverbs</h3>
+                    <ul class="vocab-list">
+                        <li>central, foggy, huge</li>
+                        <li>icy, narrow, quiet</li>
+                        <li>tiny, wide, windy</li>
+                        <li>anywhere, nowhere</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- EXERCISE A -->
+        <div class="content-section" id="section-a">
+            <h2 class="exercise-title">Exercise A</h2>
+            <p class="exercise-instruction">Choose the correct variant of the word to complete the sentence.</p>
+            <ul class="sentence-list">
+                <li>1. You can admire Ludmilla Perec's paintings at the 
+                    <select data-answer="art gallery">
+                        <option value=""></option>
+                        <option value="police station">police station</option>
+                        <option value="art gallery">art gallery</option>
+                    </select>.
+                </li>
+                <li>2. I believe that living in the 
+                    <select data-answer="countryside">
+                        <option value=""></option>
+                        <option value="countryside">countryside</option>
+                        <option value="guesthouse">guesthouse</option>
+                    </select> is healthier than living in the city.
+                </li>
+                <li>3. Moscow has a 
+                    <select data-answer="population">
+                        <option value=""></option>
+                        <option value="square">square</option>
+                        <option value="population">population</option>
+                    </select> of over 11.5 million.
+                </li>
+                <li>4. Can you send this parcel when you go to the 
+                    <select data-answer="post office">
+                        <option value=""></option>
+                        <option value="castle">castle</option>
+                        <option value="post office">post office</option>
+                    </select>?
+                </li>
+                <li>5. What's the tallest 
+                    <select data-answer="building">
+                        <option value=""></option>
+                        <option value="building">building</option>
+                        <option value="flat">flat</option>
+                    </select> in the world?
+                </li>
+                <li>6. My cousins live in a small 
+                    <select data-answer="cottage">
+                        <option value=""></option>
+                        <option value="cottage">cottage</option>
+                        <option value="office block">office block</option>
+                    </select> just outside the village.
+                </li>
+                <li>7. Let's go and buy some clothes in the 
+                    <select data-answer="shopping centre">
+                        <option value=""></option>
+                        <option value="shopping centre">shopping centre</option>
+                        <option value="bank">bank</option>
+                    </select>.
+                </li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-a')">Check Exercise A</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE B -->
+        <div class="content-section" id="section-b">
+            <h2 class="exercise-title">Exercise B</h2>
+            <p class="exercise-instruction">Fill in the gaps using the words in the box.</p>
+            <div class="word-bank">
+                bank &bull; car park &bull; flat &bull; guesthouses &bull; office block &bull; variety &bull; village
+            </div>
+            <ul class="sentence-list">
+                <li>1. We left our car in the <input type="text" data-answer="car park"> and walked up to the ancient castle.</li>
+                <li>2. Many families have now left the <input type="text" data-answer="village"> and moved to the city.</li>
+                <li>3. My best friend lives in a <input type="text" data-answer="flat"> in the city, but we live in a house with a garden.</li>
+                <li>4. We prefer to stay in small <input type="text" data-answer="guesthouses"> away from the city centre, because we don't like large hotels.</li>
+                <li>5. I must go to the <input type="text" data-answer="bank"> to get some money.</li>
+                <li>6. There's a great <input type="text" data-answer="variety"> of old paintings to see in the museum.</li>
+                <li>7. Get off the train at the next metro station, turn left at the square and you'll see a tall <input type="text" data-answer="office block"> in front of you.</li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-b')">Check Exercise B</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE C -->
+        <div class="content-section" id="section-c">
+            <h2 class="exercise-title">Exercise C</h2>
+            <p class="exercise-instruction">Choose the correct verb for each sentence.</p>
+            <ul class="sentence-list">
+                <li>1. Before you 
+                    <select data-answer="cross">
+                        <option value=""></option>
+                        <option value="divide">divide</option>
+                        <option value="cross">cross</option>
+                        <option value="pass">pass</option>
+                    </select> the road, look left and right.
+                </li>
+                <li>2. Can I 
+                    <select data-answer="offer">
+                        <option value=""></option>
+                        <option value="discover">discover</option>
+                        <option value="refuse">refuse</option>
+                        <option value="offer">offer</option>
+                    </select> you some lemonade?
+                </li>
+                <li>3. You can't 
+                    <select data-answer="park">
+                        <option value=""></option>
+                        <option value="rent">rent</option>
+                        <option value="park">park</option>
+                        <option value="hurry">hurry</option>
+                    </select> your car in this street. Only buses are allowed here.
+                </li>
+                <li>4. ' 
+                    <select data-answer="Excuse">
+                        <option value=""></option>
+                        <option value="Excuse">Excuse</option>
+                        <option value="Hear">Hear</option>
+                        <option value="Recommend">Recommend</option>
+                    </select> me, is there a bank near here, please?'
+                </li>
+                <li>5. Ludmila has changed so much that I didn't 
+                    <select data-answer="recognise">
+                        <option value=""></option>
+                        <option value="recognise">recognise</option>
+                        <option value="hear">hear</option>
+                        <option value="cover">cover</option>
+                    </select> her.
+                </li>
+                <li>6. When was this medicine 
+                    <select data-answer="discovered">
+                        <option value=""></option>
+                        <option value="refused">refused</option>
+                        <option value="discovered">discovered</option>
+                        <option value="divided">divided</option>
+                    </select>?
+                </li>
+                <li>7. I 
+                    <select data-answer="heard">
+                        <option value=""></option>
+                        <option value="covered">covered</option>
+                        <option value="doubted">doubted</option>
+                        <option value="heard">heard</option>
+                    </select> what you said, but I don't agree.
+                </li>
+                <li>8. Let's 
+                    <select data-answer="hurry">
+                        <option value=""></option>
+                        <option value="pass">pass</option>
+                        <option value="notice">notice</option>
+                        <option value="hurry">hurry</option>
+                    </select>! We don't want to be late.
+                </li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-c')">Check Exercise C</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE D -->
+        <div class="content-section" id="section-d">
+            <h2 class="exercise-title">Exercise D</h2>
+            <p class="exercise-instruction">Unscramble the anagrams to fill in the gaps.</p>
+            <ul class="sentence-list">
+                <li>1. Nikita, which restaurant would you <input type="text" data-answer="recommend"> for a special occasion? <span class="clue-word">EROCMEMND</span></li>
+                <li>2. The farmer will <input type="text" data-answer="divide"> his land into two fields. <span class="clue-word">IDEVID</span></li>
+                <li>3. We are going to start our own business and we want to <input type="text" data-answer="rent"> an office. <span class="clue-word">NETR</span></li>
+                <li>4. Are you going to <input type="text" data-answer="pass"> by the supermarket? Can you buy me some milk? <span class="clue-word">SPSA</span></li>
+                <li>5. Ivan doesn't <input type="text" data-answer="refuse"> any chance to visit a museum. <span class="clue-word">RFSEEU</span></li>
+                <li>6. I <input type="text" data-answer="notice"> that the cottage is further away than it said in the advertisement. <span class="clue-word">OIENCT</span></li>
+                <li>7. Piotr decided to <input type="text" data-answer="cover"> his painting because he didn't want people to look at it. <span class="clue-word">RCVOE</span></li>
+                <li>8. I really <input type="text" data-answer="doubt"> whether this is the tallest building in the world. <span class="clue-word">BTDUO</span></li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-d')">Check Exercise D</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE E -->
+        <div class="content-section" id="section-e">
+            <h2 class="exercise-title">Exercise E</h2>
+            <p class="exercise-instruction">Write exactly ONE word in each gap (Phrasal Verbs & Phrases).</p>
+            <ul class="sentence-list">
+                <li>1. When my mother finds <input type="text" data-answer="out"> that I broke the vase she'll be very angry!</li>
+                <li>2. They knocked <input type="text" data-answer="down"> the old guesthouse to build a block of flats.</li>
+                <li>3. You can't <input type="text" data-answer="turn"> left here. It's a one-way street.</li>
+                <li>4. Sandra was <input type="text" data-answer="in"> a hurry because she was late for school.</li>
+                <li>5. To go to the museum, go <input type="text" data-answer="straight"> ahead and then walk past the post office.</li>
+                <li>6. The museum is <input type="text" data-answer="on"> the left-hand side of the square.</li>
+                <li>7. The car came round the corner too fast and knocked <input type="text" data-answer="down"> an old man.</li>
+                <li>8. When it's <input type="text" data-answer="good"> weather, we usually go for a picnic by the river.</li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-e')">Check Exercise E</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE F -->
+        <div class="content-section" id="section-f">
+            <h2 class="exercise-title">Exercise F</h2>
+            <p class="exercise-instruction">Fill in the gaps using the Adjectives & Adverbs below.</p>
+            <div class="word-bank">
+                central &bull; foggy &bull; icy &bull; narrow &bull; quiet &bull; tiny
+            </div>
+            <div class="story-box">
+                Hi Jim,<br><br>
+                I hope you're enjoying yourself on holiday. I went on a day trip too last week to a village in the countryside. The weather was very cold and (1) <input type="text" data-answer="foggy">. We couldn't see anything outside! Mum had to drive slowly because the roads were (2) <input type="text" data-answer="icy">.<br><br>
+                When we arrived, we went for a walk around. It was very (3) <input type="text" data-answer="quiet"> because everybody was inside keeping warm. This village is really (4) <input type="text" data-answer="tiny">. There are only ten houses and most of the streets are too (5) <input type="text" data-answer="narrow"> for a bus to get through. Luckily, we found a café in the (6) <input type="text" data-answer="central"> square and had some warm homemade soup there.<br><br>
+                What about you? Are you having a good time? Write back soon!<br>Patrick
+            </div>
+            <button class="check-btn" onclick="checkSection('section-f')">Check Exercise F</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE G -->
+        <!-- EXERCISE G (INTERACTIVE CROSSWORD) -->
+        <div class="content-section" id="section-g">
+            <style>
+                .crossword-container {
+                    display: flex;
+                    gap: 40px;
+                    align-items: flex-start;
+                    flex-wrap: wrap;
+                    margin-top: 20px;
+                }
+                .cw-board {
+                    display: grid;
+                    grid-template-columns: repeat(8, 45px);
+                    grid-template-rows: repeat(9, 45px);
+                    gap: 3px;
+                    background: var(--text-main);
+                    padding: 6px;
+                    border-radius: 12px;
+                    box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+                }
+                .cw-cell-wrapper {
+                    position: relative;
+                    width: 100%;
+                    height: 100%;
+                    background: white;
+                    border-radius: 6px;
+                    overflow: hidden;
+                }
+                .cw-number {
+                    position: absolute;
+                    top: 2px;
+                    left: 4px;
+                    font-size: 11px;
+                    font-weight: 900;
+                    color: var(--text-light);
+                    z-index: 2;
+                    pointer-events: none;
+                }
+                .cw-cell {
+                    width: 100%;
+                    height: 100%;
+                    border: none !important;
+                    padding: 0 !important;
+                    margin: 0 !important;
+                    text-align: center;
+                    font-size: 1.5rem !important;
+                    font-weight: 900 !important;
+                    text-transform: uppercase;
+                    background: transparent !important;
+                    cursor: text;
+                }
+                .cw-cell:focus {
+                    background: #e0f2fe !important;
+                    box-shadow: inset 0 0 0 3px var(--primary) !important;
+                }
+                .cw-clues {
+                    flex: 1;
+                    min-width: 280px;
+                }
+                .cw-clues h4 {
+                    font-family: 'Fredoka One', cursive;
+                    color: var(--primary);
+                    margin: 0 0 15px 0;
+                    font-size: 1.4rem;
+                }
+                .cw-clues ul {
+                    list-style: none;
+                    padding: 0;
+                    margin: 0 0 25px 0;
+                }
+                .cw-clues li {
+                    margin-bottom: 12px;
+                    font-weight: 600;
+                    font-size: 1.15rem;
+                    line-height: 1.5;
+                    background: #f8fafc;
+                    padding: 10px 15px;
+                    border-radius: 10px;
+                    border: 1px solid #e2e8f0;
+                }
+                .cw-clues .num {
+                    display: inline-block;
+                    width: 24px;
+                    height: 24px;
+                    background: var(--primary);
+                    color: white;
+                    text-align: center;
+                    border-radius: 50%;
+                    font-size: 0.9rem;
+                    line-height: 24px;
+                    margin-right: 8px;
+                    font-weight: 900;
+                }
+            </style>
+
+            <h2 class="exercise-title">Exercise G: Crossword!</h2>
+            <p class="exercise-instruction">Click the boxes and type the letters to solve the puzzle.</p>
+            
+            <div class="crossword-container">
+                
+                <!-- The Crossword Grid -->
+                <div class="cw-board">
+                    <!-- Row 1 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 1 / 6;"><span class="cw-number">3</span><input type="text" maxlength="1" data-answer="c" class="cw-cell"></div>
+                    
+                    <!-- Row 2 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 1;"><span class="cw-number">1</span><input type="text" maxlength="1" data-answer="a" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 2;"><input type="text" maxlength="1" data-answer="n" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 3;"><input type="text" maxlength="1" data-answer="y" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 4;"><input type="text" maxlength="1" data-answer="w" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 5;"><span class="cw-number">2</span><input type="text" maxlength="1" data-answer="h" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 6;"><input type="text" maxlength="1" data-answer="e" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 7;"><input type="text" maxlength="1" data-answer="r" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 2 / 8;"><input type="text" maxlength="1" data-answer="e" class="cw-cell"></div>
+
+                    <!-- Row 3 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 3 / 5;"><input type="text" maxlength="1" data-answer="u" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 3 / 6;"><input type="text" maxlength="1" data-answer="n" class="cw-cell"></div>
+
+                    <!-- Row 4 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 4 / 5;"><input type="text" maxlength="1" data-answer="g" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 4 / 6;"><input type="text" maxlength="1" data-answer="t" class="cw-cell"></div>
+
+                    <!-- Row 5 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 1;"><span class="cw-number">4</span><input type="text" maxlength="1" data-answer="n" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 2;"><input type="text" maxlength="1" data-answer="o" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 3;"><span class="cw-number">5</span><input type="text" maxlength="1" data-answer="w" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 4;"><input type="text" maxlength="1" data-answer="h" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 5;"><input type="text" maxlength="1" data-answer="e" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 6;"><input type="text" maxlength="1" data-answer="r" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 5 / 7;"><input type="text" maxlength="1" data-answer="e" class="cw-cell"></div>
+
+                    <!-- Row 6 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 6 / 3;"><input type="text" maxlength="1" data-answer="i" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 6 / 6;"><input type="text" maxlength="1" data-answer="a" class="cw-cell"></div>
+
+                    <!-- Row 7 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 7 / 3;"><input type="text" maxlength="1" data-answer="n" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 7 / 6;"><input type="text" maxlength="1" data-answer="l" class="cw-cell"></div>
+
+                    <!-- Row 8 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 8 / 1;"><span class="cw-number">6</span><input type="text" maxlength="1" data-answer="w" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 8 / 2;"><input type="text" maxlength="1" data-answer="i" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 8 / 3;"><input type="text" maxlength="1" data-answer="d" class="cw-cell"></div>
+                    <div class="cw-cell-wrapper" style="grid-area: 8 / 4;"><input type="text" maxlength="1" data-answer="e" class="cw-cell"></div>
+
+                    <!-- Row 9 -->
+                    <div class="cw-cell-wrapper" style="grid-area: 9 / 3;"><input type="text" maxlength="1" data-answer="y" class="cw-cell"></div>
+                </div>
+
+                <!-- The Clues -->
+                <div class="cw-clues">
+                    <h4>➡️ ACROSS</h4>
+                    <ul>
+                        <li><span class="num">1</span> I can't find my mobile phone ______. Have you seen it?</li>
+                        <li><span class="num">4</span> I believe there is ______ in the world as beautiful as this.</li>
+                        <li><span class="num">6</span> Paris is a big city with ______ streets and many squares.</li>
+                    </ul>
+
+                    <h4 style="color: var(--secondary);">⬇️ DOWN</h4>
+                    <ul>
+                        <li><span class="num">2</span> That car is ______! You'll never find a place to park it!</li>
+                        <li><span class="num">3</span> There are three squares in our town, but the ______ square is the biggest.</li>
+                        <li><span class="num">5</span> It was very ______ yesterday and we went windsurfing.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <button class="check-btn" onclick="checkSection('section-g')">Check Crossword</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- --- WORD FORMATION SECTION --- -->
+
+        <!-- Word Formation Lesson -->
+        <div class="content-section">
+            <div class="teaching-box">
+                <h2>✨ The Magic of Word Formation ✨</h2>
+                <p style="font-size: 1.2rem; font-weight: 500;">
+                    Words are like transformers! A single "root" word can change its shape depending on the job it needs to do in a sentence. We do this by snapping on special "upgrade parts" called <strong>Prefixes</strong> (at the beginning) and <strong>Suffixes</strong> (at the end).
+                </p>
+                
+                <div class="word-types">
+                    <div class="type-card type-noun">
+                        <h3>1. The Noun (Thing/Person)</h3>
+                        <p>Names what it is. We often create nouns by adding suffixes like <strong style="color: var(--accent-noun);">-er</strong>, <strong style="color: var(--accent-noun);">-or</strong>, <strong style="color: var(--accent-noun);">-ion</strong>, or <strong style="color: var(--accent-noun);">-ing</strong> to a root word.</p>
+                        <p><em>"He is a build<strong style="color: var(--accent-noun);">er</strong>."</em> (Person)<br><em>"That is a tall build<strong style="color: var(--accent-noun);">ing</strong>."</em> (Thing)</p>
+                    </div>
+                    
+                    <div class="type-card type-verb">
+                        <h3>2. The Verb (Action)</h3>
+                        <p>Shows the action. This is usually the basic root word, but sometimes we add prefixes like <strong style="color: var(--accent-verb);">re-</strong> (to do again) or <strong style="color: var(--accent-verb);">un-</strong> (to undo).</p>
+                        <p><em>"They <strong>build</strong> houses."</em><br><em>"They will <strong style="color: var(--accent-verb);">re</strong>build it."</em></p>
+                    </div>
+                    
+                    <div class="type-card type-adj">
+                        <h3>3. The Adjective (Describer)</h3>
+                        <p>Describes a noun. We usually build these by adding suffixes like <strong style="color: var(--accent-adj);">-y</strong>, <strong style="color: var(--accent-adj);">-ful</strong>, <strong style="color: var(--accent-adj);">-ic</strong>, or <strong style="color: var(--accent-adj);">-able</strong>.</p>
+                        <p><em>"The water is ic<strong style="color: var(--accent-adj);">y</strong>."</em> (ice + y)<br><em>"It is doubt<strong style="color: var(--accent-adj);">ful</strong>."</em> (doubt + ful)</p>
+                    </div>
+                    
+                    <div class="type-card type-adv">
+                        <h3>4. The Adverb (How it's done)</h3>
+                        <p>Describes an action. This is the easiest one to spot! We almost always build it by adding the suffix <strong style="color: var(--accent-adv);">-ly</strong>.</p>
+                        <p><em>"She walked quiet<strong style="color: var(--accent-adv);">ly</strong>."</em> (quiet + ly)<br><em>"He spoke wide<strong style="color: var(--accent-adv);">ly</strong>."</em> (wide + ly)</p>
+                    </div>
+                </div>
+                
+                <p style="font-size: 1.1rem; font-weight: 700; text-align: center; margin-top: 20px; color: var(--secondary);">
+                    Read the sentences below carefully. Look for clue words to figure out which "upgrade part" (suffix or prefix) you need to add to the bold root word!
+                </p>
+            </div>
+        </div>
+
+        <!-- EXERCISE H -->
+        <div class="content-section" id="section-h">
+            <h2 class="exercise-title">Exercise H</h2>
+            <p class="exercise-instruction">Open the brackets and use the words in their correct form.</p>
+            <ul class="sentence-list">
+                <li>1. Burj Khalifa in Dubai is the tallest <span class="root-word">build</span> <input type="text" data-answer="building"> in the world.</li>
+                <li>2. It is <span class="root-word">doubt</span> <input type="text" data-answer="doubtful"> that our team will win the match.</li>
+                <li>3. Some people like <span class="root-word">rain</span> <input type="text" data-answer="rainy"> weather, but I hate it.</li>
+                <li>4. The city wants to <span class="root-word">wide</span> <input type="text" data-answer="widen"> the main street and plant trees on the sides.</li>
+                <li>5. English is spoken <span class="root-word">wide</span> <input type="text" data-answer="widely"> in many countries.</li>
+                <li>6. Kim walked into the room very <span class="root-word">quiet</span> <input type="text" data-answer="quietly">. She didn't want to wake up the baby.</li>
+                <li>7. At the <span class="root-word">cross</span> <input type="text" data-answer="crossing">, turn left and walk along the main street.</li>
+                <li>8. Nicholas is an amazing <span class="root-word">build</span> <input type="text" data-answer="builder"> and he built his cottage by himself!</li>
+                <li>9. It was too <span class="root-word">fog</span> <input type="text" data-answer="foggy"> to drive.</li>
+                <li>10. He fell into the cold <span class="root-word">ice</span> <input type="text" data-answer="icy"> water.</li>
+            </ul>
+            <button class="check-btn" onclick="checkSection('section-h')">Check Exercise H</button>
+            <div class="score-display"></div>
+        </div>
+
+        <!-- EXERCISE I -->
+        <div class="content-section" id="section-i" style="background-color: #faf5ff;">
+            <h2 class="exercise-title">Exercise I</h2>
+            <p class="exercise-instruction">Fill in the gaps. Transform the bold words to fit the story.</p>
+            <div class="story-box">
+                One day last month we were walking along the beach. It was a cold and (1) <span class="root-word">WIND</span> <input type="text" data-answer="windy"> day and we were all alone. We wanted to swim, but the water was (2) <span class="root-word">ICE</span> <input type="text" data-answer="icy">. We were walking quietly, without talking, when Jeremy said 'I can see a (3) <span class="root-word">FLASH</span> <input type="text" data-answer="flashing"> light in the distance. Can you see it, too?'
+                <br><br>
+                I turned my head (4) <span class="root-word">DOUBT</span> <input type="text" data-answer="doubtfully"> to look where he was pointing, but I couldn't see anything. It was getting (5) <span class="root-word">FOG</span> <input type="text" data-answer="foggy"> and I was feeling a bit hungry. The weather was getting worse and the waves covered the (6) <span class="root-word">WIDE</span> <input type="text" data-answer="width"> of the beach in some places. I began to feel a bit scared.
+            </div>
+            <button class="check-btn" onclick="checkSection('section-i')">Check Exercise I</button>
+            <div class="score-display"></div>
+        </div>
+
+    </div>
+
+    <!-- The Auto-Grading Script -->
+    <script>
+        function checkSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const inputs = section.querySelectorAll('input[type="text"], select');
+            const scoreDisplay = section.querySelector('.score-display');
+            let correctCount = 0;
+
+            inputs.forEach(input => {
+                const studentAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+
+                // Clear previous classes
+                input.classList.remove('correct', 'wrong');
+
+                if (studentAnswer === correctAnswer && studentAnswer !== "") {
+                    input.classList.add('correct');
+                    correctCount++;
+                } else {
+                    input.classList.add('wrong');
+                }
+            });
+
+            // Display Score
+            scoreDisplay.style.display = 'block';
+            
+            if (correctCount === inputs.length) {
+                scoreDisplay.innerHTML = `Perfect! ${correctCount}/${inputs.length} correct! 🌟 <br><span style="font-size: 1rem; color: #64748b;">(Cookie Points earned!)</span>`;
+                scoreDisplay.style.color = '#10b981';
+            } else {
+                scoreDisplay.innerHTML = `You got ${correctCount} out of ${inputs.length}! Check the red ones and try again! 💪`;
+                scoreDisplay.style.color = 'var(--secondary)';
+            }
+        }
+    </script>
+</body>
+</html>
