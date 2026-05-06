@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verb Mastery Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Fredoka+One&display=swap');
+
+        :root {
+            --bg-gradient: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+            --header-gradient: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
+            --practice-bg: #f0fdfa;
+            --ref-bg: #e0f2fe;
+            --text-dark: #1e293b;
+            --btn-teal: #2dd4bf;
+            --btn-teal-dark: #0f766e;
+            --btn-yellow: #fde047;
+            --btn-yellow-dark: #a16207;
+            --correct-green: #dcfce7;
+            --correct-text: #166534;
+            --wrong-red: #fee2e2;
+            --wrong-text: #991b1b;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--bg-gradient);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+            min-height: 100vh;
+        }
+
+        /* --- Section 1: Main Game Container --- */
+        .game-container {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 1000px;
+            overflow: hidden;
+            border: 4px solid white;
+        }
+
+        header {
+            background: var(--header-gradient);
+            text-align: center;
+            padding: 15px;
+            border-bottom: 4px solid white;
+            position: relative;
+        }
+
+        h1 {
+            font-family: 'Fredoka One', cursive;
+            color: white;
+            text-shadow: 2px 2px 0 #a855f7, -2px -2px 0 #a855f7, 2px -2px 0 #a855f7, -2px 2px 0 #a855f7;
+            margin: 0;
+            font-size: 2.5rem;
+            letter-spacing: 2px;
+        }
+
+        .star-icon {
+            position: absolute;
+            right: 20px;
+            top: 5px;
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .main-content {
+            display: flex;
+            padding: 20px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .practice-area, .reference-area {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .practice-area {
+            background: var(--practice-bg);
+            border: 3px solid #ccfbf1;
+        }
+
+        .reference-area {
+            background: var(--ref-bg);
+            border: 3px solid #bae6fd;
+        }
+
+        h2 {
+            font-family: 'Fredoka One', cursive;
+            text-align: center;
+            margin-top: 0;
+            color: #334155;
+        }
+
+        /* Progress & Stats */
+        .progress-bar-container {
+            height: 20px;
+            background: white;
+            border-radius: 10px;
+            border: 2px solid #cbd5e1;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: #38bdf8;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Question Box */
+        .question-box {
+            background: white;
+            border: 3px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 30px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+
+        .highlight {
+            background: #fef08a;
+            padding: 0 10px;
+            border-radius: 8px;
+        }
+
+        .instruction {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        /* Options */
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .option-btn {
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.5rem;
+            padding: 15px;
+            border-radius: 12px;
+            border: 3px solid #14b8a6;
+            background: var(--btn-teal);
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 6px 0 var(--btn-teal-dark);
+            transition: all 0.1s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .option-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0 0 var(--btn-teal-dark);
+        }
+
+        .option-btn.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .option-btn.correct {
+            background: var(--btn-yellow);
+            border-color: #ca8a04;
+            box-shadow: 0 6px 0 var(--btn-yellow-dark);
+            color: var(--text-dark);
+            text-shadow: none;
+        }
+
+        .option-btn.wrong {
+            background: #f87171;
+            border-color: #b91c1c;
+            box-shadow: 0 6px 0 #7f1d1d;
+        }
+
+        /* Feedback */
+        .feedback-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-height: 60px;
+        }
+
+        .feedback-msg {
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 1.2rem;
+            display: none;
+        }
+
+        .feedback-msg.show-correct {
+            display: block;
+            background: var(--correct-green);
+            color: var(--correct-text);
+            border: 2px solid #bbf7d0;
+        }
+
+        .feedback-msg.show-wrong {
+            display: block;
+            background: var(--wrong-red);
+            color: var(--wrong-text);
+            border: 2px solid #fecaca;
+        }
+
+        .next-btn {
+            font-family: 'Fredoka One', cursive;
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            background: #e2e8f0;
+            border: 3px solid #94a3b8;
+            cursor: not-allowed;
+            color: #64748b;
+        }
+
+        .next-btn.active {
+            background: #bae6fd;
+            border-color: #0284c7;
+            color: #0369a1;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #0284c7;
+        }
+
+        .next-btn.active:active {
+            transform: translateY(4px);
+            box-shadow: 0 0 0 #0284c7;
+        }
+
+        /* Reference Table */
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            border: 2px solid #93c5fd;
+            overflow-y: auto;
+            max-height: 400px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        th {
+            background: #c4b5fd;
+            color: white;
+            padding: 10px;
+            position: sticky;
+            top: 0;
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            border-bottom: 2px solid #8b5cf6;
+            z-index: 5;
+        }
+
+        .reg-th {
+            background: #34d399; /* Green for regular verbs */
+            border-bottom: 2px solid #059669;
+        }
+
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: bold;
+        }
+
+        tr:nth-child(even) { background-color: #faf5ff; }
+
+        .study-note {
+            text-align: center;
+            font-weight: bold;
+            color: #475569;
+        }
+
+        footer {
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            color: #475569;
+            background: rgba(255,255,255,0.5);
+        }
+
+        /* --- Section 2: Cloud Game CSS --- */
+        #cloud-game-container {
+            position: relative;
+            width: 100%;
+            max-width: 1000px; 
+            height: 500px;
+            background: linear-gradient(to bottom, #87CEEB, #e0f6ff);
+            border: 4px solid #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .pastel-cloud {
+            position: absolute;
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #475569;
+            cursor: pointer;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s, background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            user-select: none;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .pastel-cloud:active { transform: scale(0.9); }
+
+        .pastel-cloud::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            background: inherit;
+            border-radius: 50%;
+            z-index: -1;
+        }
+        
+        .pastel-cloud::after {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: 25px;
+            width: 70px;
+            height: 70px;
+            background: inherit;
+            border-radius: 50%;
+            z-index: -1;
+        }
+
+        .cloud-text { position: relative; z-index: 5; }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* --- Section 3: Formal Worksheet CSS & FULLSCREEN MODE --- */
+        #formal-exercise-container {
+            width: 100%;
+            max-width: 940px; 
+            background: #ffffff;
+            border: 4px solid #cbd5e1;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        #formal-exercise-container:fullscreen {
+            width: 100vw;
+            height: 100vh;
+            max-width: none;
+            border: none;
+            border-radius: 0;
+            padding: 5vh 10vw; 
+            background: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        #worksheet-scroll-area {
+            max-height: 500px; 
+            overflow-y: auto; 
+            border: 2px solid #e2e8f0; 
+            border-radius: 12px; 
+            margin-bottom: 20px;
+        }
+
+        #formal-exercise-container:fullscreen #worksheet-scroll-area {
+            max-height: 70vh; 
+            flex-grow: 1;
+        }
+
+        #formal-exercise-container:fullscreen #fs-btn {
+            background: #ef4444;
+            box-shadow: 0 4px 0 #b91c1c;
+        }
+        #formal-exercise-container:fullscreen #fs-btn::after {
+            content: " (Exit)";
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. MAIN GAME CONTAINER -->
+    <div class="game-container">
+        <header>
+            <h1>VERB MASTERY GAME!</h1>
+            <div class="star-icon">⭐</div>
+        </header>
+
+        <div class="main-content">
+            <div class="practice-area">
+                <h2>PRACTICE AREA</h2>
+                <div class="progress-bar-container">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="stats">
+                    <span id="questionCount">Progress: Question 1 of 5</span>
+                    <span id="scoreTracker">Score: 0 / 0</span>
+                </div>
+
+                <div class="question-box" id="questionDisplay">
+                    V1: <span class="highlight">GIVE</span> &rarr; V2: ?
+                </div>
+                
+                <div class="instruction">Tap the right answer!</div>
+
+                <div class="options-grid" id="optionsGrid">
+                    <!-- Populated by JS -->
+                </div>
+
+                <div class="feedback-area">
+                    <div id="feedbackMsg" class="feedback-msg"></div>
+                    <button id="nextBtn" class="next-btn" onclick="nextQuestion()">Next Question</button>
+                </div>
+            </div>
+
+            <div class="reference-area">
+                <h2>VERB LIST REFERENCE</h2>
+                <div class="table-container">
+                    
+                    <!-- IRREGULAR TABLE -->
+                    <h3 style="text-align: center; margin: 10px 0; color: #8b5cf6; font-family: 'Fredoka One', cursive;">Irregular Verbs (30)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>V1</th>
+                                <th>V2</th>
+                                <th>V3</th>
+                            </tr>
+                        </thead>
+                        <tbody id="irregularTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+
+                    <!-- REGULAR TABLE -->
+                    <h3 style="text-align: center; margin: 30px 0 10px 0; color: #059669; font-family: 'Fredoka One', cursive;">Regular Verbs (20)</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class="reg-th">V1</th>
+                                <th class="reg-th">V2</th>
+                                <th class="reg-th">V3</th>
+                            </tr>
+                        </thead>
+                        <tbody id="regularTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+
+                </div>
+                <p class="study-note">Study these to master them!</p>
+            </div>
+        </div>
+        <footer>Inspired by EnglishGrammarHere.com | Learn with Fun!</footer>
+    </div>
+
+
+    <!-- 2. CLOUD CATCHERS MINI GAME -->
+    <div id="cloud-game-container">
+        <audio id="funky-music" src="audio.mp3" loop></audio>
+
+        <div style="position: absolute; top: 15px; left: 20px; font-weight: 900; font-size: 1.5rem; color: #334155; z-index: 20;">
+            Time: <span id="time-display" style="color: #e11d48;">60</span>s
+        </div>
+        <div style="position: absolute; top: 15px; right: 20px; font-weight: 900; font-size: 1.5rem; color: #334155; z-index: 20;">
+            Score: <span id="score-display" style="color: #059669;">0</span>
+        </div>
+
+        <div id="game-prompt" style="position: absolute; top: 60px; width: 100%; text-align: center; font-size: 2rem; font-weight: 900; color: #1e293b; z-index: 20; text-shadow: 2px 2px 0px #fff;">
+            Press Start to Play!
+        </div>
+
+        <div id="start-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255,255,255,0.7); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 50;">
+            <h2 id="end-message" style="font-size: 2.5rem; font-weight: 900; color: #8b5cf6; margin-bottom: 20px; text-shadow: 2px 2px 0 #fff;">Cloud Catchers!</h2>
+            <button onclick="startGame()" style="font-size: 1.5rem; font-weight: bold; padding: 15px 40px; background: #f472b6; color: white; border: 4px solid #fff; border-radius: 30px; cursor: pointer; box-shadow: 0 6px 0 #db2777; transition: all 0.1s;">Start Game 🎵</button>
+        </div>
+
+        <div id="cloud-area" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10;"></div>
+    </div>
+
+
+    <!-- 3. FORMAL WORKSHEET -->
+    <div id="formal-exercise-container">
+        <div style="text-align: center; margin-bottom: 20px;">
+            <h2 style="font-family: 'Fredoka One', cursive; color: #334155; font-size: 2rem; margin-top: 0;">Verb Mastery Worksheet</h2>
+            <p style="color: #64748b; font-weight: bold; font-size: 1.1rem;">Fill in the missing V2 (Past Simple) and V3 (Past Participle) forms.</p>
+        </div>
+
+        <div id="worksheet-scroll-area">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead style="background: #f8fafc; position: sticky; top: 0; z-index: 10; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                    <tr>
+                        <th style="padding: 15px; border-bottom: 2px solid #cbd5e1; color: #0f172a;">V1 (Base Form)</th>
+                        <th style="padding: 15px; border-bottom: 2px solid #cbd5e1; color: #0f172a;">V2 (Past Simple)</th>
+                        <th style="padding: 15px; border-bottom: 2px solid #cbd5e1; color: #0f172a;">V3 (Past Participle)</th>
+                    </tr>
+                </thead>
+                <tbody id="worksheet-body">
+                    <!-- Populated by Javascript -->
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div id="worksheet-score" style="font-size: 1.5rem; font-weight: 900; color: #0284c7;">Score: 0 / 60</div>
+            
+            <div style="display: flex; gap: 10px;">
+                <button id="fs-btn" onclick="toggleFullScreen()" style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.2rem; padding: 12px 25px; background: #6366f1; color: white; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #4338ca; transition: all 0.2s;">Go Fullscreen 📺</button>
+                <button onclick="checkWorksheet()" style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.2rem; padding: 12px 25px; background: #2dd4bf; color: white; border: none; border-radius: 12px; cursor: pointer; box-shadow: 0 4px 0 #0f766e; transition: transform 0.1s;">Check Answers</button>
+                <button onclick="resetWorksheet()" style="font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 1.2rem; padding: 12px 25px; background: #f1f5f9; color: #475569; border: 2px solid #cbd5e1; border-radius: 12px; cursor: pointer; transition: background 0.2s;">Reset & Reshuffle</button>
+            </div>
+        </div>
+    </div>
+    <!-- Next Lesson Navigation -->
+    <div style="text-align: center; margin: 20px 0 60px 0;">
+        <a href="divara-w25-vocab.html" style="text-decoration: none; font-family: 'Nunito', sans-serif; font-weight: 900; font-size: 1.5rem; padding: 15px 40px; background: #a855f7; color: white; border: 4px solid #fff; border-radius: 30px; display: inline-block; box-shadow: 0 6px 0 #7e22ce, 0 10px 20px rgba(0,0,0,0.1); transition: transform 0.1s, box-shadow 0.1s;"
+           onmousedown="this.style.transform='translateY(6px)'; this.style.boxShadow='0 0 0 #7e22ce, 0 5px 10px rgba(0,0,0,0.1)';" 
+           onmouseup="this.style.transform='translateY(0)'; this.style.boxShadow='0 6px 0 #7e22ce, 0 10px 20px rgba(0,0,0,0.1)';">
+            Next Up: Vocab Lesson! ➡️
+        </a>
+    </div>
+    <!-- ALL JAVASCRIPT CONSOLIDATED HERE -->
+    <script>
+        // --- DATA LISTS ---
+        
+        // 30 Irregular Verbs
+        const irregularVerbs = [
+            {v1: "be", v2: "was/were", v3: "been"}, {v1: "beat", v2: "beat", v3: "beaten"},
+            {v1: "become", v2: "became", v3: "become"}, {v1: "begin", v2: "began", v3: "begun"},
+            {v1: "bite", v2: "bit", v3: "bitten"}, {v1: "break", v2: "broke", v3: "broken"},
+            {v1: "bring", v2: "brought", v3: "brought"}, {v1: "build", v2: "built", v3: "built"},
+            {v1: "buy", v2: "bought", v3: "bought"}, {v1: "catch", v2: "caught", v3: "caught"},
+            {v1: "choose", v2: "chose", v3: "chosen"}, {v1: "come", v2: "came", v3: "come"},
+            {v1: "do", v2: "did", v3: "done"}, {v1: "draw", v2: "drew", v3: "drawn"},
+            {v1: "drink", v2: "drank", v3: "drunk"}, {v1: "drive", v2: "drove", v3: "driven"},
+            {v1: "eat", v2: "ate", v3: "eaten"}, {v1: "fall", v2: "fell", v3: "fallen"},
+            {v1: "feel", v2: "felt", v3: "felt"}, {v1: "find", v2: "found", v3: "found"},
+            {v1: "fly", v2: "flew", v3: "flown"}, {v1: "forget", v2: "forgot", v3: "forgotten"},
+            {v1: "give", v2: "gave", v3: "given"}, {v1: "go", v2: "went", v3: "gone"},
+            {v1: "know", v2: "knew", v3: "known"}, {v1: "run", v2: "ran", v3: "run"},
+            {v1: "see", v2: "saw", v3: "seen"}, {v1: "speak", v2: "spoke", v3: "spoken"},
+            {v1: "take", v2: "took", v3: "taken"}, {v1: "write", v2: "wrote", v3: "written"}
+        ];
+
+        // 20 Regular Verbs
+        const regularVerbs = [
+            {v1: "ask", v2: "asked", v3: "asked"}, {v1: "call", v2: "called", v3: "called"},
+            {v1: "clean", v2: "cleaned", v3: "cleaned"}, {v1: "climb", v2: "climbed", v3: "climbed"},
+            {v1: "cook", v2: "cooked", v3: "cooked"}, {v1: "cry", v2: "cried", v3: "cried"},
+            {v1: "dance", v2: "danced", v3: "danced"}, {v1: "help", v2: "helped", v3: "helped"},
+            {v1: "jump", v2: "jumped", v3: "jumped"}, {v1: "laugh", v2: "laughed", v3: "laughed"},
+            {v1: "look", v2: "looked", v3: "looked"}, {v1: "open", v2: "opened", v3: "opened"},
+            {v1: "paint", v2: "painted", v3: "painted"}, {v1: "play", v2: "played", v3: "played"},
+            {v1: "smile", v2: "smiled", v3: "smiled"}, {v1: "talk", v2: "talked", v3: "talked"},
+            {v1: "walk", v2: "walked", v3: "walked"}, {v1: "want", v2: "wanted", v3: "wanted"},
+            {v1: "wash", v2: "washed", v3: "washed"}, {v1: "work", v2: "worked", v3: "worked"}
+        ];
+
+        // Combine for games/worksheets
+        const masterVerbList = irregularVerbs.concat(regularVerbs);
+
+        // --- 1. INITIALIZE REFERENCE TABLES ---
+        
+        // Populate Irregular Table
+        const irrTableBody = document.getElementById('irregularTableBody');
+        irregularVerbs.forEach(verb => {
+            let row = `<tr><td>${verb.v1}</td><td>${verb.v2}</td><td>${verb.v3}</td></tr>`;
+            irrTableBody.innerHTML += row;
+        });
+
+        // Populate Regular Table
+        const regTableBody = document.getElementById('regularTableBody');
+        regularVerbs.forEach((verb, index) => {
+            let row = `<tr style="background-color: ${index % 2 === 0 ? '#ffffff' : '#ecfdf5'};">
+                        <td>${verb.v1}</td><td>${verb.v2}</td><td>${verb.v3}</td>
+                       </tr>`;
+            regTableBody.innerHTML += row;
+        });
+
+        // --- 2. MULTIPLE CHOICE PRACTICE GAME LOGIC ---
+        const quizQuestions = [
+            { verb: "GIVE", targetForm: "V2", correct: "gave", options: ["gived", "gave", "gives", "giving"] },
+            { verb: "EAT", targetForm: "V3", correct: "eaten", options: ["ated", "ate", "eaten", "eating"] },
+            { verb: "GO", targetForm: "V2", correct: "went", options: ["goed", "went", "gone", "goes"] },
+            { verb: "SEE", targetForm: "V3", correct: "seen", options: ["seed", "saw", "seeing", "seen"] },
+            { verb: "RUN", targetForm: "V2", correct: "ran", options: ["runned", "ran", "running", "runs"] }
+        ];
+
+        let currentQIndex = 0; let mainScore = 0;
+
+        function loadQuestion() {
+            document.getElementById('feedbackMsg').className = 'feedback-msg';
+            document.getElementById('nextBtn').className = 'next-btn';
+            
+            const q = quizQuestions[currentQIndex];
+            document.getElementById('questionCount').innerText = `Progress: Question ${currentQIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById('scoreTracker').innerText = `Score: ${mainScore} / ${currentQIndex}`;
+            document.getElementById('questionDisplay').innerHTML = `V1: <span class="highlight">${q.verb}</span> &rarr; ${q.targetForm}: ?`;
+            
+            const progressPercent = (currentQIndex / quizQuestions.length) * 100;
+            document.getElementById('progressBar').style.width = progressPercent + '%';
+
+            const grid = document.getElementById('optionsGrid');
+            grid.innerHTML = '';
+            
+            let shuffledOptions = [...q.options].sort(() => Math.random() - 0.5);
+            shuffledOptions.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(btn, opt);
+                grid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(clickedBtn, selectedAnswer) {
+            if (document.getElementById('nextBtn').classList.contains('active')) return; 
+
+            const q = quizQuestions[currentQIndex];
+            const buttons = document.querySelectorAll('.options-grid .option-btn');
+            const feedback = document.getElementById('feedbackMsg');
+            buttons.forEach(btn => btn.classList.add('disabled'));
+
+            if (selectedAnswer === q.correct) {
+                clickedBtn.classList.add('correct');
+                feedback.innerText = "CORRECT! WELL DONE! 😊";
+                feedback.className = 'feedback-msg show-correct';
+                mainScore++;
+            } else {
+                clickedBtn.classList.add('wrong');
+                buttons.forEach(btn => { if(btn.innerText === q.correct) btn.classList.add('correct'); });
+                feedback.innerText = `Oops! The correct answer is ${q.correct}.`;
+                feedback.className = 'feedback-msg show-wrong';
+            }
+
+            document.getElementById('scoreTracker').innerText = `Score: ${mainScore} / ${currentQIndex + 1}`;
+            const nextBtn = document.getElementById('nextBtn');
+            nextBtn.classList.add('active');
+            
+            if (currentQIndex === quizQuestions.length - 1) nextBtn.innerText = "Finish Game";
+        }
+
+        function nextQuestion() {
+            const nextBtn = document.getElementById('nextBtn');
+            if (!nextBtn.classList.contains('active')) return;
+
+            currentQIndex++;
+            if (currentQIndex < quizQuestions.length) {
+                loadQuestion();
+            } else {
+                document.getElementById('progressBar').style.width = '100%';
+                document.getElementById('questionDisplay').innerHTML = `<span class="highlight">GAME OVER!</span>`;
+                document.getElementById('optionsGrid').innerHTML = `
+                    <div style="grid-column: span 2; text-align: center; font-size: 1.5rem; font-weight: bold;">
+                        You scored ${mainScore} out of ${quizQuestions.length}! <br><br>
+                        <button class="option-btn" style="background:var(--btn-yellow); color:var(--text-dark);" onclick="currentQIndex=0; mainScore=0; loadQuestion();">Play Again</button>
+                    </div>
+                `;
+                document.getElementById('feedbackMsg').style.display = 'none';
+                nextBtn.style.display = 'none';
+            }
+        }
+        loadQuestion(); // Start Main Game
+
+        // --- 3. CLOUD CATCHERS GAME LOGIC ---
+        const pastelColors = ['#ffb3ba', '#ffdfba', '#ffffba', '#baffc9', '#bae1ff', '#e0c3fc'];
+        let currentTimer = 60; let currentCloudScore = 0; let gameInterval; let isPlaying = false;
+
+        function startGame() {
+            const bgMusic = document.getElementById('funky-music');
+            bgMusic.currentTime = 0;
+            bgMusic.play().catch(e => console.log("Audio block."));
+
+            document.getElementById('start-overlay').style.display = 'none';
+            currentTimer = 60; currentCloudScore = 0;
+            updateUI(); isPlaying = true;
+            
+            clearInterval(gameInterval);
+            gameInterval = setInterval(() => {
+                currentTimer--;
+                updateUI();
+                if (currentTimer <= 0) endGame();
+            }, 1000);
+            nextRound();
+        }
+
+        function updateUI() {
+            document.getElementById('time-display').innerText = currentTimer;
+            document.getElementById('score-display').innerText = currentCloudScore;
+        }
+
+        function endGame() {
+            isPlaying = false;
+            clearInterval(gameInterval);
+            document.getElementById('funky-music').pause();
+            document.getElementById('cloud-area').innerHTML = '';
+            document.getElementById('game-prompt').innerText = "Time's Up!";
+            
+            const overlay = document.getElementById('start-overlay');
+            overlay.style.display = 'flex';
+            document.getElementById('end-message').innerText = `Final Score: ${currentCloudScore}!`;
+            overlay.querySelector('button').innerText = "Play Again 🎵";
+        }
+
+        function nextRound() {
+            if (!isPlaying) return;
+            const cloudArea = document.getElementById('cloud-area');
+            cloudArea.innerHTML = ''; 
+
+            const targetVerb = masterVerbList[Math.floor(Math.random() * masterVerbList.length)];
+            const askForV2 = Math.random() > 0.5;
+            const targetForm = askForV2 ? 'V2' : 'V3';
+            const correctAnswer = askForV2 ? targetVerb.v2 : targetVerb.v3;
+
+            document.getElementById('game-prompt').innerHTML = `Find <span style="color:#e11d48">${targetForm}</span> of: <span style="color:#0284c7; background:white; padding: 0 10px; border-radius: 8px;">${targetVerb.v1.toUpperCase()}</span>`;
+
+            let options = [correctAnswer];
+            while (options.length < 4) {
+                const randomVerb = masterVerbList[Math.floor(Math.random() * masterVerbList.length)];
+                const wrongAnswer = Math.random() > 0.5 ? randomVerb.v2 : randomVerb.v3;
+                if (!options.includes(wrongAnswer)) options.push(wrongAnswer);
+            }
+
+            options.sort(() => Math.random() - 0.5);
+
+            const safeZones = [
+                { topMin: 25, topMax: 35, leftMin: 5, leftMax: 30 },  
+                { topMin: 25, topMax: 35, leftMin: 55, leftMax: 75 }, 
+                { topMin: 60, topMax: 70, leftMin: 5, leftMax: 30 },  
+                { topMin: 60, topMax: 70, leftMin: 55, leftMax: 75 }  
+            ];
+            
+            safeZones.sort(() => Math.random() - 0.5);
+
+            options.forEach((optionText, index) => {
+                const cloud = document.createElement('div');
+                cloud.className = 'pastel-cloud';
+                const color = pastelColors[Math.floor(Math.random() * pastelColors.length)];
+                cloud.style.background = color;
+
+                const zone = safeZones[index];
+                const topPos = Math.floor(Math.random() * (zone.topMax - zone.topMin + 1)) + zone.topMin;
+                const leftPos = Math.floor(Math.random() * (zone.leftMax - zone.leftMin + 1)) + zone.leftMin;
+                
+                cloud.style.top = topPos + '%';
+                cloud.style.left = leftPos + '%';
+                cloud.style.animationDelay = (Math.random() * 2) + 's';
+
+                const textSpan = document.createElement('span');
+                textSpan.className = 'cloud-text';
+                textSpan.innerText = optionText;
+                cloud.appendChild(textSpan);
+
+                cloud.onclick = function() {
+                    if (optionText === correctAnswer) {
+                        currentCloudScore += 10; updateUI();
+                        document.getElementById('game-prompt').style.color = '#059669';
+                        setTimeout(() => { document.getElementById('game-prompt').style.color = '#1e293b'; nextRound(); }, 200);
+                    } else {
+                        cloud.style.background = '#fca5a5'; 
+                        cloud.style.transform = 'translateY(10px)';
+                        setTimeout(() => { cloud.style.background = color; cloud.style.transform = 'translateY(0)'; }, 300);
+                    }
+                };
+                cloudArea.appendChild(cloud);
+            });
+        }
+
+        // --- 4. FORMAL WORKSHEET LOGIC ---
+        let worksheetVerbs = [];
+
+        function initWorksheet() {
+            // Pick 30 random verbs from the combined master list of 50
+            worksheetVerbs = [...masterVerbList].sort(() => Math.random() - 0.5).slice(0, 30);
+            const tbody = document.getElementById('worksheet-body');
+            tbody.innerHTML = ''; 
+
+            worksheetVerbs.forEach((verb, index) => {
+                const tr = document.createElement('tr');
+                tr.style.backgroundColor = index % 2 === 0 ? '#ffffff' : '#f8fafc';
+                tr.innerHTML = `
+                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0; font-weight: 900; color: #334155; font-size: 1.2rem; text-transform: uppercase;">
+                        ${verb.v1}
+                    </td>
+                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0;">
+                        <input type="text" id="v2-input-${index}" placeholder="Type V2..." style="width: 90%; padding: 10px 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-family: 'Nunito', sans-serif; font-weight: bold; font-size: 1rem; outline: none; transition: all 0.2s;">
+                    </td>
+                    <td style="padding: 12px 15px; border-bottom: 1px solid #e2e8f0;">
+                        <input type="text" id="v3-input-${index}" placeholder="Type V3..." style="width: 90%; padding: 10px 12px; border: 2px solid #cbd5e1; border-radius: 8px; font-family: 'Nunito', sans-serif; font-weight: bold; font-size: 1rem; outline: none; transition: all 0.2s;">
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function checkWorksheet() {
+            let score = 0;
+            worksheetVerbs.forEach((verb, index) => {
+                const v2Input = document.getElementById(`v2-input-${index}`);
+                const v3Input = document.getElementById(`v3-input-${index}`);
+                
+                const validate = (inputElement, correctValue) => {
+                    const val = inputElement.value.trim().toLowerCase();
+                    const isCorrect = correctValue.includes('/') 
+                        ? correctValue.split('/').includes(val) 
+                        : val === correctValue.toLowerCase();
+
+                    if (isCorrect) {
+                        inputElement.style.borderColor = '#22c55e'; inputElement.style.backgroundColor = '#dcfce7'; inputElement.style.color = '#166534';
+                        score++;
+                    } else {
+                        inputElement.style.borderColor = '#ef4444'; inputElement.style.backgroundColor = '#fee2e2'; inputElement.style.color = '#991b1b';
+                    }
+                };
+                validate(v2Input, verb.v2);
+                validate(v3Input, verb.v3);
+            });
+
+            const scoreDisplay = document.getElementById('worksheet-score');
+            scoreDisplay.innerText = `Score: ${score} / 60`;
+            
+            if(score === 60) {
+                scoreDisplay.innerText += " 🎉 Perfect Score!";
+                scoreDisplay.style.color = '#16a34a';
+            } else {
+                scoreDisplay.style.color = '#0284c7'; 
+            }
+        }
+
+        function resetWorksheet() {
+            initWorksheet();
+            const scoreDisplay = document.getElementById('worksheet-score');
+            scoreDisplay.innerText = "Score: 0 / 60";
+            scoreDisplay.style.color = '#0284c7';
+        }
+
+        // FULLSCREEN LOGIC
+        function toggleFullScreen() {
+            const container = document.getElementById("formal-exercise-container");
+            
+            if (!document.fullscreenElement) {
+                container.requestFullscreen().catch(err => {
+                    alert(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        initWorksheet(); // Start Worksheet
+    </script>
+</body>
+</html>
