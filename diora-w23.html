@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poetry & Rhyme Mastery</title>
+    <style>
+        /* Imported Lora (elegant serif), Nunito (clean sans-serif), and Dancing Script (beautiful handwriting) */
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;700&family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-color: #f0f9ff; 
+            --container-bg: #ffffff;
+            --text-main: #334155;
+            --text-poem: #1e293b;
+            --primary: #3b82f6;
+            --primary-light: #bae6fd;
+            --accent: #0ea5e9;
+            --correct: #10b981;
+            --wrong: #ef4444;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#bae6fd 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--container-bg);
+            width: 100%;
+            max-width: 850px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(56, 130, 246, 0.1);
+            border: 1px solid #e0f2fe;
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+            padding: 30px;
+            text-align: center;
+            color: white;
+            border-bottom: 4px solid #e0f2fe;
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.5rem;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 10px 0 0 0;
+            opacity: 0.95;
+        }
+
+        .level-section {
+            padding: 40px;
+            display: none; 
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .level-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .level-title {
+            font-family: 'Lora', serif;
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-top: 0;
+            border-bottom: 2px solid var(--primary-light);
+            padding-bottom: 10px;
+            margin-bottom: 25px;
+        }
+
+        /* Educational Context Box */
+        .edu-box {
+            background: #f0fdf4;
+            border: 2px solid #bbf7d0;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+        }
+
+        .edu-box.blue-theme {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+        
+        .edu-box.red-theme {
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .edu-box h3 {
+            font-family: 'Lora', serif;
+            color: #166534;
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+
+        .edu-box.blue-theme h3 { color: #1e40af; }
+        .edu-box.red-theme h3 { color: #991b1b; }
+        
+        .edu-box p {
+            color: #166534;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .edu-box.blue-theme p, .edu-box.blue-theme li { color: #1e3a8a; }
+        .edu-box.red-theme p, .edu-box.red-theme li { color: #7f1d1d; }
+
+        .instructions {
+            background: #f8fafc;
+            padding: 15px 20px;
+            border-left: 4px solid var(--primary);
+            border-radius: 0 8px 8px 0;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+
+        .poem-box {
+            font-family: 'Lora', serif;
+            font-size: 1.25rem;
+            line-height: 2.2;
+            color: var(--text-poem);
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.02);
+            white-space: pre-wrap; 
+        }
+
+        /* Inputs */
+        select, input[type="text"] {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary);
+            padding: 4px 10px;
+            border: 2px solid var(--primary-light);
+            border-radius: 6px;
+            background: #f0f9ff;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin: 0 5px;
+        }
+
+        input[type="text"] {
+            width: 100px;
+            cursor: text;
+        }
+
+        select:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+
+        .correct {
+            border-color: var(--correct) !important;
+            background-color: #dcfce7 !important;
+            color: #065f46 !important;
+        }
+
+        .wrong {
+            border-color: var(--wrong) !important;
+            background-color: #fee2e2 !important;
+            color: #991b1b !important;
+        }
+
+        /* Buttons & Feedback */
+        .controls-area {
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 800;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-check {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 0 #2563eb;
+        }
+        .btn-check:active { transform: translateY(4px); box-shadow: 0 0 0 #2563eb; }
+
+        .btn-next {
+            background: var(--correct);
+            color: white;
+            box-shadow: 0 4px 0 #059669;
+            display: none;
+        }
+        .btn-next:active { transform: translateY(4px); box-shadow: 0 0 0 #059669; }
+
+        .btn-generate {
+            background: #8b5cf6;
+            color: white;
+            box-shadow: 0 4px 0 #6d28d9;
+            margin-bottom: 20px;
+        }
+        .btn-generate:active { transform: translateY(4px); box-shadow: 0 0 0 #6d28d9; }
+
+        .success-msg {
+            display: none;
+            color: var(--correct);
+            font-size: 1.3rem;
+            font-weight: 800;
+            animation: fadeIn 0.4s;
+        }
+
+        /* Keyword Tags */
+        .keyword-tag {
+            background: #e0e7ff;
+            color: #4338ca;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 800;
+            font-size: 1.1rem;
+            border: 2px solid #c7d2fe;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            animation: fadeIn 0.3s;
+        }
+
+        /* Poem Writing Area */
+        textarea {
+            width: 100%;
+            height: 400px;
+            padding: 25px;
+            font-family: 'Lora', serif;
+            font-size: 1.25rem;
+            line-height: 2;
+            color: var(--text-poem);
+            background: #ffffff;
+            border: 2px solid #bae6fd;
+            border-radius: 12px;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.03);
+            transition: border-color 0.2s;
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+        }
+
+        /* --- THE PRESENTATION MODE (RUSTIC PAPER) --- */
+        #presentation-mode {
+            display: none; 
+            width: 100vw;
+            height: 100vh;
+            background-color: #2c2724; 
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        #presentation-mode.active {
+            display: flex;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .rustic-paper {
+            background-color: #fdf5e6; 
+            background-image: 
+                radial-gradient(circle at 0% 0%, rgba(205, 180, 155, 0.2) 20%, transparent 50%),
+                radial-gradient(circle at 100% 100%, rgba(205, 180, 155, 0.3) 20%, transparent 50%),
+                linear-gradient(to right, rgba(0,0,0,0.05) 0%, transparent 5%, transparent 95%, rgba(0,0,0,0.05) 100%);
+            padding: 60px 80px;
+            border-radius: 4px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5), inset 0 0 40px rgba(139, 69, 19, 0.15);
+            max-width: 800px;
+            width: 90%;
+            max-height: 75vh;
+            overflow-y: auto;
+            text-align: center;
+            border: 1px solid #eaddcf;
+        }
+
+        .handwriting-text {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.4rem;
+            line-height: 1.8;
+            color: #3b2f2f; 
+            white-space: pre-wrap;
+            text-shadow: 0px 1px 1px rgba(255,255,255,0.5);
+        }
+
+        .presentation-header {
+            font-family: 'Lora', serif;
+            color: #eaddcf;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .presentation-header h2 {
+            font-size: 2.2rem;
+            margin: 0 0 5px 0;
+            letter-spacing: 2px;
+        }
+
+        .btn-exit-fs {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 4px 0 #b91c1c;
+            margin-top: 30px;
+        }
+        .btn-exit-fs:active { transform: translateY(4px); box-shadow: 0 0 0 #b91c1c; }
+
+    </style>
+</head>
+<body>
+
+    <!-- Audio Element -->
+    <audio id="poem-audio" src="poem.mp3" loop></audio>
+
+    <div class="container">
+        <header>
+            <h1>The Art of the Rhyme</h1>
+            <p>An exploration of poetry, structure, and sound.</p>
+        </header>
+
+        <!-- LEVEL 1: The Sonnet -->
+        <div id="level-1" class="level-section active">
+            <h2 class="level-title">Part I: The Sonnet</h2>
+            
+            <div class="edu-box">
+                <h3>📖 About This Poem</h3>
+                <p><strong>Type & Author:</strong> This is a Shakespearean (English) Sonnet written by William Shakespeare. It consists of 14 lines written in <em>iambic pentameter</em>.</p>
+                <p><strong>Rhyme Scheme:</strong> It follows a strict <strong>ABAB CDCD EFEF GG</strong> pattern. The poem ends with a "rhyming couplet" (the last two lines), which usually provides a thematic twist or a final summary of the poem’s message.</p>
+            </div>
+
+            <div class="instructions">
+                Now, read the classic sonnet below. Choose the correct ending words from the dropdowns to complete the ABAB CDCD EFEF GG rhyme scheme.
+            </div>
+
+            <div class="poem-box"><strong>"Sonnet 18"</strong>
+By William Shakespeare
+
+Shall I compare thee to a summer’s day?
+Thou art more lovely and more <select class="answer-box" data-answer="temperate"><option value=""></option><option value="gorgeous">gorgeous</option><option value="mild">mild</option><option value="temperate">temperate</option></select>:
+Rough winds do shake the darling buds of <select class="answer-box" data-answer="May"><option value=""></option><option value="trees">trees</option><option value="May">May</option><option value="April">April</option></select>,
+And summer’s lease hath all too short a <select class="answer-box" data-answer="date"><option value=""></option><option value="date">date</option><option value="span">span</option><option value="time">time</option></select>;
+Sometime too hot the eye of heaven shines,
+And often is his gold complexion dimm'd;
+And every fair from fair sometime declines,
+By chance or nature’s changing course untrimm'd;
+But thy eternal summer shall not fade,
+Nor lose possession of that fair thou ow’st;
+Nor shall death brag thou wander’st in his shade,
+When in eternal lines to time thou grow’st:
+So long as men can breathe or eyes can <select class="answer-box" data-answer="see"><option value=""></option><option value="look">look</option><option value="watch">watch</option><option value="see">see</option></select>,
+So long lives this, and this gives life to <select class="answer-box" data-answer="thee"><option value=""></option><option value="us">us</option><option value="thee">thee</option><option value="you">you</option></select>.</div>
+
+            <div class="controls-area">
+                <button class="btn btn-check" onclick="checkAnswers(1)">Check Rhymes</button>
+                <div class="success-msg" id="success-1">✨ Beautifully done!</div>
+                <button class="btn btn-next" id="next-btn-1" onclick="nextLevel(2)">Next Poem ➡️</button>
+            </div>
+        </div>
+
+        <!-- LEVEL 2: The Narrative Ballad -->
+        <div id="level-2" class="level-section">
+            <h2 class="level-title">Part II: The Narrative Ballad</h2>
+            
+            <div class="edu-box">
+                <h3>📖 About This Poem</h3>
+                <p><strong>Type & Author:</strong> This is a Narrative Ballad by Edgar Allan Poe. Ballads are meant to tell a story and often have a musical, rhythmic quality that makes them feel like a song or a folk legend.</p>
+                <p><strong>Rhyme Scheme:</strong> Poe uses a varied but repetitive scheme, primarily <strong>ABABCB</strong>. Notice how he consistently returns to the "ee" sound (sea, Lee, me) throughout the stanzas to create a haunting, melodic effect that emphasizes the setting and the subject.</p>
+            </div>
+
+            <div class="instructions">
+                It's getting trickier! All the options rhyme with each other. You must choose the word that makes the most sense in the context of the story.
+            </div>
+
+            <div class="poem-box"><strong>"Annabel Lee"</strong> (Excerpt)
+By Edgar Allan Poe
+
+It was many and many a year ago,
+In a kingdom by the <select class="answer-box" data-answer="sea"><option value=""></option><option value="tree">tree</option><option value="sea">sea</option><option value="knee">knee</option><option value="flea">flea</option></select>,
+That a maiden there lived whom you may <select class="answer-box" data-answer="know"><option value=""></option><option value="blow">blow</option><option value="throw">throw</option><option value="know">know</option><option value="glow">glow</option></select>
+By the name of Annabel <select class="answer-box" data-answer="Lee"><option value=""></option><option value="Lee">Lee</option><option value="spree">spree</option><option value="fee">fee</option><option value="degree">degree</option></select>;
+And this maiden she lived with no other thought
+Than to love and be loved by <select class="answer-box" data-answer="me"><option value=""></option><option value="me">me</option><option value="key">key</option><option value="tea">tea</option><option value="ski">ski</option></select>.</div>
+
+            <div class="controls-area">
+                <button class="btn btn-check" onclick="checkAnswers(2)">Check Rhymes</button>
+                <div class="success-msg" id="success-2">✨ A hauntingly perfect score!</div>
+                <button class="btn btn-next" id="next-btn-2" onclick="nextLevel(3)">Next Poem ➡️</button>
+            </div>
+        </div>
+
+        <!-- LEVEL 3: The Rhymed Verse -->
+        <div id="level-3" class="level-section">
+            <h2 class="level-title">Part III: The Rhymed Verse</h2>
+            
+            <div class="edu-box">
+                <h3>📖 About This Poem</h3>
+                <p><strong>Type & Author:</strong> This is a classic Lyric Poem by Robert Frost. It is famous for its "Chain Rhyme" structure and its meditative, calm tone.</p>
+                <p><strong>Rhyme Scheme:</strong> Frost uses a sophisticated <strong>AABA BCBB CDCC DDDD</strong> scheme. In each stanza, the third line introduces the rhyme for the next stanza, creating a "pulling" effect that mimics the traveler moving through the woods, until the final stanza where every line rhymes to bring the poem to a complete stop.</p>
+            </div>
+
+            <div class="instructions">
+                No multiple choice this time. Type the correct rhyming words to complete Robert Frost's snowy scene based on the AABA BCBB CDCC DDDD pattern.
+            </div>
+
+            <div class="poem-box"><strong>"Stopping by Woods on a Snowy Evening"</strong>
+By Robert Frost
+
+Whose woods these are I think I <input type="text" class="answer-box" data-answer="know">.
+His house is in the village <input type="text" class="answer-box" data-answer="though">;
+He will not see me stopping here
+To watch his woods fill up with <input type="text" class="answer-box" data-answer="snow">.
+
+My little horse must think it queer
+To stop without a farmhouse near
+Between the woods and frozen lake
+The darkest evening of the year.
+
+He gives his harness bells a shake
+To ask if there is some mistake.
+The only other sound’s the sweep
+Of easy wind and downy flake.
+
+The woods are lovely, dark and deep,
+But I have promises to <input type="text" class="answer-box" data-answer="keep">,
+And miles to go before I <input type="text" class="answer-box" data-answer="sleep">,
+And miles to go before I <input type="text" class="answer-box" data-answer="sleep">.</div>
+
+            <div class="controls-area">
+                <button class="btn btn-check" onclick="checkAnswers(3)">Check Rhymes</button>
+                <div class="success-msg" id="success-3">✨ Masterfully completed!</div>
+                <button class="btn btn-next" id="next-btn-3" onclick="nextLevel(4)">The Writer's Challenge ➡️</button>
+            </div>
+        </div>
+
+        <!-- LEVEL 4: Write Your Own Sonnet -->
+        <div id="level-4" class="level-section">
+            <h2 class="level-title">Part IV: The Poet's Desk</h2>
+            
+            <div class="edu-box blue-theme">
+                <h3>📖 The Anatomy of a Sonnet</h3>
+                <ul style="font-size: 1.1rem; line-height: 1.8;">
+                    <li><strong>14 Lines:</strong> A sonnet always has exactly fourteen lines.</li>
+                    <li><strong>Rhyme Scheme:</strong> <strong>ABAB CDCD EFEF GG</strong>. It is broken into three <em>quatrains</em> (4 lines each) and ends with a <em>couplet</em> (2 lines).</li>
+                    <li><strong>Iambic Pentameter:</strong> The rhythm of a heartbeat! Each line typically has 10 syllables with a bouncing "da-DUM da-DUM da-DUM da-DUM da-DUM" beat.</li>
+                    <li><strong>The Volta (Turn):</strong> Usually around line 9 (or sometimes at the final couplet), the poem shifts its tone, answers a question, or reveals a twist!</li>
+                </ul>
+            </div>
+
+            <div class="instructions">
+                Now it is your turn, Diora! Click the button below to generate your <strong>8 mandatory keywords</strong>. Then, draft your very own Shakespearean Sonnet. When you publish it, prepare to perform!
+            </div>
+
+            <div style="text-align: center; margin-bottom: 30px;">
+                <button class="btn btn-generate" id="btn-generate" onclick="generateKeywords()">Generate My 8 Keywords 🎲</button>
+                <div id="keyword-display" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; min-height: 45px;"></div>
+            </div>
+
+            <textarea id="poem-area" placeholder="Line 1 (Ends with A)&#10;Line 2 (Ends with B)&#10;Line 3 (Ends with A)&#10;Line 4 (Ends with B)&#10;..."></textarea>
+
+            <div class="controls-area">
+                <button class="btn btn-check" onclick="submitPoem()">Publish & Perform 🖋️</button>
+                <div class="success-msg" id="success-4" style="flex: 1; text-align: center;">✨ A beautiful creation!</div>
+                <button class="btn btn-next" id="next-btn-4" onclick="nextLevel(5)" style="background-color: #8b5cf6; box-shadow: 0 4px 0 #6d28d9;">The Final Challenge ➡️</button>
+            </div>
+        </div>
+
+        <!-- LEVEL 5: The Critic's Chair -->
+        <div id="level-5" class="level-section">
+            <h2 class="level-title">Part V: The Critic's Chair</h2>
+            
+            <div class="edu-box red-theme">
+                <h3>📖 What Makes a Poem "Bad"?</h3>
+                <ul style="font-size: 1.1rem; line-height: 1.8;">
+                    <li><strong>Forced Rhymes:</strong> Choosing words just because they rhyme, even if they make no sense (e.g., rhyming "love" with "shove" when it doesn't fit).</li>
+                    <li><strong>Broken Meter:</strong> A rhythm that is clunky, skips beats, or forces the reader to stumble over too many or too few syllables.</li>
+                    <li><strong>Clichés & Melodrama:</strong> Overused phrases ("roses are red") and emotions that are extremely exaggerated.</li>
+                </ul>
+            </div>
+
+            <div class="instructions">
+                A great writer must also be a great editor. Read the dramatically terrible poem below aloud. <br><br>
+                <strong>Your Task:</strong> Identify the forced rhymes, the broken rhythm, and the clichés. Be prepared to critique this poem orally to your teacher and provide suggestions on how you would fix it!
+            </div>
+
+            <div class="poem-box" style="border-color: #fecaca; background-color: #fffaf9;"><strong>"The Stolen Blue Hoodie"</strong>
+By Anonymous (A Bitter Ex)
+
+You broke my heart into a million little pieces,
+And now my sadness literally never ceases.
+You took my absolute favorite blue hoodie,
+And you are acting like a real big meanie.
+I saw you eating a slice of pizza with Brad,
+Which made me feel super duper incredibly mad.
+Brad is not even that cool,
+He is the biggest nerd in the whole entire school!
+Roses are red, and violets are blue,
+I am so totally completely over you.
+But please, please give me back my sweater,
+Because without it my life doesn't feel better.
+The sky is dark, the moon is crying,
+My soul inside is basically dying.
+You are a terrible betrayer,
+But I am an awesome player.
+Goodbye forever, until tomorrow,
+I am drowning in my deep, dark sorrow.</div>
+
+            <div class="controls-area" style="justify-content: center; margin-top: 40px;">
+                <button class="btn btn-check" style="background: #ef4444; box-shadow: 0 4px 0 #b91c1c;" onclick="alert('Prepare your critique! Your teacher is ready to listen.')">I'm Ready to Critique! 🗣️</button>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Presentation Mode (Rustic Paper & Music) -->
+    <div id="presentation-mode">
+        <div class="presentation-header">
+            <h2>A Reading by Diora</h2>
+            <p style="font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 600; margin: 0;">Practice reading your sonnet aloud with feeling and rhythm.</p>
+        </div>
+        
+        <div class="rustic-paper">
+            <div id="final-poem-display" class="handwriting-text"></div>
+        </div>
+
+        <button class="btn btn-exit-fs" onclick="exitPresentation()">End Reading 🎬</button>
+    </div>
+
+    <script>
+        // Check Answers Logic for Levels 1-3
+        function checkAnswers(level) {
+            const section = document.getElementById(`level-${level}`);
+            const inputs = section.querySelectorAll('.answer-box');
+            let allCorrect = true;
+
+            inputs.forEach(input => {
+                const studentAnswer = input.value.trim().toLowerCase();
+                const correctAnswer = input.getAttribute('data-answer').toLowerCase();
+
+                input.classList.remove('correct', 'wrong');
+
+                if (studentAnswer === correctAnswer) {
+                    input.classList.add('correct');
+                } else {
+                    input.classList.add('wrong');
+                    allCorrect = false;
+                }
+            });
+
+            if (allCorrect) {
+                document.getElementById(`success-${level}`).style.display = 'block';
+                const checkBtn = section.querySelector('.btn-check');
+                if(checkBtn) checkBtn.style.display = 'none';
+                
+                const nextBtn = document.getElementById(`next-btn-${level}`);
+                if(nextBtn) nextBtn.style.display = 'block';
+            } else {
+                document.getElementById(`success-${level}`).style.display = 'none';
+            }
+        }
+
+        // Navigation Logic
+        function nextLevel(nextLevelNumber) {
+            document.querySelectorAll('.level-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(`level-${nextLevelNumber}`).classList.add('active');
+            window.scrollTo({ top: document.querySelector('.container').offsetTop - 20, behavior: 'smooth' });
+        }
+
+        // Level 4: Keyword Generator Logic
+        const wordBank = [
+            "moonlight", "whisper", "ocean", "mirror", "shadow", "blossom", "secret", "fire", 
+            "velvet", "echo", "promise", "storm", "crystal", "dream", "silence", "journey", 
+            "starlight", "memory", "sapphire", "twilight", "breeze", "melody", "sorrow", "time",
+            "winter", "golden", "horizon", "spirit"
+        ];
+
+        function generateKeywords() {
+            const display = document.getElementById('keyword-display');
+            display.innerHTML = ''; 
+            
+            let shuffled = [...wordBank].sort(() => 0.5 - Math.random());
+            let selected = shuffled.slice(0, 8);
+            
+            selected.forEach(word => {
+                const span = document.createElement('span');
+                span.className = 'keyword-tag';
+                span.innerText = word;
+                display.appendChild(span);
+            });
+
+            document.getElementById('btn-generate').innerText = "Reroll Keywords 🎲";
+        }
+
+        // Level 4 to Presentation Logic
+        function submitPoem() {
+            const text = document.getElementById('poem-area').value.trim();
+            const lineCount = text.split('\n').filter(line => line.trim().length > 0).length;
+
+            if(lineCount >= 10) { 
+                // Set the text on the rustic paper
+                document.getElementById('final-poem-display').innerText = text;
+                
+                // Show presentation mode
+                const presentation = document.getElementById('presentation-mode');
+                presentation.classList.add('active');
+                
+                // Play audio with soft volume
+                const audio = document.getElementById('poem-audio');
+                audio.volume = 0.2; 
+                audio.play().catch(e => console.log("Audio block - user interaction required to play audio on some browsers."));
+
+                // Go Fullscreen
+                if (!document.fullscreenElement) {
+                    presentation.requestFullscreen().catch(err => {
+                        console.log(`Error attempting to enable full-screen mode: ${err.message}`);
+                    });
+                }
+            } else {
+                alert(`Keep writing, Diora! A true sonnet needs 14 lines. (You currently have ${lineCount} non-empty lines).`);
+            }
+        }
+
+        function exitPresentation() {
+            // Stop audio
+            const audio = document.getElementById('poem-audio');
+            audio.pause();
+            audio.currentTime = 0;
+
+            // Exit fullscreen
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            }
+
+            // Hide presentation mode
+            document.getElementById('presentation-mode').classList.remove('active');
+            
+            // Show success message and the NEXT button to level 5
+            document.getElementById('success-4').style.display = 'block';
+            document.getElementById('next-btn-4').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
