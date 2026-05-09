@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Units 10, 11 and 12 Review 4</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #fdf6e3;
+            color: #4a5568;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            border: 3px solid #fbd38d;
+        }
+
+        h1 {
+            color: #ed8936;
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        /* Grammar Guide Styles */
+        .grammar-guide {
+            background-color: #faf5ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 35px;
+            border: 3px dashed #d6bcfa;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.02);
+        }
+
+        .grammar-guide h2 {
+            color: #805ad5;
+            text-align: center;
+            font-size: 1.8em;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+
+        .tense-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .tense-card {
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 15px 20px;
+            border-left: 6px solid #b794f4;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .tense-card h3 {
+            margin-top: 0;
+            color: #6b46c1;
+            font-size: 1.3em;
+            border-bottom: 2px dotted #e9d8fd;
+            padding-bottom: 5px;
+        }
+
+        .tense-card p {
+            margin: 8px 0;
+        }
+
+        .tense-card .formula {
+            background-color: #f3ebff;
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #553c9a;
+            margin-bottom: 10px;
+        }
+
+        .tense-card ul {
+            margin: 5px 0 0 0;
+            padding-left: 25px;
+            color: #553c9a;
+        }
+
+        /* Exercise Styles */
+        .exercise {
+            background-color: #ebf8ff;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 5px solid #63b3ed;
+        }
+
+        .exercise:nth-of-type(even) {
+            background-color: #f0fff4;
+            border-left: 5px solid #48bb78;
+        }
+
+        .exercise h2 {
+            color: #2b6cb0;
+            margin-top: 0;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+        }
+
+        .exercise:nth-of-type(even) h2 {
+            color: #2f855a;
+        }
+
+        .letter-badge {
+            background-color: #ecc94b;
+            color: #fff;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            margin-right: 10px;
+            font-weight: bold;
+            box-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        ol {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            border: 2px dashed #a0aec0;
+            background-color: transparent;
+            padding: 5px;
+            font-family: inherit;
+            font-size: 1em;
+            color: #2d3748;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #ed8936;
+            background-color: #fffaf0;
+        }
+
+        .word-bank {
+            background-color: #fff;
+            border: 2px dashed #f6ad55;
+            padding: 10px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            color: #dd6b20;
+            font-weight: bold;
+            word-spacing: 10px;
+        }
+
+        .points {
+            text-align: right;
+            font-size: 0.9em;
+            color: #a0aec0;
+            font-style: italic;
+            margin-top: 10px;
+        }
+
+        .options {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .option {
+            background-color: #fff;
+            border: 1px solid #cbd5e1;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            cursor: pointer;
+        }
+
+        .option:hover {
+            background-color: #edf2f7;
+        }
+
+        .matching {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .matching-col {
+            width: 48%;
+        }
+
+        .matching-col ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .word-formation {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+        }
+        
+        .word-formation-input {
+            flex-grow: 1;
+            margin: 0 10px;
+        }
+
+        .capital-word {
+            font-weight: bold;
+            color: #718096;
+        }
+
+        .total-score {
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #e53e3e;
+            margin-top: 20px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Units 10, 11 and 12 Review 4</h1>
+
+    <!-- GRAMMAR CHEAT SHEET SECTION -->
+    <div class="grammar-guide">
+        <h2>✨ Grammar Cheat Sheet: The Tense Trio ✨</h2>
+        <div class="tense-container">
+            
+            <!-- Present Simple -->
+            <div class="tense-card">
+                <h3>🕰️ Present Simple</h3>
+                <div class="formula">Formula: Subject + V1 (add -s/-es for he/she/it)</div>
+                <p><strong>When to use it:</strong> For habits, daily routines, general facts, and permanent situations.</p>
+                <p><strong>Examples:</strong></p>
+                <ul>
+                    <li><i>Fact:</i> Water <strong>boils</strong> at 100 degrees Celsius.</li>
+                    <li><i>Routine:</i> I <strong>wake up</strong> at 7 AM every day.</li>
+                    <li><i>Negative:</i> She <strong>doesn't like</strong> spicy food.</li>
+                </ul>
+            </div>
+
+            <!-- Past Simple -->
+            <div class="tense-card">
+                <h3>⏪ Past Simple</h3>
+                <div class="formula">Formula: Subject + V2 (verb-ed or irregular past)</div>
+                <p><strong>When to use it:</strong> For actions that started and finished completely in the past. Usually accompanied by time words like <i>yesterday, last week, in 2015, two days ago</i>.</p>
+                <p><strong>Examples:</strong></p>
+                <ul>
+                    <li><i>Completed Action:</i> We <strong>visited</strong> the museum yesterday.</li>
+                    <li><i>Irregular Verb:</i> He <strong>went</strong> to the store two hours ago.</li>
+                    <li><i>Question:</i> <strong>Did</strong> you <strong>finish</strong> your homework?</li>
+                </ul>
+            </div>
+
+            <!-- Present Perfect -->
+            <div class="tense-card">
+                <h3>🌉 Present Perfect</h3>
+                <div class="formula">Formula: Subject + have/has + V3 (Past Participle)</div>
+                <p><strong>When to use it:</strong> For past actions connected to the present! This includes life experiences, actions that recently finished (often with <i>just, already, yet</i>), or actions that started in the past and continue today (with <i>since, for</i>).</p>
+                <p><strong>Examples:</strong></p>
+                <ul>
+                    <li><i>Experience:</i> I <strong>have traveled</strong> to Japan three times.</li>
+                    <li><i>Recent Action:</i> She <strong>has just finished</strong> her dinner.</li>
+                    <li><i>Duration:</i> They <strong>have lived</strong> here since 2020.</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <!-- END OF GRAMMAR CHEAT SHEET SECTION -->
+
+    <!-- EXERCISES START HERE -->
+    <div class="exercise">
+        <h2><span class="letter-badge">A</span> Open the brackets, putting the verbs in present perfect.</h2>
+        <ol>
+            <li>I <input type="text" size="15" placeholder="(not answer)"> all the questions yet.</li>
+            <li><input type="text" size="5" placeholder="(you)"> you <input type="text" size="10" placeholder="(remember)"> where you put your pencil?</li>
+            <li>Damien <input type="text" size="10" placeholder="(pass)"> all his exams with top marks.</li>
+            <li>I got the right answer, but the teacher <input type="text" size="10" placeholder="(not tick)"> it.</li>
+            <li>Terry <input type="text" size="10" placeholder="(learn)"> so much this year.</li>
+            <li>You <input type="text" size="10" placeholder="(match)"> the wrong sentences!</li>
+            <li>He <input type="text" size="10" placeholder="(mark)"> twenty exam papers this morning.</li>
+            <li>They <input type="text" size="15" placeholder="(never apologise)"> for being so rude.</li>
+        </ol>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="exercise">
+        <h2><span class="letter-badge">B</span> Open the brackets, putting the verbs in present perfect or past simple.</h2>
+        <ol start="9">
+            <li>James <input type="text" size="15" placeholder="(not / arrive)"> at school yet.</li>
+            <li>William <input type="text" size="10" placeholder="(study)"> a lot of new things since last year.</li>
+            <li>I'm worried because Julie <input type="text" size="15" placeholder="(never / be)"> absent before.</li>
+            <li><input type="text" size="5" placeholder="(you)"> you <input type="text" size="5" placeholder="(do)"> your homework last night?</li>
+            <li>We <input type="text" size="15" placeholder="(have / already)"> three maths lessons this week.</li>
+            <li>The teacher <input type="text" size="10" placeholder="(take)"> the register for the first time with his new class last week.</li>
+            <li>The good news is that nobody <input type="text" size="10" placeholder="(fail)"> a test in this class since the beginning of the year.</li>
+            <li>The bus <input type="text" size="5" placeholder="(be)"> late again this morning.</li>
+            <li>William <input type="text" size="5" placeholder="(go)"> to university last year after passing all his exams.</li>
+            <li>The teacher <input type="text" size="10" placeholder="(not / tell)"> us about the test until today!</li>
+            <li>You <input type="text" size="10" placeholder="(not / do)"> your homework for three weeks.</li>
+            <li><input type="text" size="5" placeholder="(you)"> you <input type="text" size="5" placeholder="(read)"> this book yet?</li>
+        </ol>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="exercise">
+        <h2><span class="letter-badge">C</span> Choose the correct option.</h2>
+        <ol start="21">
+            <li>
+                The teacher wrote the homework on the <input type="text" size="10"> .
+                <div class="options">
+                    <span class="option">A board</span>
+                    <span class="option">B desk</span>
+                    <span class="option">C library</span>
+                </div>
+            </li>
+            <li>
+                When you hear the bell <input type="text" size="10"> it's time for a break.
+                <div class="options">
+                    <span class="option">A term</span>
+                    <span class="option">B ring</span>
+                    <span class="option">C exam</span>
+                </div>
+            </li>
+            <li>
+                I don't know what this word means so I need to use the <input type="text" size="10"> .
+                <div class="options">
+                    <span class="option">A timetable</span>
+                    <span class="option">B report</span>
+                    <span class="option">C dictionary</span>
+                </div>
+            </li>
+            <li>
+                Where are they going on the <input type="text" size="10"> this year?
+                <div class="options">
+                    <span class="option">A project</span>
+                    <span class="option">B lesson</span>
+                    <span class="option">C school trip</span>
+                </div>
+            </li>
+            <li>
+                Why don't you <input type="text" size="10"> attention?
+                <div class="options">
+                    <span class="option">A pay</span>
+                    <span class="option">B give</span>
+                    <span class="option">C correct</span>
+                </div>
+            </li>
+            <li>
+                Maria is probably the most <input type="text" size="10"> pupil in the class.
+                <div class="options">
+                    <span class="option">A favourite</span>
+                    <span class="option">B complicated</span>
+                    <span class="option">C intelligent</span>
+                </div>
+            </li>
+            <li>
+                Our <input type="text" size="10"> is a really horrible colour.
+                <div class="options">
+                    <span class="option">A head teacher</span>
+                    <span class="option">B school uniform</span>
+                    <span class="option">C IWB</span>
+                </div>
+            </li>
+        </ol>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="exercise">
+        <h2><span class="letter-badge">D</span> Fill in the blanks with the words given in the box.</h2>
+        <div class="word-bank">
+            begin • know • pay • read • spell • teach • understand • write
+        </div>
+        <ol start="28">
+            <li>I was worried that I might not <input type="text" size="10"> the answer to some of the questions.</li>
+            <li>She asked her dad to <input type="text" size="10"> her to drive.</li>
+            <li>You must <input type="text" size="10"> attention to the teacher.</li>
+            <li>How old was Diana when she learned to <input type="text" size="10"> ?</li>
+            <li>Please <input type="text" size="10"> your name at the top of the page.</li>
+            <li>I can't remember how to <input type="text" size="10"> that word. Is it with one 'r' or two?</li>
+            <li>I don't speak very much German but I can <input type="text" size="10"> what you are saying.</li>
+            <li>I'd like to <input type="text" size="10"> the lesson with a discussion, today.</li>
+        </ol>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="exercise">
+        <h2><span class="letter-badge">E</span> Match the two parts of the sentence.</h2>
+        <div class="matching">
+            <div class="matching-col">
+                <ol start="36">
+                    <li>Meet me at <input type="text" size="2"></li>
+                    <li>My dad drove me <input type="text" size="2"></li>
+                    <li>What time do we have <input type="text" size="2"></li>
+                    <li>He crossed <input type="text" size="2"></li>
+                    <li>I knew the answer so I put <input type="text" size="2"></li>
+                    <li>I borrowed a rubber <input type="text" size="2"></li>
+                    <li>Write this <input type="text" size="2"></li>
+                </ol>
+            </div>
+            <div class="matching-col">
+                <ul>
+                    <li>a up my hand.</li>
+                    <li>b down in your notebooks, everyone.</li>
+                    <li>c break-time and I'll tell you a secret!</li>
+                    <li>d out his answer and wrote a better one.</li>
+                    <li>e to school this morning because it was raining.</li>
+                    <li>f to rub something out.</li>
+                    <li>g a break today?</li>
+                </ul>
+            </div>
+        </div>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="exercise">
+        <h2><span class="letter-badge">F</span> Read the text below. Transform the words printed in capital letters at the end of the lines so that they grammatically and lexically match the content of the text. Fill in the blanks with the resulting words.</h2>
+        <ol start="43">
+            <li class="word-formation">
+                <span>What makes a successful lesson? In a new class, it is important that there is a good relationship between everyone right from the <input type="text" class="word-formation-input" size="15"> .</span>
+                <span class="capital-word">BEGIN</span>
+            </li>
+            <li class="word-formation">
+                <span>Learning to work with and learn from other people is a big part of the <input type="text" class="word-formation-input" size="15"> process.</span>
+                <span class="capital-word">EDUCATE</span>
+            </li>
+            <li class="word-formation">
+                <span>It is not just the relationships between the children, but also between them and their <input type="text" class="word-formation-input" size="15"> .</span>
+                <span class="capital-word">TEACH</span>
+            </li>
+            <li class="word-formation">
+                <span>He or she should try to be very <input type="text" class="word-formation-input" size="15"> all the time.</span>
+                <span class="capital-word">ENCOURAGE</span>
+            </li>
+            <li class="word-formation">
+                <span>When a <input type="text" class="word-formation-input" size="15"> makes a mistake, for example, they might need some help.</span>
+                <span class="capital-word">STUDY</span>
+            </li>
+            <li class="word-formation">
+                <span>Sometimes a pupil might spell something <input type="text" class="word-formation-input" size="15"> , so they need a lot of spelling practice.</span>
+                <span class="capital-word">CORRECT</span>
+            </li>
+            <li class="word-formation">
+                <span>Perhaps a schoolchild doesn't know the <input type="text" class="word-formation-input" size="15"> of a word and needs a clear and simple explanation.</span>
+                <span class="capital-word">MEAN</span>
+            </li>
+            <li class="word-formation">
+                <span>So it is easy to see the <input type="text" class="word-formation-input" size="15"> of good relationships in the classroom.</span>
+                <span class="capital-word">IMPORTANT</span>
+            </li>
+        </ol>
+        <div class="points">(1 point for each correct answer)</div>
+    </div>
+
+    <div class="total-score">
+        Total Score: ___ / 50
+    </div>
+</div>
+
+</body>
+</html>
