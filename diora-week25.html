@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diora's Elegant Review Portal</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Nunito:wght@400;600;800&display=swap');
+
+        :root {
+            --bg-pastel: #f0f9ff;
+            --container-bg: #ffffff;
+            --text-main: #334155;
+            --primary: #0ea5e9;
+            --primary-light: #e0f2fe;
+            --accent: #3b82f6;
+            --correct: #10b981;
+            --wrong: #ef4444;
+            --border-color: #bae6fd;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: var(--bg-pastel);
+            background-image: radial-gradient(#bae6fd 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background: var(--container-bg);
+            width: 100%;
+            max-width: 950px;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7dd3fc, #38bdf8);
+            padding: 40px 30px;
+            text-align: center;
+            color: white;
+            border-bottom: 4px solid var(--border-color);
+        }
+
+        header h1 {
+            font-family: 'Lora', serif;
+            font-size: 2.8rem;
+            margin: 0;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin: 10px 0 0 0;
+            opacity: 0.95;
+        }
+
+        /* Navigation */
+        .nav-menu {
+            display: flex;
+            background: #f8fafc;
+            border-bottom: 2px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            background: none;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .nav-btn:hover { background: var(--primary-light); color: var(--primary); }
+        .nav-btn.active { background: var(--primary); color: white; }
+
+        .section {
+            padding: 40px;
+            display: none;
+            animation: fadeIn 0.4s;
+        }
+
+        .section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tables & Typography */
+        h2 { font-family: 'Lora', serif; color: var(--accent); font-size: 2rem; border-bottom: 2px solid var(--primary-light); padding-bottom: 10px; }
+        h3 { font-family: 'Lora', serif; color: var(--primary); font-size: 1.5rem; margin-top: 30px; }
+        
+        .grammar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .grammar-table th { background: var(--primary-light); color: var(--accent); padding: 15px; text-align: left; font-family: 'Lora', serif; font-size: 1.2rem; }
+        .grammar-table td { padding: 15px; border-bottom: 1px solid #f1f5f9; font-size: 1.1rem; }
+        .grammar-table tr:last-child td { border-bottom: none; }
+
+        /* Question Formats */
+        .question-block {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .question-text { font-size: 1.2rem; font-weight: 600; margin-bottom: 15px; color: var(--text-main); }
+        
+        /* Error Analysis Underlines */
+        .error-phrase {
+            text-decoration: underline;
+            text-decoration-color: var(--primary);
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
+            padding: 0 4px;
+            font-weight: 700;
+        }
+
+        /* Inputs & Selects */
+        select, input[type="text"] {
+            font-family: 'Nunito', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--accent);
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            outline: none;
+            background: #ffffff;
+            transition: all 0.2s;
+            margin-top: 10px;
+        }
+        
+        .inline-input { margin-top: 0; width: 120px; text-align: center; }
+        .long-input { width: 100%; max-width: 500px; }
+
+        select:focus, input[type="text"]:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.2); }
+
+        .correct { border-color: var(--correct) !important; background-color: #dcfce7 !important; color: #065f46 !important; }
+        .wrong { border-color: var(--wrong) !important; background-color: #fee2e2 !important; color: #991b1b !important; }
+
+        .btn {
+            font-family: 'Nunito', sans-serif; font-size: 1.2rem; font-weight: 800; padding: 12px 30px;
+            border: none; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            background: var(--primary); color: white; box-shadow: 0 4px 0 #0284c7; margin-top: 20px; display: block; width: 100%;
+        }
+        .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #0284c7; }
+
+        .score-display { text-align: center; font-size: 1.5rem; font-weight: 900; color: var(--accent); margin-top: 20px; display: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Review Week</h1>
+            <p>Goodluck, Diora!</p>
+        </header>
+
+        <div class="nav-menu">
+            <button class="nav-btn active" onclick="switchTab('sec-inversions')">1. Inversions</button>
+            <button class="nav-btn" onclick="switchTab('sec-conditionals')">2. Conditionals</button>
+            <button class="nav-btn" onclick="switchTab('sec-relative')">3. Relative Clauses</button>
+            <button class="nav-btn" onclick="switchTab('sec-vocab')">4. Vocabulary</button>
+            <button class="nav-btn" onclick="switchTab('sec-interpreter')">5. Interpreter</button>
+        </div>
+
+        <div id="sec-inversions" class="section active">
+            <h2>Inversions & Possessives</h2>
+            
+            <table class="grammar-table">
+                <tr><th>Negative Adverbial Inversion</th><td>When a sentence starts with a negative or restrictive adverb (Never, Seldom, Rarely, Hardly, Not only), the subject and auxiliary verb are inverted.<br><em>Ex: Not only <strong>did she</strong> win, but she also broke the record.</em></td></tr>
+                <tr><th>Possessives (Double Genitive)</th><td>We use "of + possessive pronoun" or "of + noun's" to specify possession among a larger group.<br><em>Ex: A friend <strong>of mine</strong> (not 'a friend of me'). A colleague <strong>of my father's</strong>.</em></td></tr>
+            </table>
+
+            <h3>Part A: Multiple Choice (8 Questions)</h3>
+            <div id="inv-mcq-container"></div>
+            <button class="btn" onclick="checkAnswers('inv-mcq')">Check Part A</button>
+            <div class="score-display" id="score-inv-mcq"></div>
+
+            <h3>Part B: Error Analysis (12 Questions)</h3>
+            <p style="color: #64748b; font-weight: 600;">Identify the error in the underlined phrases and type the correct version in the box.</p>
+            <div id="inv-error-container"></div>
+            <button class="btn" onclick="checkAnswers('inv-error')">Check Part B</button>
+            <div class="score-display" id="score-inv-error"></div>
+        </div>
+
+        <div id="sec-conditionals" class="section">
+            <h2>Conditional Sentences</h2>
+            
+            <table class="grammar-table">
+                <tr><th>Zero</th><td><strong>If + Present, Present.</strong> (Facts, scientific truths)</td></tr>
+                <tr><th>First</th><td><strong>If + Present, Will + V1.</strong> (Real, possible future situations)</td></tr>
+                <tr><th>Second</th><td><strong>If + Past, Would + V1.</strong> (Unreal, hypothetical present/future)</td></tr>
+                <tr><th>Third</th><td><strong>If + Past Perfect, Would have + V3.</strong> (Unreal past, regrets)</td></tr>
+                <tr><th>Mixed</th><td><strong>If + Past Perfect, Would + V1.</strong> (Past condition with a present result)</td></tr>
+            </table>
+
+            <h3>Transformation Challenge (10 Questions)</h3>
+            <p style="color: #64748b; font-weight: 600;">Read the situation and type the main clause of the conditional sentence.</p>
+            <div id="cond-container"></div>
+            <button class="btn" onclick="checkAnswers('cond')">Check Conditionals</button>
+            <div class="score-display" id="score-cond"></div>
+        </div>
+
+        <div id="sec-relative" class="section">
+            <h2>Relative Clauses</h2>
+            
+            <table class="grammar-table">
+                <tr><th>Who / Whom</th><td>For people. (Who = Subject, Whom = Object)</td></tr>
+                <tr><th>Which / That</th><td>For things or animals. ('That' is only used in defining clauses).</td></tr>
+                <tr><th>Whose</th><td>For possession. (The girl whose bag was stolen...)</td></tr>
+                <tr><th>Where / When</th><td>For places and times.</td></tr>
+            </table>
+
+            <h3>Fill in the Blanks (20 Questions)</h3>
+            <p style="color: #64748b; font-weight: 600;">Type the correct relative pronoun.</p>
+            <div id="rel-container"></div>
+            <button class="btn" onclick="checkAnswers('rel')">Check Relative Clauses</button>
+            <div class="score-display" id="score-rel"></div>
+        </div>
+
+        <div id="sec-vocab" class="section"><h2>Vocabulary</h2><div id="vocab-content"></div></div>
+        <div id="sec-interpreter" class="section"><h2>The Interpreter's Desk</h2><div id="interpreter-content"></div></div>
+    </div>
+
+<script>
+    // Navigation Logic
+    function switchTab(tabId) {
+        document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        document.getElementById(tabId).classList.add('active');
+        event.target.classList.add('active');
+    }
+
+    // Auto-Grading Logic
+    function checkAnswers(groupId) {
+        const inputs = document.querySelectorAll(`[data-group="${groupId}"]`);
+        let correct = 0;
+        inputs.forEach(input => {
+            const studentAns = input.value.trim().toLowerCase().replace(/[.,!]/g, '');
+            const correctAns = input.getAttribute('data-answer').toLowerCase();
+            input.classList.remove('correct', 'wrong');
+            
+            // Allow multiple possible answers separated by |
+            const possibleAnswers = correctAns.split('|');
+            if (possibleAnswers.includes(studentAns) && studentAns !== "") {
+                input.classList.add('correct');
+                correct++;
+            } else {
+                input.classList.add('wrong');
+            }
+        });
+        const scoreDiv = document.getElementById(`score-${groupId}`);
+        scoreDiv.style.display = 'block';
+        scoreDiv.innerHTML = `Score: ${correct} / ${inputs.length}`;
+    }
+
+    // ==============================================
+    // DATA & RENDERING FOR PART 1
+    // ==============================================
+
+    // 1A: Inversion MCQ (8 Questions)
+    const invMcqData = [
+        { q: "Never before ______ such a beautiful sunset.", opts: ["I have seen", "have I seen", "did I saw"], ans: "have I seen" },
+        { q: "Not only ______ the piano, but she also sings beautifully.", opts: ["she plays", "does she play", "she does play"], ans: "does she play" },
+        { q: "Hardly ______ the house when it started to rain.", opts: ["had I left", "I had left", "did I leave"], ans: "had I left" },
+        { q: "I borrowed a car from a friend ______.", opts: ["of me", "of my", "of mine"], ans: "of mine" },
+        { q: "Under no circumstances ______ this button.", opts: ["you should press", "should you press", "you must press"], ans: "should you press" },
+        { q: "We went to a party at a colleague ______.", opts: ["of my father", "of my father's", "of my fathers"], ans: "of my father's" },
+        { q: "No sooner ______ dinner than the phone rang.", opts: ["we had finished", "had we finished", "did we finished"], ans: "had we finished" },
+        { q: "Seldom ______ such incredible talent in someone so young.", opts: ["we see", "do we see", "we do see"], ans: "do we see" }
+    ];
+
+    // 1B: Inversion/Possessives Error Analysis (12 Questions)
+    const invErrorData = [
+        { text: "<span class='error-phrase'>Not only he forgot</span> my birthday, but he also lost my gift.", ans: "Not only did he forget|did he forget" },
+        { text: "Rarely <span class='error-phrase'>she talks</span> about her past experiences.", ans: "does she talk" },
+        { text: "I met a cousin <span class='error-phrase'>of him</span> at the grocery store.", ans: "of his" },
+        { text: "Scarcely <span class='error-phrase'>they had arrived</span> when the meeting started.", ans: "had they arrived" },
+        { text: "In no way <span class='error-phrase'>I am responsible</span> for this mistake.", ans: "am I responsible" },
+        { text: "That idea was actually a suggestion <span class='error-phrase'>of my manager</span>.", ans: "of my manager's" },
+        { text: "Little <span class='error-phrase'>he knew</span> about the surprise party awaiting him.", ans: "did he know" },
+        { text: "Only later <span class='error-phrase'>she realized</span> the true meaning of his words.", ans: "did she realize" },
+        { text: "On no account <span class='error-phrase'>you must leave</span> the doors unlocked.", ans: "must you leave" },
+        { text: "I found an old photograph <span class='error-phrase'>of us</span> in the attic.", ans: "of ours" },
+        { text: "Never <span class='error-phrase'>I have heard</span> such a ridiculous excuse.", ans: "have I heard" },
+        { text: "Hardly <span class='error-phrase'>he had spoken</span> when everyone applauded.", ans: "had he spoken" }
+    ];
+
+    // 2: Conditionals (10 Questions)
+    const condData = [
+        { sit: "Situation: You don't water plants. Result: They die. (Zero Conditional)", prompt: "If you don't water plants,", ans: "they die" },
+        { sit: "Situation: It might rain tomorrow. Result: We will cancel the picnic. (First Conditional)", prompt: "If it rains tomorrow,", ans: "we will cancel the picnic|we'll cancel the picnic" },
+        { sit: "Situation: I don't have a million dollars. I can't buy a mansion. (Second Conditional)", prompt: "If I had a million dollars,", ans: "I would buy a mansion|I'd buy a mansion" },
+        { sit: "Situation: She didn't set her alarm. She missed the bus. (Third Conditional)", prompt: "If she had set her alarm,", ans: "she wouldn't have missed the bus|she would not have missed the bus" },
+        { sit: "Situation: I didn't eat breakfast this morning. I am hungry now. (Mixed Conditional)", prompt: "If I had eaten breakfast this morning,", ans: "I wouldn't be hungry now|I would not be hungry now" },
+        { sit: "Situation: Ice melts. Heat is applied. (Zero Conditional)", prompt: "Ice melts", ans: "if heat is applied|if you apply heat" },
+        { sit: "Situation: You study hard. You pass the exam. (First Conditional)", prompt: "You will pass the exam", ans: "if you study hard" },
+        { sit: "Situation: I am not a bird. I cannot fly. (Second Conditional)", prompt: "If I were a bird,", ans: "I would fly|I could fly|I would be able to fly" },
+        { sit: "Situation: We took the wrong turn. We got lost. (Third Conditional)", prompt: "If we hadn't taken the wrong turn,", ans: "we wouldn't have got lost|we wouldn't have gotten lost|we would not have got lost" },
+        { sit: "Situation: He didn't sleep well last night. He is tired today. (Mixed Conditional)", prompt: "If he had slept well last night,", ans: "he wouldn't be tired today|he would not be tired today" }
+    ];
+
+    // 3: Relative Clauses (20 Questions)
+    const relData = [
+        { q: "The woman ______ lives next door is a doctor.", ans: "who|that" },
+        { q: "I lost the book ______ you lent me.", ans: "which|that" },
+        { q: "The man ______ car was stolen went to the police station.", ans: "whose" },
+        { q: "This is the restaurant ______ we had dinner last night.", ans: "where" },
+        { q: "I remember the day ______ we first met.", ans: "when" },
+        { q: "The student to ______ I gave the pen is absent today.", ans: "whom" },
+        { q: "My laptop, ______ I bought last week, is already broken.", ans: "which" },
+        { q: "Do you know anyone ______ can speak Russian?", ans: "who|that" },
+        { q: "The hotel ______ we stayed was near the beach.", ans: "where" },
+        { q: "The author, ______ latest book is a bestseller, is signing copies.", ans: "whose" },
+        { q: "Winter is the season ______ I feel most productive.", ans: "when" },
+        { q: "The keys ______ are on the table belong to my sister.", ans: "which|that" },
+        { q: "She is the professor ______ everyone admires.", ans: "whom|who|that" },
+        { q: "The building, ______ was built in 1890, is a museum now.", ans: "which" },
+        { q: "I have a friend ______ brother is a famous actor.", ans: "whose" },
+        { q: "That is the park ______ I learned to ride a bike.", ans: "where" },
+        { q: "1999 was the year ______ my brother was born.", ans: "when" },
+        { q: "The cake ______ she baked was delicious.", ans: "which|that" },
+        { q: "The colleague with ______ I share an office is very quiet.", ans: "whom" },
+        { q: "Anyone ______ wants to participate must sign up.", ans: "who|that" }
+    ];
+
+    // Rendering Functions
+    function render() {
+        // 1A
+        let invMcqHtml = '';
+        invMcqData.forEach((item, i) => {
+            let opts = item.opts.map(o => `<option value="${o}">${o}</option>`).join('');
+            invMcqHtml += `<div class="question-block"><div class="question-text">${i+1}. ${item.q.replace('______', `<select data-group="inv-mcq" data-answer="${item.ans}"><option value=""></option>${opts}</select>`)}</div></div>`;
+        });
+        document.getElementById('inv-mcq-container').innerHTML = invMcqHtml;
+
+        // 1B
+        let invErrHtml = '';
+        invErrorData.forEach((item, i) => {
+            invErrHtml += `<div class="question-block"><div class="question-text">${i+1}. ${item.text}</div>Correction: <input type="text" class="long-input" data-group="inv-error" data-answer="${item.ans}" placeholder="Type the corrected phrase here..."></div>`;
+        });
+        document.getElementById('inv-error-container').innerHTML = invErrHtml;
+
+        // 2
+        let condHtml = '';
+        condData.forEach((item, i) => {
+            condHtml += `<div class="question-block" style="border-left: 4px solid var(--primary);"><div style="color:var(--primary); font-size: 0.9rem; margin-bottom: 5px;">${item.sit}</div><div class="question-text">${i+1}. ${item.prompt} <input type="text" class="long-input" data-group="cond" data-answer="${item.ans}" placeholder="Finish the sentence..."></div></div>`;
+        });
+        document.getElementById('cond-container').innerHTML = condHtml;
+
+        // 3
+        let relHtml = '<ol style="font-size: 1.2rem; line-height: 2.5; font-weight: 600; color: var(--text-main);">';
+        relData.forEach((item, i) => {
+            relHtml += `<li>${item.q.replace('______', `<input type="text" class="inline-input" data-group="rel" data-answer="${item.ans}">`)}</li>`;
+        });
+        relHtml += '</ol>';
+        document.getElementById('rel-container').innerHTML = relHtml;
+    }
+
+    window.onload = render;
+</script>
+</body>
+</html>
