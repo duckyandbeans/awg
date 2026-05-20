@@ -137,7 +137,6 @@
             text-decoration-color: var(--primary);
             text-decoration-thickness: 2px;
             text-underline-offset: 4px;
-            padding: 0 4px;
             font-weight: 700;
         }
 
@@ -172,6 +171,11 @@
         .btn:active { transform: translateY(4px); box-shadow: 0 0 0 #0284c7; }
 
         .score-display { text-align: center; font-size: 1.5rem; font-weight: 900; color: var(--accent); margin-top: 20px; display: none; }
+        
+        textarea {
+            width: 100%; min-width: 300px; height: 80px; padding: 10px; border-radius: 8px; border: 2px solid #bae6fd; 
+            font-family: 'Nunito', sans-serif; font-size: 1rem; outline: none; resize: vertical; box-sizing: border-box;
+        }
     </style>
 </head>
 <body>
@@ -179,15 +183,15 @@
     <div class="container">
         <header>
             <h1>Review Week</h1>
-            <p>Goodluck, Diora!</p>
+            <p>Diora's Elegant English Mastery</p>
         </header>
 
         <div class="nav-menu">
-            <button class="nav-btn active" onclick="switchTab('sec-inversions')">1. Inversions</button>
-            <button class="nav-btn" onclick="switchTab('sec-conditionals')">2. Conditionals</button>
-            <button class="nav-btn" onclick="switchTab('sec-relative')">3. Relative Clauses</button>
-            <button class="nav-btn" onclick="switchTab('sec-vocab')">4. Vocabulary</button>
-            <button class="nav-btn" onclick="switchTab('sec-interpreter')">5. Interpreter</button>
+            <button class="nav-btn active" onclick="switchTab('sec-inversions', this)">1. Inversions</button>
+            <button class="nav-btn" onclick="switchTab('sec-conditionals', this)">2. Conditionals</button>
+            <button class="nav-btn" onclick="switchTab('sec-relative', this)">3. Relative Clauses</button>
+            <button class="nav-btn" onclick="switchTab('sec-vocab', this)">4. Vocabulary</button>
+            <button class="nav-btn" onclick="switchTab('sec-interpreter', this)">5. Interpreter</button>
         </div>
 
         <div id="sec-inversions" class="section active">
@@ -245,17 +249,25 @@
             <div class="score-display" id="score-rel"></div>
         </div>
 
-        <div id="sec-vocab" class="section"><h2>Vocabulary</h2><div id="vocab-content"></div></div>
-        <div id="sec-interpreter" class="section"><h2>The Interpreter's Desk</h2><div id="interpreter-content"></div></div>
+        <div id="sec-vocab" class="section">
+            <h2>Vocabulary Practice</h2>
+            <p style="color: #64748b; font-weight: 600;">Select the correct word or type the proper word form based on the context.</p>
+            <div id="vocab-content"></div>
+        </div>
+
+        <div id="sec-interpreter" class="section">
+            <h2>The Interpreter's Desk</h2>
+            <div id="interpreter-content"></div>
+        </div>
     </div>
 
 <script>
     // Navigation Logic
-    function switchTab(tabId) {
+    function switchTab(tabId, element) {
         document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        event.target.classList.add('active');
+        element.classList.add('active');
     }
 
     // Auto-Grading Logic
@@ -267,7 +279,6 @@
             const correctAns = input.getAttribute('data-answer').toLowerCase();
             input.classList.remove('correct', 'wrong');
             
-            // Allow multiple possible answers separated by |
             const possibleAnswers = correctAns.split('|');
             if (possibleAnswers.includes(studentAns) && studentAns !== "") {
                 input.classList.add('correct');
@@ -281,11 +292,7 @@
         scoreDiv.innerHTML = `Score: ${correct} / ${inputs.length}`;
     }
 
-    // ==============================================
-    // DATA & RENDERING FOR PART 1
-    // ==============================================
-
-    // 1A: Inversion MCQ (8 Questions)
+    // DATA ARRAYS
     const invMcqData = [
         { q: "Never before ______ such a beautiful sunset.", opts: ["I have seen", "have I seen", "did I saw"], ans: "have I seen" },
         { q: "Not only ______ the piano, but she also sings beautifully.", opts: ["she plays", "does she play", "she does play"], ans: "does she play" },
@@ -297,7 +304,6 @@
         { q: "Seldom ______ such incredible talent in someone so young.", opts: ["we see", "do we see", "we do see"], ans: "do we see" }
     ];
 
-    // 1B: Inversion/Possessives Error Analysis (12 Questions)
     const invErrorData = [
         { text: "<span class='error-phrase'>Not only he forgot</span> my birthday, but he also lost my gift.", ans: "Not only did he forget|did he forget" },
         { text: "Rarely <span class='error-phrase'>she talks</span> about her past experiences.", ans: "does she talk" },
@@ -313,7 +319,6 @@
         { text: "Hardly <span class='error-phrase'>he had spoken</span> when everyone applauded.", ans: "had he spoken" }
     ];
 
-    // 2: Conditionals (10 Questions)
     const condData = [
         { sit: "Situation: You don't water plants. Result: They die. (Zero Conditional)", prompt: "If you don't water plants,", ans: "they die" },
         { sit: "Situation: It might rain tomorrow. Result: We will cancel the picnic. (First Conditional)", prompt: "If it rains tomorrow,", ans: "we will cancel the picnic|we'll cancel the picnic" },
@@ -327,7 +332,6 @@
         { sit: "Situation: He didn't sleep well last night. He is tired today. (Mixed Conditional)", prompt: "If he had slept well last night,", ans: "he wouldn't be tired today|he would not be tired today" }
     ];
 
-    // 3: Relative Clauses (20 Questions)
     const relData = [
         { q: "The woman ______ lives next door is a doctor.", ans: "who|that" },
         { q: "I lost the book ______ you lent me.", ans: "which|that" },
@@ -351,7 +355,63 @@
         { q: "Anyone ______ wants to participate must sign up.", ans: "who|that" }
     ];
 
-    // Rendering Functions
+    const vocabData = [
+        { q: "We left our car in the ______ and walked to the castle.", opts: ["bus station", "car park", "office block"], ans: "car park" },
+        { q: "Many families have left the ______ and moved to the city.", opts: ["flat", "village", "square"], ans: "village" },
+        { q: "I prefer to stay in small ______ away from the city centre.", opts: ["guesthouses", "castles", "banks"], ans: "guesthouses" },
+        { q: "Can you send this parcel when you go to the ______?", opts: ["police station", "post office", "shopping centre"], ans: "post office" },
+        { q: "Moscow has a ______ of over 11.5 million.", opts: ["square", "population", "countryside"], ans: "population" },
+        { q: "Let's go and buy some clothes in the ______.", opts: ["shopping centre", "art gallery", "museum"], ans: "shopping centre" },
+        { q: "They knocked ______ the old guesthouse to build a block of flats.", opts: ["out", "down", "off"], ans: "down" },
+        { q: "You can't turn left here. It's a ______ street.", opts: ["one-way", "narrow", "central"], ans: "one-way" },
+        { q: "Sandra was in a ______ because she was late for school.", opts: ["hurry", "doubt", "tendency"], ans: "hurry" },
+        { q: "The weather was very cold and ______. We couldn't see anything outside!", opts: ["foggy", "icy", "huge"], ans: "foggy" },
+        { q: "I need to ______ these trousers to see if they fit.", opts: ["put on", "try on", "take off"], ans: "try on" },
+        { q: "That style of dress has really ______ on with teenagers recently.", opts: ["caught", "taken", "drawn"], ans: "caught" },
+        { q: "The company decided to do ______ with the old uniform.", opts: ["up", "out", "away"], ans: "away" },
+        { q: "She loves to ______ up in fancy clothes for parties.", opts: ["dress", "show", "wear"], ans: "dress" },
+        { q: "My older sister always ______ down her old clothes to me.", opts: ["hands", "tears", "pops"], ans: "hands" },
+        { q: "You should follow her ______, she has great taste in clothes.", opts: ["trend", "example", "fashion"], ans: "example" },
+        { q: "It takes her an hour to put on her ______ before she goes out.", opts: ["make-up", "style", "pattern"], ans: "make-up" },
+        { q: "The new advertising campaign was very ______ (ATTRACT).", type: "fill", ans: "attractive" },
+        { q: "I was extremely ______ (ANXIETY) before the big fashion show.", type: "fill", ans: "anxious" },
+        { q: "It is important to make a firm ______ (DECIDE) about the design.", type: "fill", ans: "decision" },
+        { q: "My boss refused to give me a ______ in my salary.", opts: ["promotion", "pension", "raise"], ans: "raise" },
+        { q: "He decided to ______ out of the agreement at the last minute.", opts: ["back", "see", "set"], ans: "back" },
+        { q: "The company had to ______ down due to financial problems.", opts: ["close", "slow", "turn"], ans: "close" },
+        { q: "I need someone to stand ______ for me while I am on holiday.", opts: ["in", "by", "up"], ans: "in" },
+        { q: "They decided to ______ over the smaller competing firm.", opts: ["take", "bring", "set"], ans: "take" },
+        { q: "We finally reached an ______ about the new business arrangement.", opts: ["experience", "agreement", "interest"], ans: "agreement" },
+        { q: "I am writing to make a formal ______ about the terrible service.", opts: ["complaint", "duty", "effort"], ans: "complaint" },
+        { q: "She has applied ______ a job in the marketing department.", type: "fill", ans: "for" },
+        { q: "He is highly ______ (EXPERIENCE) in software development.", type: "fill", ans: "experienced" },
+        { q: "The manager praised his ______ (DEDICATE) to the company.", type: "fill", ans: "dedication" }
+    ];
+
+    const interpreterData = [
+        { speaker: "Therapist", text: "Hello! Thank you for joining the session today. How have you been feeling lately?", ans: "Halo! Terima kasih sudah bergabung di sesi hari ini. Bagaimana perasaan Anda akhir-akhir ini?" },
+        { speaker: "Patient", text: "Sejujurnya, saya merasa sangat terbebani akhir-akhir ini. Beban kerja saya tidak terkendali.", ans: "Honestly, I have been feeling very overwhelmed lately. My workload is unmanageable." },
+        { speaker: "Therapist", text: "I understand. It sounds like burnout is starting to set in. Are you having trouble sleeping?", ans: "Saya mengerti. Sepertinya kelelahan mental mulai terjadi. Apakah Anda mengalami kesulitan tidur?" },
+        { speaker: "Patient", text: "Ya, saya sering terbangun di tengah malam dan pikiran saya terus berpacu memikirkan tenggat waktu.", ans: "Yes, I often wake up in the middle of the night and my mind keeps racing thinking about deadlines." },
+        { speaker: "Therapist", text: "Racing thoughts are very common with anxiety. Let's try some grounding exercises to calm your nervous system.", ans: "Pikiran yang berpacu sangat umum terjadi pada kecemasan. Mari kita coba beberapa latihan grounding untuk menenangkan sistem saraf Anda." },
+        { speaker: "Patient", text: "Saya pernah mencoba meditasi sebelumnya, tapi saya sulit untuk fokus lebih dari lima menit.", ans: "I have tried meditation before, but I find it hard to focus for more than five minutes." },
+        { speaker: "Therapist", text: "That is completely normal. Meditation takes practice. Have you tried setting clear boundaries at work instead?", ans: "Itu benar-benar normal. Meditasi membutuhkan latihan. Apakah Anda sudah mencoba menetapkan batasan yang jelas di tempat kerja sebagai gantinya?" },
+        { speaker: "Patient", text: "Sulit bagi saya untuk mengatakan 'tidak' kepada atasan saya karena saya takut dianggap tidak kompeten.", ans: "It is hard for me to say 'no' to my boss because I am afraid of being considered incompetent." },
+        { speaker: "Therapist", text: "Saying 'no' actually shows strong self-awareness. You must prioritize your well-being over excessive productivity.", ans: "Mengatakan 'tidak' sebenarnya menunjukkan kesadaran diri yang kuat. Anda harus memprioritaskan kesejahteraan Anda di atas produktivitas yang berlebihan." },
+        { speaker: "Patient", text: "Itu masuk akal. Saya kira saya perlu belajar bagaimana berkomunikasi dengan lebih tegas.", ans: "That makes sense. I guess I need to learn how to communicate more assertively." },
+        { speaker: "Therapist", text: "Exactly! Assertive communication is a skill we can develop together over the next few sessions.", ans: "Tepat sekali! Komunikasi asertif adalah keterampilan yang dapat kita kembangkan bersama selama beberapa sesi ke depan." },
+        { speaker: "Patient", text: "Saya juga merasa bersalah jika saya beristirahat di akhir pekan. Saya merasa seperti saya membuang-buang waktu.", ans: "I also feel guilty if I rest on the weekends. I feel like I am wasting time." },
+        { speaker: "Therapist", text: "Rest is not a waste of time; it is a biological necessity. You cannot pour from an empty cup.", ans: "Istirahat bukanlah membuang-buang waktu; itu adalah kebutuhan biologis. Anda tidak bisa menuangkan dari cangkir yang kosong." },
+        { speaker: "Patient", text: "Saya belum pernah memikirkannya seperti itu. Saya selalu didorong untuk bekerja sekeras mungkin.", ans: "I have never thought about it like that. I have always been pushed to work as hard as possible." },
+        { speaker: "Therapist", text: "It is a tough habit to break. Let's make a tiny goal for this week: no checking emails after 7 PM.", ans: "Itu adalah kebiasaan yang sulit untuk dihentikan. Mari kita buat tujuan kecil untuk minggu ini: tidak memeriksa email setelah jam 7 malam." },
+        { speaker: "Patient", text: "Itu terdengar agak menakutkan, tapi saya akan berusaha sebaik mungkin untuk mencobanya.", ans: "That sounds a bit scary, but I will try my best to do it." },
+        { speaker: "Therapist", text: "I am proud of your willingness to try. Disconnecting is the first step to recovery.", ans: "Saya bangga dengan kemauan Anda untuk mencoba. Memutuskan hubungan adalah langkah pertama menuju pemulihan." },
+        { speaker: "Patient", text: "Terima kasih banyak atas pengertian Anda. Saya merasa sedikit lega setelah membicarakan hal ini.", ans: "Thank you so much for your understanding. I feel a little relieved after talking about this." },
+        { speaker: "Therapist", text: "You are very welcome. Remember to be gentle with yourself. We will meet again next week at the same time.", ans: "Sama-sama. Ingatlah untuk bersikap lembut pada diri sendiri. Kita akan bertemu lagi minggu depan di waktu yang sama." },
+        { speaker: "Patient", text: "Baiklah. Sampai jumpa minggu depan. Semoga hari Anda menyenangkan!", ans: "Alright. See you next week. Have a great day!" }
+    ];
+
+    // RENDERING
     function render() {
         // 1A
         let invMcqHtml = '';
@@ -382,6 +442,56 @@
         });
         relHtml += '</ol>';
         document.getElementById('rel-container').innerHTML = relHtml;
+
+        // 4 Vocab
+        let vocabHtml = '';
+        vocabData.forEach((item, i) => {
+            if (item.type === "fill") {
+                vocabHtml += `<div class="question-block"><div class="question-text">${i+1}. ${item.q.replace('______', `<input type="text" class="inline-input" data-group="vocab" data-answer="${item.ans}">`)}</div></div>`;
+            } else {
+                let opts = item.opts.sort(() => Math.random() - 0.5).map(o => `<option value="${o}">${o}</option>`).join('');
+                vocabHtml += `<div class="question-block"><div class="question-text">${i+1}. ${item.q.replace('______', `<select data-group="vocab" data-answer="${item.ans}"><option value=""></option>${opts}</select>`)}</div></div>`;
+            }
+        });
+        vocabHtml += `<button class="btn" onclick="checkAnswers('vocab')">Check Vocabulary</button><div class="score-display" id="score-vocab"></div>`;
+        document.getElementById('vocab-content').innerHTML = vocabHtml;
+
+        // 5 Interpreter
+        let intHtml = `
+        <div style="background: #eef2ff; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 2px solid #c7d2fe;">
+            <p style="margin:0; font-weight: 700; color: #3730a3;">🎬 Roleplay Scenario: You are the live interpreter for a Zoom therapy session between a US Therapist (English) and an Indonesian Patient (Indonesian). Translate their sentences accurately to keep the session flowing smoothly!</p>
+        </div>`;
+        
+        interpreterData.forEach((item, i) => {
+            const isTherapist = item.speaker === "Therapist";
+            const bubbleColor = isTherapist ? "#f0f9ff" : "#fdf4ff";
+            const borderColor = isTherapist ? "#bae6fd" : "#fbcfe8";
+            const textColor = isTherapist ? "#0369a1" : "#be185d";
+            const align = isTherapist ? "left" : "right";
+            
+            intHtml += `
+            <div style="margin-bottom: 25px; text-align: ${align};">
+                <div style="display: inline-block; text-align: left; max-width: 80%; background: ${bubbleColor}; border: 2px solid ${borderColor}; padding: 15px 25px; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                    <div style="font-family: 'Lora', serif; font-weight: 900; color: ${textColor}; margin-bottom: 8px;">${item.speaker} says:</div>
+                    <div style="font-size: 1.15rem; font-weight: 600; color: var(--text-main); margin-bottom: 12px;">"${item.text}"</div>
+                    <div style="font-size: 0.9rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; margin-bottom: 5px;">Your Translation:</div>
+                    <textarea data-group="interpreter"></textarea>
+                    
+                    <div class="answer-key" style="display: none; margin-top: 15px; padding-top: 15px; border-top: 2px dashed ${borderColor};">
+                        <div style="font-size: 0.9rem; font-weight: 800; color: #10b981; text-transform: uppercase;">Correct Translation:</div>
+                        <div style="font-weight: 700; color: #065f46;">${item.ans}</div>
+                    </div>
+                </div>
+            </div>`;
+        });
+        
+        intHtml += `<button class="btn" onclick="revealInterpreter()">Finish & Reveal Answers 📝</button>`;
+        document.getElementById('interpreter-content').innerHTML = intHtml;
+    }
+
+    function revealInterpreter() {
+        const keys = document.querySelectorAll('.answer-key');
+        keys.forEach(key => key.style.display = 'block');
     }
 
     window.onload = render;
