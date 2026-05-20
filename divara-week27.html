@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Grammar Workbook - Units 28 & 29</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+        :root {
+            --bg-color: #fdf4ff;
+            --container-bg: #ffffff;
+            --primary-pink: #f472b6;
+            --light-pink: #fce7f3;
+            --border-pink: #fbcfe8;
+            --primary-purple: #a855f7;
+            --light-purple: #f3e8ff;
+            --border-purple: #e9d5ff;
+            --primary-blue: #3b82f6;
+            --light-blue: #eff6ff;
+            --border-blue: #bfdbfe;
+            --primary-green: #10b981;
+            --light-green: #ecfdf5;
+            --border-green: #a7f3d0;
+            --text-main: #4b5563;
+            --text-heading: #db2777;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Nunito', sans-serif;
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: var(--container-bg);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 15px 30px rgba(244, 114, 182, 0.15);
+            border: 5px solid var(--border-pink);
+        }
+
+        h1, h2, h3 {
+            color: var(--text-heading);
+            font-weight: 800;
+        }
+
+        .unit-header {
+            display: flex;
+            align-items: center;
+            background: var(--light-pink);
+            padding: 15px 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            border-left: 10px solid var(--primary-pink);
+        }
+
+        .unit-badge {
+            background: var(--primary-pink);
+            color: white;
+            padding: 5px 20px;
+            border-radius: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-right: 20px;
+            box-shadow: 0 4px 6px rgba(244, 114, 182, 0.3);
+        }
+
+        .unit-title {
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .section-title {
+            display: inline-block;
+            background: var(--light-purple);
+            color: var(--primary-purple);
+            padding: 5px 20px;
+            border-radius: 20px;
+            border: 2px solid var(--border-purple);
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        /* Interactive Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            font-size: 0.95rem;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 2px solid var(--border-pink);
+            text-align: left;
+            vertical-align: top;
+            position: relative; /* Needed for the door absolute positioning */
+        }
+
+        th {
+            background-color: var(--light-pink);
+            color: var(--text-heading);
+        }
+
+        td {
+            background-color: #fff;
+        }
+
+        .vertical-header {
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+            text-align: center;
+            background-color: var(--primary-pink);
+            color: white;
+            font-weight: bold;
+            padding: 10px;
+            width: 30px;
+        }
+
+        /* Interactive Door Logic */
+        .content-cell {
+            position: relative;
+            cursor: pointer;
+            overflow: hidden; /* Keeps the door animation clean inside the cell */
+            padding: 12px 15px;
+        }
+
+        .door {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--primary-pink);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            z-index: 10;
+            transition: transform 0.4s ease-in-out;
+            transform-origin: left; /* Opens like a door from the left hinge */
+        }
+
+        .door-purple {
+            background-color: var(--primary-purple);
+        }
+        
+        .door-blue {
+             background-color: var(--primary-blue);
+        }
+
+        .door.open {
+            transform: scaleX(0);
+        }
+
+        .hidden-text {
+            position: relative;
+            z-index: 1; /* Ensures text stays behind the door */
+        }
+
+        /* Hint Boxes */
+        .hint-box {
+            background: var(--light-blue);
+            border: 2px solid var(--border-blue);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            box-shadow: 3px 3px 0px rgba(59, 130, 246, 0.1);
+        }
+
+        .hint-box.warning {
+            background: #fffbeb;
+            border-color: #fcd34d;
+            box-shadow: 3px 3px 0px rgba(245, 158, 11, 0.1);
+        }
+
+        .hint-box h4 {
+            color: var(--primary-blue);
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+        }
+
+        .hint-box.warning h4 {
+            color: #d97706;
+        }
+
+        .hint-box ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .hint-box li {
+            margin-bottom: 5px;
+        }
+
+        /* Exercises */
+        .exercise-block {
+            margin-bottom: 40px;
+            padding: 25px;
+            border-radius: 20px;
+            background: #fafaf9;
+            border: 2px dashed #d1d5db;
+        }
+
+        .exercise-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .exercise-letter {
+            background: var(--primary-purple);
+            color: white;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 6px rgba(168, 85, 247, 0.3);
+        }
+
+        .word-bank {
+            background: var(--light-green);
+            border: 2px dashed var(--primary-green);
+            padding: 15px;
+            border-radius: 15px;
+            text-align: center;
+            color: var(--primary-green);
+            font-weight: 700;
+            margin-bottom: 20px;
+            word-spacing: 15px;
+        }
+
+        ol {
+            padding-left: 25px;
+            margin: 0;
+        }
+
+        li {
+            margin-bottom: 15px;
+        }
+
+        /* Inputs & Selects */
+        input[type="text"] {
+            border: none;
+            border-bottom: 3px dashed var(--primary-pink);
+            background: transparent;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1rem;
+            color: var(--primary-purple);
+            font-weight: bold;
+            padding: 5px 10px;
+            text-align: center;
+            transition: all 0.3s ease;
+            width: 150px;
+        }
+
+        input[type="text"].full-width {
+            width: 85%;
+            text-align: left;
+            margin-top: 5px;
+        }
+        
+        input[type="text"].medium-width {
+            width: 250px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-bottom-style: solid;
+            background: var(--light-pink);
+            border-radius: 10px 10px 0 0;
+        }
+
+        select {
+            appearance: none;
+            background-color: var(--light-blue);
+            border: 2px solid var(--primary-blue);
+            border-radius: 12px;
+            padding: 5px 15px;
+            font-family: 'Nunito', sans-serif;
+            font-weight: bold;
+            color: var(--primary-blue);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        select:hover, select:focus {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .options-list {
+            display: flex;
+            gap: 20px;
+            margin-top: 5px;
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+        .reading-text {
+            background: #fff;
+            padding: 25px;
+            border-radius: 15px;
+            border: 1px solid #e5e7eb;
+            line-height: 2.2;
+            margin-bottom: 20px;
+        }
+
+        .transformation-item {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .transformation-text {
+            flex-grow: 1;
+        }
+
+        .capital-word {
+            font-weight: bold;
+            color: var(--primary-purple);
+            background: var(--light-purple);
+            padding: 3px 10px;
+            border-radius: 8px;
+            margin-left: 15px;
+        }
+
+        .two-cols {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .divider {
+            height: 4px;
+            background: var(--border-pink);
+            margin: 40px 0;
+            border-radius: 2px;
+        }
+
+        /* --- Mini Game Styles --- */
+        .minigame-container {
+            background-color: var(--light-pink);
+            border: 4px solid var(--primary-pink);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 350px;
+        }
+
+        .minigame-header {
+            color: var(--text-heading);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .question-display {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--primary-purple);
+            margin-bottom: 30px;
+            min-height: 60px; /* Prevent jumping */
+        }
+
+        .game-area {
+            position: relative;
+            height: 200px;
+            border: 2px dashed var(--border-pink);
+            border-radius: 10px;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+
+        .start-btn {
+            background-color: var(--primary-purple);
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(168, 85, 247, 0.4);
+            transition: transform 0.2s;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 20;
+        }
+
+        .start-btn:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .bubble-btn {
+            position: absolute;
+            background-color: var(--primary-blue);
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(59, 130, 246, 0.3);
+            transition: background-color 0.2s;
+            display: none; /* Hidden until game starts */
+            z-index: 10;
+        }
+
+        .bubble-btn:hover {
+            background-color: #2563eb;
+        }
+
+        .feedback-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 30;
+            pointer-events: none; 
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    
+    <div class="unit-header">
+        <div class="unit-badge">Unit 28</div>
+        <h1 class="unit-title">Grammar: Adverbs</h1>
+    </div>
+
+    <h2 class="section-title">Theory: Adverbs</h2>
+    <p>Most adverbs are formed from adjectives by adding the suffix <b>-ly</b>.</p>
+    
+    <table>
+        <tr>
+            <td rowspan="5" class="vertical-header">Form</td>
+            <th>Adjective</th>
+            <th>Adverb formed by rule <span style="font-size: 0.8em; font-weight: normal;">(Click to reveal)</span></th>
+        </tr>
+        <tr>
+            <td>slow</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">slow<b>ly</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>simple</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">simp<b>ly</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>careful</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">careful<b>ly</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>happy</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">happi<b>ly</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="6" class="vertical-header" style="background-color: var(--primary-purple);">Exceptions</td>
+            <th>Adjective</th>
+            <th>Adverb (exception) <span style="font-size: 0.8em; font-weight: normal;">(Click to reveal)</span></th>
+        </tr>
+        <tr>
+            <td>good</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text"><b>well</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>hard</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text"><b>hard</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>fast</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text"><b>fast</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>late</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text"><b>late</b></span>
+            </td>
+        </tr>
+        <tr>
+            <td>early</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text"><b>early</b></span>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th>Adverb Usage</th>
+            <th>Examples</th>
+        </tr>
+        <tr>
+            <td><b>Expresses a characteristic or evaluates an action</b><br>(can be placed before or after the verb)</td>
+            <td>
+                <i>They <b>slowly</b> walked along the beach.<br>They walked <b>slowly</b> along the beach.<br>They walked along the beach <b>slowly</b>.</i>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Indicates the time of an action</b><br>(usually placed at the beginning or end of a sentence)</td>
+             <td>
+                <i>We'll arrive at the hotel <b>soon</b>.<br>We'll <b>soon</b> arrive at the hotel.<br><b>Soon</b> we'll arrive at the hotel.</i>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Shows how often an action occurs</b><br>(can be placed before or after the verb)</td>
+            <td>
+                <i>She <b>rarely</b> travels by train.<br>She travels by train <b>rarely</b>.</i>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Indicates the degree or extent of something</b><br>(usually placed before the word it defines)</td>
+            <td>
+                <i>We were <b>really</b> tired by the end of the journey.<br>She drives <b>very</b> fast!</i>
+            </td>
+        </tr>
+    </table>
+
+    <div class="hint-box warning">
+        <h4>⚠️ Watch Out!</h4>
+        <p>The word <b>friendly</b> ends in -ly, but it is an adjective, not an adverb. To make an adverb from this word, we use the phrase <i>in a friendly way</i>. Some adverbs, like <i>fast, hard, early</i>, do not have a single-root adjective.</p>
+    </div>
+
+    <h2 class="section-title">Adverbs: degrees of comparison</h2>
+    <table>
+        <tr>
+            <td rowspan="2" class="vertical-header">Form</td>
+            <th>Positive degree</th>
+            <th>Comparative degree <span style="font-size: 0.8em; font-weight: normal;">(Click to reveal)</span></th>
+            <th>Superlative degree <span style="font-size: 0.8em; font-weight: normal;">(Click to reveal)</span></th>
+        </tr>
+        <tr>
+            <td>loudly</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">more loudly</span>
+            </td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door">Click!</div>
+                <span class="hidden-text">the most loudly</span>
+            </td>
+        </tr>
+        <tr>
+            <td rowspan="6" class="vertical-header" style="background-color: var(--primary-purple);">Exceptions</td>
+            <th>Positive degree</th>
+            <th>Comparative degree</th>
+            <th>Superlative degree</th>
+        </tr>
+        <tr>
+            <td>hard</td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">harder</span>
+            </td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">the hardest</span>
+            </td>
+        </tr>
+        <tr>
+            <td>early</td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">earlier</span>
+            </td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">the earliest</span>
+            </td>
+        </tr>
+        <tr>
+            <td>well</td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">better</span>
+            </td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">the best</span>
+            </td>
+        </tr>
+        <tr>
+            <td>badly</td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">worse</span>
+            </td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">the worst</span>
+            </td>
+        </tr>
+        <tr>
+            <td>far</td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">farther / further</span>
+            </td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-purple">Click!</div>
+                <span class="hidden-text">the farthest / furthest</span>
+            </td>
+        </tr>
+    </table>
+
+    <table>
+        <tr>
+            <th style="width: 30%;"></th>
+            <th style="width: 30%;">Usage</th>
+            <th>Examples</th>
+        </tr>
+        <tr>
+            <td><b>Comparative</b></td>
+            <td>Indicates a greater or lesser degree of manifestation of a characteristic</td>
+            <td>
+                <i>Cars and trains travel <b>more slowly</b> than aeroplanes.</i>
+            </td>
+        </tr>
+        <tr>
+            <td><b>Superlative</b></td>
+            <td>Indicates the greatest or least degree of manifestation of a characteristic</td>
+            <td>
+                <i>Andy drove <b>the fastest</b> of all the racing drivers.</i>
+            </td>
+        </tr>
+    </table>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">A</div>
+            <div>Open the brackets, using the appropriate form of the adverbs.</div>
+        </div>
+        <ol>
+            <li>It rained <input type="text" placeholder="(heavy)"> on the first day of the holiday.</li>
+            <li>It was <input type="text" placeholder="(surprising)"> warm in Paris for the time of year.</li>
+            <li>Please pack your bag <input type="text" placeholder="(careful)"> and don't forget your swimsuit.</li>
+            <li>We must leave <input type="text" placeholder="(early)"> if we're going to get to the airport on time.</li>
+            <li>They said they ate <input type="text" placeholder="(good)"> even at the cheap restaurants in Spain.</li>
+            <li>I <input type="text" placeholder="(strong)"> recommend you buy travel insurance before you leave.</li>
+            <li>She <input type="text" placeholder="(near)"> changed her mind about booking the holiday to India.</li>
+            <li>Tim worked <input type="text" placeholder="(hard)"> on his language skills before he left the country.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">B</div>
+            <div>Open the brackets, using the appropriate form of the adverbs.</div>
+        </div>
+        <div class="reading-text">
+            <h3 style="margin-top:0;">Holiday planning</h3>
+            It's the time of year when everyone is looking for a good holiday deal. Making sure your trip is <b>(1)</b> <input type="text" placeholder="(good)"> planned can make all the difference. Whatever you do, it's <b>(2)</b> <input type="text" placeholder="(definite)"> a good idea to find out as much as possible about the place you want to visit before you go. Check out the information on websites and travel forums. The <b>(3)</b> <input type="text" placeholder="(bad)">-prepared holidays are the ones that end up being a nightmare.<br><br>
+            So where should you go? If you don't have much money, then perhaps camping might suit you. It might not be the same as staying in a hotel where everything is done for you, but it's <b>(4)</b> <input type="text" placeholder="(usual)"> worth it for both the money you save and the wonderful adventure.<br><br>
+            <b>(5)</b> <input type="text" placeholder="(luck)">, package deals are <b>(6)</b> <input type="text" placeholder="(incredible)"> cheap this year. So, if you don't mind a busy holiday resort then why not? <b>(7)</b> <input type="text" placeholder="(final)">, when you get to your destination, make sure that you talk to the locals. They will <b>(8)</b> <input type="text" placeholder="(certain)"> know more than anyone else about the area.
+        </div>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">C</div>
+            <div>Make sentences about yourself. Use the given words and one of the adverbs in the box.</div>
+        </div>
+        <div class="word-bank">
+            always &bull; never &bull; often &bull; rarely &bull; sometimes &bull; usually
+        </div>
+        <ol>
+            <li>get up / in the morning / at ... <br>
+                <input type="text" class="full-width"></li>
+            <li>go to / expensive restaurants / on special occasions <br>
+                <input type="text" class="full-width"></li>
+            <li>see / a film / at the cinema <br>
+                <input type="text" class="full-width"></li>
+            <li>watch TV / in the evenings <br>
+                <input type="text" class="full-width"></li>
+            <li>have dinner / with my family / at the weekends <br>
+                <input type="text" class="full-width"></li>
+            <li>see / my friends / during the week <br>
+                <input type="text" class="full-width"></li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">D</div>
+            <div>Complete the sentences using the words given in brackets.</div>
+        </div>
+        <ol>
+            <li>Caroline unpacked her suitcase. <b>(carefully)</b><br>
+                <input type="text" class="full-width"></li>
+            <li>He goes to the US on business trips. <b>(often)</b><br>
+                <input type="text" class="full-width"></li>
+            <li>I'm sorry you can't come with us on holiday. <b>(really)</b><br>
+                <input type="text" class="full-width"></li>
+            <li>They will apply for their passports. <b>(soon)</b><br>
+                <input type="text" class="full-width"></li>
+            <li>The hotel owner is often rude to his customers. <b>(very)</b><br>
+                <input type="text" class="full-width"></li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">E</div>
+            <div>Fill in the blanks, using the given adverbs in the comparative or superlative degree.</div>
+        </div>
+        <div class="word-bank">
+            badly &bull; carefully &bull; early &bull; far &bull; hard &bull; loudly &bull; quickly &bull; well
+        </div>
+        <ol>
+            <li>It was <input type="text" class="medium-width"> to learn a new language than I realised.</li>
+            <li>The ferry which leaves on Monday travels the <input type="text" class="medium-width"> to the island.</li>
+            <li>I think this tourist company gives a <input type="text" class="medium-width"> deal than the other ones.</li>
+            <li>The coach driver was the <input type="text" class="medium-width"> injured in the crash – he broke his leg.</li>
+            <li>The children talked <input type="text" class="medium-width"> after they had left the museum.</li>
+            <li>What's the <input type="text" class="medium-width"> from home you've ever travelled?</li>
+            <li>I'd advise you to spend your money <input type="text" class="medium-width"> if you want it to last until the end of the holiday.</li>
+            <li>What's the <input type="text" class="medium-width"> we can leave for the coast in the morning?</li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">F</div>
+            <div>Complete each second sentence so that it means the same as the first sentence. Use the words in capital letters.</div>
+        </div>
+        <ol>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    Can he run any faster than that?<br>
+                    Is that <input type="text" class="medium-width"> run?
+                </div>
+                <div class="capital-word">THE</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    It's the first time he has ever been on holiday.<br>
+                    He <input type="text" class="medium-width"> on holiday before.
+                </div>
+                <div class="capital-word">NEVER</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    No one gave answers as intelligent as hers.<br>
+                    She answered <input type="text" class="medium-width"> anyone else.
+                </div>
+                <div class="capital-word">MORE</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    Peter is a good cook.<br>
+                    Peter can cook <input type="text" class="medium-width"> most people.
+                </div>
+                <div class="capital-word">THAN</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    Carol got bad injuries in the accident.<br>
+                    Carol <input type="text" class="medium-width"> in the accident.
+                </div>
+                <div class="capital-word">INJURED</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    He took quiet, soft steps across the room.<br>
+                    He walked <input type="text" class="medium-width"> across the room.
+                </div>
+                <div class="capital-word">SOFTLY</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    Paula is a very energetic dancer when she wants to be.<br>
+                    Paula <input type="text" class="medium-width"> when she wants to.
+                </div>
+                <div class="capital-word">DANCES</div>
+            </li>
+            <li class="transformation-item">
+                <div class="transformation-text">
+                    The prisoners made a clever escape from the police cells.<br>
+                    The prisoners <input type="text" class="medium-width"> from the police cells.
+                </div>
+                <div class="capital-word">ESCAPED</div>
+            </li>
+        </ol>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="minigame-container" id="minigame">
+        <h2 class="minigame-header">🎈 Preposition Pop! 🎈</h2>
+        <p>Tap the moving bubble with the correct preposition! Answer 15 questions quickly!</p>
+        
+        <div class="question-display" id="game-question">Are you ready?</div>
+        
+        <div class="game-area" id="game-area">
+            <button class="start-btn" id="start-btn" onclick="startGame()">Start Game!</button>
+            <button class="bubble-btn" id="btn0" onclick="checkAnswer(0)"></button>
+            <button class="bubble-btn" id="btn1" onclick="checkAnswer(1)"></button>
+            <button class="bubble-btn" id="btn2" onclick="checkAnswer(2)"></button>
+            
+            <div class="feedback-overlay" id="feedback-overlay"></div>
+        </div>
+
+        <div class="score-display">Score: <span id="score-val">0</span> / 15 | Question: <span id="q-num">1</span></div>
+    </div>
+
+
+    <div class="unit-header" style="background: var(--light-blue); border-color: var(--primary-blue);">
+        <div class="unit-badge" style="background: var(--primary-blue);">Unit 29</div>
+        <h1 class="unit-title" style="color: var(--primary-blue);">Grammar: Prepositions of place, movement and time</h1>
+    </div>
+
+    <h2 class="section-title">Theory: Prepositions of place</h2>
+    <table>
+        <tr>
+            <th style="width: 25%;">Prepositions of place</th>
+            <th>Examples <span style="font-size: 0.8em; font-weight: normal;">(Click door to reveal)</span></th>
+        </tr>
+        <tr>
+            <td><b>above / over</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">above the door, over your head</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>at</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">at home, at work, at school, at the airport, at the hospital</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>behind</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">behind the petrol station</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>below / under</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">below the bridge, under the desk</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>in</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">in the car park, in the town centre, in Paris, in Russia, in hospital, in the world, in the bag</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>in front of</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">in front of the hotel</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>inside / outside</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">inside the hotel room, outside the train station</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>near</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">near the harbour</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>next to</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">next to the café</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>on</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">on the bridge, on the road, on the bus</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>opposite</b></td>
+             <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">opposite the reception desk</span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="two-cols">
+        <div class="hint-box warning">
+            <h4>⚠️ Watch out!</h4>
+            <p>In the fixed phrase <i>at home</i>, a possessive pronoun is never used:</p>
+            <ul>
+                <li><i>Jenny is not <b>at home</b> today.</i> (Correct)</li>
+                <li><i><strike>Jenny is not at her home today.</strike></i> (Incorrect)</li>
+            </ul>
+        </div>
+        <div class="hint-box">
+            <h4>💡 Helpful hints</h4>
+            <p>The choice of preposition used with the word <i>hospital</i> depends on what is meant: <i>in hospital</i> (as a patient), <i>at the hospital</i> (as a visitor or employee):</p>
+            <ul>
+                <li><i>Kelly is <b>in hospital</b> with pneumonia.</i></li>
+                <li><i>Philip is <b>at the hospital</b> visiting his mother.</i></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="section-title">Prepositions of movement</h2>
+    <table>
+        <tr>
+            <th style="width: 25%;">Prepositions of movement</th>
+            <th>Examples <span style="font-size: 0.8em; font-weight: normal;">(Click door to reveal)</span></th>
+        </tr>
+        <tr>
+            <td><b>by</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">by car / bike / train / bus etc</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>into</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">(go / walk / etc) into the room, (put something) into a suitcase</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>on</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">on foot</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>out of</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">(go / walk / etc) out of the kitchen, (take something) out of a box</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>to</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">(go / walk / come / etc) to school / work / the cinema / etc</span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="two-cols">
+        <div class="hint-box warning">
+            <h4>⚠️ Watch out!</h4>
+            <p>In fixed phrases like <i>go home</i> and <i>come home</i>, a preposition indicating place/direction or the preposition <i>to</i> is never used:</p>
+            <ul>
+                <li><i>I came <b>home</b> at two o'clock.</i> (Correct)</li>
+                <li><i><strike>I came to my home at two o'clock.</strike></i> (Incorrect)</li>
+                <li><i><strike>I came to home at two o'clock.</strike></i> (Incorrect)</li>
+            </ul>
+        </div>
+        <div class="hint-box">
+            <h4>💡 Helpful hints</h4>
+            <p>The preposition <i>to</i> is usually used with verbs of movement (<i>come, go, move, run, walk, drive</i>, etc.) to indicate movement from one place to another:</p>
+            <ul>
+                <li><i>She drove <b>to</b> Berlin last summer.</i></li>
+                <li><i>I'm walking <b>to</b> school this morning.</i></li>
+            </ul>
+            <p>The preposition <i>in</i> is used to indicate finding an object inside some space:</p>
+            <ul>
+                <li><i>She lives <b>in</b> Berlin.</i></li>
+                <li><i>The travel agent is <b>in</b> Oxford.</i></li>
+            </ul>
+        </div>
+    </div>
+
+    <h2 class="section-title">Prepositions of time</h2>
+    <table>
+        <tr>
+            <th style="width: 25%;">Prepositions of time</th>
+            <th>Examples <span style="font-size: 0.8em; font-weight: normal;">(Click door to reveal)</span></th>
+        </tr>
+        <tr>
+            <td><b>at</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">at three o'clock, at night, at the weekend, at Christmas / Easter</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>during</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">during the week</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>for</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">for three hours, for a day</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>in</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">in five minutes, in May, in the morning / afternoon, in (the) winter / summer, in 2015, in the holidays</span>
+            </td>
+        </tr>
+        <tr>
+            <td><b>on</b></td>
+            <td class="content-cell" onclick="toggleDoor(this)">
+                <div class="door door-blue">Click!</div>
+                <span class="hidden-text">on Monday, on 15th February, on Saturday morning</span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="hint-box warning">
+        <h4>⚠️ Watch out!</h4>
+        <p>The preposition <i>in</i> is used in phrases like <i>in the morning / afternoon / evening</i>.</p>
+        <p>The preposition <i>on</i> is used in phrases like <i>on Tuesday morning / on Saturday evening</i>.</p>
+        <ul>
+            <li><i>Are you going shopping <b>in</b> the morning?</i></li>
+            <li><i>We're going shopping <b>on</b> Saturday afternoon.</i></li>
+        </ul>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">A</div>
+            <div>Fill in the blanks using the words given in the box.</div>
+        </div>
+        <div class="word-bank" style="background: var(--light-blue); border-color: var(--primary-blue); color: var(--primary-blue);">
+            at (x2) &bull; in &bull; inside &bull; next &bull; on &bull; opposite &bull; under
+        </div>
+        <ol>
+            <li>I'll meet you <input type="text"> the bus stop.</li>
+            <li>Tina has lived <input type="text"> Paris since 2005.</li>
+            <li>Josie is standing <input type="text"> to Thomas in the photograph.</li>
+            <li>I'm catching the train <input type="text"> five o'clock.</li>
+            <li>Pete was <input type="text"> the train when I phoned him.</li>
+            <li>I put your bag <input type="text"> the table because there was no room for it on top.</li>
+            <li>The bank is on the other side of the road; almost exactly <input type="text"> the cinema.</li>
+            <li>It's raining, so don't wait for me. I'll meet you <input type="text"> the museum.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">B</div>
+            <div>Circle the correct answer.</div>
+        </div>
+        <ol>
+            <li>Are you going <select><option value=""></option><option value="by">by</option><option value="on">on</option></select> bus or train?</li>
+            <li>He flew <select><option value=""></option><option value="in">in</option><option value="to">to</option></select> Turkey last summer.</li>
+            <li>The bell rang and the students went <select><option value=""></option><option value="into">into</option><option value="in">in</option></select> their classrooms.</li>
+            <li>She went all the way from London to Dover <select><option value=""></option><option value="by">by</option><option value="on">on</option></select> foot.</li>
+            <li>She took the guitar <select><option value=""></option><option value="by">by</option><option value="out of">out of</option></select> its case and began to play.</li>
+            <li>Are you meeting her <select><option value=""></option><option value="in">in</option><option value="into">into</option></select> the café or outside?</li>
+            <li>She walks <select><option value=""></option><option value="to">to</option><option value="into">into</option></select> school every morning and her mum picks her up after lessons.</li>
+            <li>The sign <select><option value=""></option><option value="into">into</option><option value="above">above</option></select> the door says that this is a private club.</li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">C</div>
+            <div>Choose the correct option.</div>
+        </div>
+        <div class="two-cols">
+            <ol>
+                <li>I'll meet you outside the cinema <input type="text"> seven o'clock.
+                    <div class="options-list"><b>A</b> on &nbsp;&nbsp; <b>B</b> at &nbsp;&nbsp; <b>C</b> in</div>
+                </li>
+                <li>She was born <input type="text"> 2001.
+                    <div class="options-list"><b>A</b> on &nbsp;&nbsp; <b>B</b> in &nbsp;&nbsp; <b>C</b> at</div>
+                </li>
+                <li>Her birthday is <input type="text"> the 25th January.
+                    <div class="options-list"><b>A</b> at &nbsp;&nbsp; <b>B</b> in &nbsp;&nbsp; <b>C</b> on</div>
+                </li>
+                <li>Our plane leaves at three o'clock <input type="text"> the morning!
+                    <div class="options-list"><b>A</b> in &nbsp;&nbsp; <b>B</b> to &nbsp;&nbsp; <b>C</b> on</div>
+                </li>
+            </ol>
+            <ol start="5">
+                <li>My friend Jake didn't stop talking <input type="text"> the film.
+                    <div class="options-list"><b>A</b> in &nbsp;&nbsp; <b>B</b> at &nbsp;&nbsp; <b>C</b> during</div>
+                </li>
+                <li><input type="text"> February we're going skiing for two weeks.
+                    <div class="options-list"><b>A</b> On &nbsp;&nbsp; <b>B</b> During &nbsp;&nbsp; <b>C</b> In</div>
+                </li>
+                <li>Did you do anything interesting <input type="text"> the weekend?
+                    <div class="options-list"><b>A</b> on &nbsp;&nbsp; <b>B</b> at &nbsp;&nbsp; <b>C</b> in</div>
+                </li>
+                <li>I walked <input type="text"> more than an hour in the rain to get home.
+                    <div class="options-list"><b>A</b> for &nbsp;&nbsp; <b>B</b> during &nbsp;&nbsp; <b>C</b> in</div>
+                </li>
+            </ol>
+        </div>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">D</div>
+            <div>The highlighted prepositions are used incorrectly. Write the correct variant.</div>
+        </div>
+        <ol>
+            <li>Toby ran across the school yard and <b>at</b> the gymnasium. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">I'm not going to school. I'm staying <b>in</b> home today. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">Everyone was silent <b>in</b> the headmaster's speech. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">My sister has been <b>at</b> hospital for a week. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">I'm going <b>in</b> Switzerland for my holidays. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">You can't see it because it's <b>into</b> the bed. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">I never take the bus, I go everywhere <b>with</b> car. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">The shop you want is <b>at</b> the town centre. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">I'm only going to London <b>during</b> three days. <input type="text" style="float: right;"></li>
+            <li style="clear: both; padding-top: 5px;">We had a good time <b>in</b> the music festival. <input type="text" style="float: right;"></li>
+        </ol>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">E</div>
+            <div>Fill in the missing words.</div>
+        </div>
+        <div class="reading-text">
+            <h3 style="margin-top:0;">Marco Polo</h3>
+            Marco Polo is one of the most famous travellers of all time. He was born <b>(1)</b> <input type="text"> September 15th <b>(2)</b> <input type="text"> the year 1254 to a rich merchant family <b>(3)</b> <input type="text"> Venice. <b>(4)</b> <input type="text"> most of his childhood his father was away, so he stayed <b>(5)</b> <input type="text"> an aunt's house. He saw his father <b>(6)</b> <input type="text"> the first time <b>(7)</b> <input type="text"> the age of about fifteen. A year later he and his father and uncle left Venice to see the emperor Kublai Khan. First they sailed <b>(8)</b> <input type="text"> the port of Acre. Then they rode <b>(9)</b> <input type="text"> camels to the port of Hormuz, but the ships were no good there, so they travelled overland from Persia <b>(10)</b> <input type="text"> China. Sometime <b>(11)</b> <input type="text"> their journey Marco fell ill in Afghanistan and this slowed them down, but they finally arrived at the palace of Kublai Khan. Marco stayed there <b>(12)</b> <input type="text"> seventeen years, before returning home and writing about his adventures.
+        </div>
+    </div>
+
+    <div class="exercise-block">
+        <div class="exercise-header">
+            <div class="exercise-letter">F</div>
+            <div>Circle the correct answer.</div>
+        </div>
+        <ol>
+            <li>Next year <select><option value=""></option><option value="at">at</option><option value="in">in</option></select> the summer I'm going to America.</li>
+            <li>Sue's <select><option value=""></option><option value="in">in</option><option value="at">at</option></select> the hospital visiting her mother.</li>
+            <li>The theatre is <select><option value=""></option><option value="near">near</option><option value="outside">outside</option></select> the town hall.</li>
+            <li>I waited for you <select><option value=""></option><option value="for">for</option><option value="during">during</option></select> more than an hour.</li>
+            <li>Kate is hiding <select><option value=""></option><option value="inside">inside</option><option value="behind">behind</option></select> the curtain. I can see her feet.</li>
+            <li><select><option value=""></option><option value="In">In</option><option value="On">On</option></select> the first day of term we don't do much work.</li>
+            <li>I came <select><option value=""></option><option value="-">-</option><option value="to">to</option></select> home at two o'clock.</li>
+            <li>Are you going shopping <select><option value=""></option><option value="in">in</option><option value="on">on</option></select> Saturday morning?</li>
+            <li>He was born <select><option value=""></option><option value="on">on</option><option value="in">in</option></select> 15th February.</li>
+        </ol>
+    </div>
+
+</div>
+
+<script>
+    // --- Interactive Door Logic ---
+    function toggleDoor(cell) {
+        const door = cell.querySelector('.door');
+        if (door) {
+            door.classList.toggle('open');
+        }
+    }
+
+    // --- Mini Game Logic ---
+    const questions = [
+        { q: "Which preposition do we use to talk about being inside a building?", a: "in", opts: ["in", "on", "at"] },
+        { q: "Which preposition do we use for days of the week?", a: "on", opts: ["in", "on", "at"] },
+        { q: "Which preposition means 'directly below'?", a: "under", opts: ["under", "over", "next to"] },
+        { q: "Which preposition do we use for specific times (like 3 o'clock)?", a: "at", opts: ["in", "on", "at"] },
+        { q: "Which preposition shows movement towards the inside of something?", a: "into", opts: ["into", "out of", "onto"] },
+        { q: "Which preposition means 'facing someone or something'?", a: "opposite", opts: ["opposite", "behind", "near"] },
+        { q: "Which preposition do we use for 'the weekend'?", a: "at", opts: ["at", "in", "on"] },
+        { q: "Which preposition shows movement away from the inside of something?", a: "out of", opts: ["out of", "into", "by"] },
+        { q: "Which preposition means 'directly higher than'?", a: "above", opts: ["above", "below", "near"] },
+        { q: "Which preposition do we use with transportation like 'bus' or 'train'?", a: "by", opts: ["by", "in", "on"] },
+        { q: "Which preposition means 'close to'?", a: "near", opts: ["near", "far", "under"] },
+        { q: "Which preposition means 'at the back of'?", a: "behind", opts: ["behind", "in front of", "next to"] },
+        { q: "Which preposition do we use for months (like May)?", a: "in", opts: ["in", "on", "at"] },
+        { q: "Which preposition means 'beside' or 'right beside'?", a: "next to", opts: ["next to", "under", "over"] },
+        { q: "Which preposition do we use for 'night'?", a: "at", opts: ["at", "in", "on"] }
+    ];
+
+    let currentQ = 0;
+    let score = 0;
+    let animationInterval;
+    
+    // REDUCED dx/dy values for slower movement
+    let buttonPositions = [
+        { x: 10, y: 10, dx: 0.3, dy: 0.3 },
+        { x: 50, y: 50, dx: -0.4, dy: 0.5 },
+        { x: 80, y: 20, dx: 0.5, dy: -0.3 }
+    ];
+    
+    const gameArea = document.getElementById('game-area');
+    const qDisplay = document.getElementById('game-question');
+    const startBtn = document.getElementById('start-btn');
+    const scoreVal = document.getElementById('score-val');
+    const qNum = document.getElementById('q-num');
+    const feedbackOverlay = document.getElementById('feedback-overlay');
+    const btns = [document.getElementById('btn0'), document.getElementById('btn1'), document.getElementById('btn2')];
+
+    function startGame() {
+        startBtn.style.display = 'none';
+        currentQ = 0;
+        score = 0;
+        scoreVal.innerText = score;
+        btns.forEach(btn => btn.style.display = 'block');
+        loadQuestion();
+        startAnimation();
+    }
+
+    function loadQuestion() {
+        if (currentQ >= questions.length) {
+            endGame();
+            return;
+        }
+
+        qNum.innerText = currentQ + 1;
+        const qData = questions[currentQ];
+        qDisplay.innerText = qData.q;
+
+        // Shuffle options
+        let shuffledOpts = [...qData.opts].sort(() => Math.random() - 0.5);
+
+        btns.forEach((btn, index) => {
+            btn.innerText = shuffledOpts[index];
+            // Randomize starting positions slightly
+            buttonPositions[index].x = Math.random() * 70;
+            buttonPositions[index].y = Math.random() * 70;
+        });
+    }
+
+    function moveButtons() {
+        btns.forEach((btn, i) => {
+            let pos = buttonPositions[i];
+            pos.x += pos.dx;
+            pos.y += pos.dy;
+
+            // Bounce off edges
+            if (pos.x <= 0 || pos.x >= 85) pos.dx *= -1; 
+            if (pos.y <= 0 || pos.y >= 75) pos.dy *= -1;
+
+            btn.style.left = pos.x + '%';
+            btn.style.top = pos.y + '%';
+        });
+    }
+
+    function startAnimation() {
+        clearInterval(animationInterval);
+        // INCREASED interval time from 30ms to 50ms for smoother, slower framerate
+        animationInterval = setInterval(moveButtons, 50); 
+    }
+
+    function checkAnswer(btnIndex) {
+        const selectedAnswer = btns[btnIndex].innerText;
+        const correctAnswer = questions[currentQ].a;
+
+        if (selectedAnswer === correctAnswer) {
+            score++;
+            scoreVal.innerText = score;
+            showFeedback("💖✨", true);
+            currentQ++;
+            setTimeout(loadQuestion, 800); 
+        } else {
+            showFeedback("💔", false);
+        }
+    }
+
+    function showFeedback(emoji, isCorrect) {
+        feedbackOverlay.innerText = emoji;
+        feedbackOverlay.style.display = 'flex';
+        feedbackOverlay.style.backgroundColor = isCorrect ? 'rgba(252, 231, 243, 0.8)' : 'rgba(254, 226, 226, 0.8)';
+        
+        clearInterval(animationInterval);
+        
+        setTimeout(() => {
+            feedbackOverlay.style.display = 'none';
+            if (currentQ < questions.length) {
+                startAnimation();
+            }
+        }, 800);
+    }
+
+    function endGame() {
+        clearInterval(animationInterval);
+        btns.forEach(btn => btn.style.display = 'none');
+        qDisplay.innerText = `Game Over! You got ${score} out of 15!`;
+        startBtn.innerText = "Play Again!";
+        startBtn.style.display = 'block';
+    }
+</script>
+
+</body>
+</html>
