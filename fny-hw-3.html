@@ -1,353 +1,518 @@
-// --- BATCH 5: 50 CONVERSATIONAL DIALOGUES (Modeled after image.png) ---
-const dialogueExercises = [
-    {
-        id: "diag_1",
-        type: "fitb",
-        text: "A: Hello, I'm Mark. What is ___ name?<br>B: Hi Mark, I'm David.",
-        answer: "your",
-        explanation: "A bertanya secara langsung kepada lawan bicaranya (B) mengenai namanya (What is your name?)."
-    },
-    {
-        id: "diag_2",
-        type: "fitb",
-        text: "A: Are those your keys on the table, Lily?<br>B: No, they are not ___ keys. My keys are in my bag.",
-        answer: "my",
-        explanation: "Lily (B) menegaskan bahwa kunci di meja itu bukan milik saya (my keys)."
-    },
-    {
-        id: "diag_3",
-        type: "fitb",
-        text: "A: Look at that beautiful bird over there!<br>B: Wow! ___ feathers are incredibly bright.",
-        answer: "its",
-        explanation: "Kata ganti kepemilikan untuk satu hewan tunggal (The bird/It) adalah 'its' (bulunya)."
-    },
-    {
-        id: "diag_4",
-        type: "fitb",
-        text: "A: Where do Mr. and Mrs. Smith live?<br>B: ___ house is right down the street with the blue gate.",
-        answer: "their",
-        explanation: "Rumah tersebut adalah milik Mr. dan Mrs. Smith (mereka/They), maka gunakan 'their'."
-    },
-    {
-        id: "diag_5",
-        type: "fitb",
-        text: "A: Is Lisa still at the school party?<br>B: Yes, she is over there talking with ___ brother.",
-        answer: "her",
-        explanation: "Lisa sedang berbicara dengan saudara laki-laki milik dia perempuan (Lisa/She), maka gunakan 'her'."
-    },
-    {
-        id: "diag_6",
-        type: "fitb",
-        text: "A: John is running late at the airport terminal.<br>B: Oh dear. Is ___ flight on time?",
-        answer: "his",
-        explanation: "Menanyakan jadwal penerbangan milik John (dia laki-laki/He), maka gunakan kata ganti 'his'."
-    },
-    {
-        id: "diag_7",
-        type: "fitb",
-        text: "A: Welcome to our brand new neighborhood cafe!<br>B: Thank you! ___ coffee smells absolutely amazing.",
-        answer: "your",
-        explanation: "B memuji kopi milik kafe tersebut (your coffee) langsung kepada sang pemilik (A)."
-    },
-    {
-        id: "diag_8",
-        type: "fitb",
-        text: "A: We are completely lost in this city. We need to check ___ map.<br>B: Let me help you find the way.",
-        answer: "our",
-        explanation: "A menyatakan bahwa kita (We) tersesat dan harus memeriksa peta milik kita bersama ('our map')."
-    },
-    {
-        id: "diag_9",
-        type: "fitb",
-        text: "A: Who are those two girls playing in the park?<br>B: They are my cousins. ___ names are Lily and Anna.",
-        answer: "their",
-        explanation: "Menyebutkan nama-nama milik anak perempuan tersebut (mereka/They), jadi gunakan 'their'."
-    },
-    {
-        id: "diag_10",
-        type: "fitb",
-        text: "A: Hi Emma! Is this red jacket over here ___ jacket?<br>B: No, my jacket is black.",
-        answer: "your",
-        explanation: "A bertanya langsung kepada Emma apakah jaket itu milik kamu (your jacket)."
-    },
-    {
-        id: "diag_11",
-        type: "fitb",
-        text: "A: Where is the puppy going?<br>B: Look, it is running into the garden with ___ favorite toy.",
-        answer: "its",
-        explanation: "Mainan favorit milik anak anjing itu (hewan tunggal/It) menggunakan kata ganti kepemilikan 'its'."
-    },
-    {
-        id: "diag_12",
-        type: "fitb",
-        text: "A: Paul is currently in the kitchen cooking dinner.<br>B: Awesome, ___ food is always fantastic!",
-        answer: "his",
-        explanation: "Makanan buatan Paul (dia laki-laki/He) selalu enak, jadi gunakan 'his food'."
-    },
-    {
-        id: "diag_13",
-        type: "fitb",
-        text: "A: Are you and Tommy ready for the weekend trip?<br>B: Yes, ___ bags are packed and ready in the car.",
-        answer: "our",
-        explanation: "B menjawab atas nama diri sendiri dan Tommy (kami/We), sehingga tas-tas milik kami menggunakan 'our'."
-    },
-    {
-        id: "diag_14",
-        type: "fitb",
-        text: "A: Where exactly is Sarah's new office building?<br>B: ___ office is located on the third floor near the elevator.",
-        answer: "her",
-        explanation: "Kantor tempat kerja milik Sarah (dia perempuan/She) menggunakan kata ganti 'her'."
-    },
-    {
-        id: "diag_15",
-        type: "fitb",
-        text: "A: I really like your new laptop, but ___ screen seems a bit dirty.<br>B: Oh, thank you. Let me clean it.",
-        answer: "its",
-        explanation: "Layar milik laptop (benda tunggal/It) agak kotor, jadi gunakan kata hubung 'its screen'."
-    },
-    {
-        id: "diag_16",
-        type: "fitb",
-        text: "A: Is this Kevin's winter jacket?<br>B: Yes, it is ___ jacket.",
-        answer: "his",
-        explanation: "Jaket tersebut adalah milik Kevin (dia laki-laki/He), sehingga jawaban yang benar adalah 'his'."
-    },
-    {
-        id: "diag_17",
-        type: "fitb",
-        text: "A: Where are Rachel and Monica?<br>B: They are in ___ room upstairs.",
-        answer: "their",
-        explanation: "Kamar tersebut adalah milik Rachel dan Monica (mereka/They), jadi gunakan 'their room'."
-    },
-    {
-        id: "diag_18",
-        type: "fitb",
-        text: "A: I have a new cute puppy.<br>B: Really? What is ___ name?",
-        answer: "its",
-        explanation: "Menanyakan nama dari seekor anak anjing (hewan tunggal/It) menggunakan kepemilikan 'its'."
-    },
-    {
-        id: "diag_19",
-        type: "fitb",
-        text: "A: Welcome to ___ classroom, kids!<br>B: Wow, it is very big, teacher!",
-        answer: "our",
-        explanation: "Guru (A) menyambut murid-murid ke dalam kelas milik kita bersama (our classroom)."
-    },
-    {
-        id: "diag_20",
-        type: "fitb",
-        text: "A: Hi Linda, I love ___ new dress!<br>B: Thank you, it's a gift from my mom.",
-        answer: "your",
-        explanation: "A memuji gaun baru milik Linda (your dress) saat berbicara langsung dengannya."
-    },
-    {
-        id: "diag_21",
-        type: "fitb",
-        text: "A: I can't find ___ keys anywhere.<br>B: Look, they are on your desk!",
-        answer: "my",
-        explanation: "A panik karena tidak bisa menemukan kunci milik saya sendiri (my keys)."
-    },
-    {
-        id: "diag_22",
-        type: "fitb",
-        text: "A: Is that lady your English teacher?<br>B: Yes, ___ name is Mrs. Smith.",
-        answer: "her",
-        explanation: "Nama milik wanita/guru perempuan tersebut (She) menggunakan kata ganti 'her'."
-    },
-    {
-        id: "diag_23",
-        type: "fitb",
-        text: "A: This laptop belongs to Tom.<br>B: Oh, so it is ___ laptop.",
-        answer: "his",
-        explanation: "Laptop tersebut kepunyaan Tom (dia laki-laki/He), jadi gunakan 'his laptop'."
-    },
-    {
-        id: "diag_24",
-        type: "fitb",
-        text: "A: The house has a nice green door.<br>B: Yes, ___ door is very pretty.",
-        answer: "its",
-        explanation: "Pintu milik rumah tersebut (benda tunggal/It) menggunakan kata hubung 'its door'."
-    },
-    {
-        id: "diag_25",
-        type: "fitb",
-        text: "A: Do you and your sister have a pet?<br>B: Yes, ___ pet is a small rabbit.",
-        answer: "our",
-        explanation: "B menjawab bahwa hewan peliharaan milik kami (saya dan kakak/We) adalah seekor kelinci ('our pet')."
-    },
-    {
-        id: "diag_26",
-        type: "fitb",
-        text: "A: Look at the children in the garden.<br>B: Wow, ___ toys are so colorful!",
-        answer: "their",
-        explanation: "Mainan-mainan tersebut milik anak-anak (jamak/They), jadi gunakan kata ganti 'their'."
-    },
-    {
-        id: "diag_27",
-        type: "fitb",
-        text: "A: Hello, ___ name's Thalia.<br>B: Hi, Thalia.",
-        answer: "my",
-        explanation: "Dialog ini diambil langsung dari contoh nomor 1 di file file_0.png. Thalia memperkenalkan dirinya (My name's Thalia)."
-    },
-    {
-        id: "diag_28",
-        type: "fitb",
-        text: "A: What are ___ names?<br>B: I'm Adam and this is Janine.",
-        answer: "your",
-        explanation: "Terinspirasi dari percakapan nomor 1 di file file_0.png. A bertanya langsung kepada Adam dan Janine tentang nama kalian ('your names')."
-    },
-    {
-        id: "diag_29",
-        type: "fitb",
-        text: "A: This is a photo of children.<br>B: What are ___ names?<br>A: Maya and Penny.",
-        answer: "their",
-        explanation: "Terinspirasi dari percakapan nomor 2 di file file_0.png. B menanyakan nama dari anak-anak tersebut (nama mereka / 'their names')."
-    },
-    {
-        id: "diag_30",
-        type: "fitb",
-        text: "A: Is Lorraine married?<br>B: Yes, ___ husband's a businessman with a big company.",
-        answer: "her",
-        explanation: "Terinspirasi dari percakapan nomor 3 di file file_0.png. Suami dari Lorraine (dia perempuan/She) menggunakan kata 'her husband'."
-    },
-    {
-        id: "diag_31",
-        type: "fitb",
-        text: "A: Hi Liz, I'm at the airport, but ___ brother isn't here.",
-        answer: "my",
-        explanation: "Terinspirasi dari percakapan nomor 4 di file file_0.png. A memberi tahu Liz bahwa saudara laki-laki saya ('my brother') belum datang."
-    },
-    {
-        id: "diag_32",
-        type: "fitb",
-        text: "A: Oh, no. Just a moment. I have ___ phone number.<br>B: Thanks.",
-        answer: "your",
-        explanation: "Terinspirasi dari percakapan nomor 4 di file file_0.png. Lawan bicara menyimpan nomor telepon kamu ('your phone number') untuk membantu menghubungi."
-    },
-    {
-        id: "diag_33",
-        type: "fitb",
-        text: "A: David has a very expensive sports car.<br>B: Is ___ car fast?",
-        answer: "his",
-        explanation: "Menanyakan apakah mobil milik David (dia laki-laki/He) melaju cepat menggunakan 'his car'."
-    },
-    {
-        id: "diag_34",
-        type: "fitb",
-        text: "A: My sister and I love listening to pop music.<br>B: Really? What is ___ favorite band?",
-        answer: "your",
-        explanation: "B bertanya langsung kepada A mengenai grup band favorit kalian (kamu dan kakakmu -> 'your favorite band')."
-    },
-    {
-        id: "diag_35",
-        type: "fitb",
-        text: "A: The cat is drinking milk from the kitchen counter.<br>B: Look, ___ bowl is empty now!",
-        answer: "its",
-        explanation: "Mangkuk tempat makan milik kucing tersebut (hewan tunggal/It) menggunakan kata ganti 'its'."
-    },
-    {
-        id: "diag_36",
-        type: "fitb",
-        text: "A: Excuse me, is this ___ black bag left on the bench?<br>B: No, it's not mine.",
-        answer: "your",
-        explanation: "A bertanya langsung kepada seseorang di dekat bangku apakah ini tas milikmu ('your bag')."
-    },
-    {
-        id: "diag_37",
-        type: "fitb",
-        text: "A: I need to call ___ mother right now.<br>B: Here, use my phone.",
-        answer: "my",
-        explanation: "A perlu menelepon ibu saya sendiri (my mother), sehingga B meminjamkan ponselnya."
-    },
-    {
-        id: "diag_38",
-        type: "fitb",
-        text: "A: Mr. and Mrs. Baker are on vacation in Bali.<br>B: Where is ___ daughter staying?",
-        answer: "their",
-        explanation: "Menanyakan tempat tinggal anak perempuan dari Mr. dan Mrs. Baker (mereka/They), jadi gunakan 'their'."
-    },
-    {
-        id: "diag_39",
-        type: "fitb",
-        text: "A: Jessica has a beautiful green garden.<br>B: Yes, ___ flowers are lovely.",
-        answer: "her",
-        explanation: "Bunga-bunga hias di kebun milik Jessica (dia perempuan/She) menggunakan kata ganti 'her'."
-    },
-    {
-        id: "diag_40",
-        type: "fitb",
-        text: "A: This old textbook is great, but ___ cover is torn.<br>B: That's a shame.",
-        answer: "its",
-        explanation: "Sampul pelindung milik buku (benda tunggal/It) rusak, maka gunakan kata hubung 'its cover'."
-    },
-    {
-        id: "diag_41",
-        type: "fitb",
-        text: "A: We live in a small countryside village.<br>B: Wow, ___ village must be very quiet.",
-        answer: "your",
-        explanation: "B berkomentar langsung mengenai desa tempat tinggal milik kalian (A dan keluarga -> 'your village')."
-    },
-    {
-        id: "diag_42",
-        type: "fitb",
-        text: "A: Ben is currently playing football in the field.<br>B: Are those red shoes over there ___ boots?",
-        answer: "his",
-        explanation: "Menanyakan apakah sepatu sepak bola itu milik Ben (dia laki-laki/He) menggunakan kata ganti 'his'."
-    },
-    {
-        id: "diag_43",
-        type: "fitb",
-        text: "A: Hi Peter, is this blue mechanical pencil ___ pencil?<br>B: Yes, thank you so much!",
-        answer: "your",
-        explanation: "A mengonfirmasi langsung kepada Peter apakah pensil ini adalah miliknya ('your pencil')."
-    },
-    {
-        id: "diag_44",
-        type: "fitb",
-        text: "A: The birds are singing beautifully outside.<br>B: I love ___ songs in the morning.",
-        answer: "their",
-        explanation: "Kicauan lagu milik burung-burung (jamak/They) terdengar merdu, sehingga gunakan kata 'their songs'."
-    },
-    {
-        id: "diag_45",
-        type: "fitb",
-        text: "A: Emma is sitting alone under the tree reading.<br>B: What is ___ book about?",
-        answer: "her",
-        explanation: "Menanyakan isi buku yang sedang dibaca oleh Emma (dia perempuan/She) menggunakan kata 'her book'."
-    },
-    {
-        id: "diag_46",
-        type: "fitb",
-        text: "A: I love playing acoustic guitar in my free time.<br>B: Is that brown instrument over there ___ guitar?",
-        answer: "your",
-        explanation: "B bertanya langsung kepada A apakah alat musik itu adalah gitar milikmu ('your guitar')."
-    },
-    {
-        id: "diag_47",
-        type: "fitb",
-        text: "A: Medan is a very famous city in North Sumatra.<br>B: Yes, ___ culinary places are amazing.",
-        answer: "its",
-        explanation: "Tempat kuliner milik kota Medan (benda/kota tunggal/It) sangat terkenal, gunakan kata hubung 'its'."
-    },
-    {
-        id: "diag_48",
-        type: "fitb",
-        text: "A: Sam and Leo are twin brothers.<br>B: Really? ___ faces look exactly the same!",
-        answer: "their",
-        explanation: "Wajah milik Sam dan Leo (mereka/They) terlihat sangat mirip, maka gunakan kata ganti 'their'."
-    },
-    {
-        id: "diag_49",
-        type: "fitb",
-        text: "A: We have a difficult English test tomorrow morning.<br>B: We must study ___ lesson seriously tonight.",
-        answer: "our",
-        explanation: "A dan B (We) harus mempelajari materi pelajaran milik kita bersama ('our lesson')."
-    },
-    {
-        id: "diag_50",
-        type: "fitb",
-        text: "A: Is this white smartphone Henry's phone?<br>B: No, ___ phone is black.",
-        answer: "his",
-        explanation: "B menjelaskan bahwa ponsel genggam milik Henry (dia laki-laki/He) berwarna hitam ('his phone')."
-    }
-];
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastery Mission: Conversational Possessives</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #e0f2f1; /* Pastel mint teal */
+            --card-bg: #ffffff;
+            --primary: #4db6ac; /* Soft teal primary */
+            --primary-dark: #00897b;
+            --secondary: #ffb74d; /* Soft pastel orange */
+            --text-dark: #004d40;
+            --wrong: #ff8a80;
+            --accent-purple: #ba68c8;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.05);
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 { color: var(--text-dark); margin-bottom: 10px; font-weight: 700; }
+        p { color: #00796b; margin-top: 0; font-weight: 600; }
+
+        .dropdown {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            border-radius: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            color: var(--text-dark);
+            background-color: #f2faf9;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            width: 100%;
+        }
+        button:hover { transform: translateY(-2px); background-color: var(--primary-dark); }
+        button:active { transform: translateY(0); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        #btn-exercise { background-color: var(--secondary); color: white; }
+        #btn-exercise:hover { background-color: #ffa726; }
+
+        /* Learn Page Card Layout */
+        .card-deck {
+            position: relative;
+            height: 300px;
+            margin: 30px auto;
+            width: 100%;
+            max-width: 400px;
+            perspective: 1000px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #edf7f6 100%);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 25px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+
+        .flashcard.flick-left { transform: translateX(-150%) rotate(-25deg); opacity: 0; }
+        .flashcard.flick-right { transform: translateX(150%) rotate(25deg); opacity: 0; }
+
+        .pronoun-badge {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .poss-word { font-size: 3rem; font-weight: 700; color: var(--text-dark); margin: 5px 0; }
+        .indo-trans { font-size: 1.1rem; font-weight: 600; color: #e65100; margin-bottom: 15px; }
+
+        .example-box {
+            background-color: white;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .card-nav { display: flex; justify-content: space-between; align-items: center; max-width: 250px; margin: 0 auto; }
+        .nav-arrow { border-radius: 50%; width: 45px; height: 45px; padding: 0; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; }
+
+        /* Exercise Module Styling */
+        .section-tag {
+            background-color: var(--accent-purple);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        .dialogue-bubble {
+            background-color: #f4fbfb;
+            border: 2px solid #b2dfdb;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #00332c;
+        }
+
+        .input-blank {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.25rem;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+            background-color: #f2faf9;
+            box-sizing: border-box;
+        }
+        .input-blank:focus { border-color: var(--secondary); background-color: #fff; }
+
+        .exp-box {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #fbc02d;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .progress-indicator { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; text-align: right; }
+        .menu-back { background: none; color: var(--primary-dark); box-shadow: none; padding: 5px; font-size: 0.95rem; text-decoration: underline; width: auto; margin-top: 15px; }
+        .menu-back:hover { background: none; color: var(--text-dark); transform: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- VIEW 1: GATEWAY LOGIN -->
+        <div id="view-login">
+            <h2>Welcome Back! 🌟</h2>
+            <p>Pilih akunmu untuk melanjutkan pelajaran:</p>
+            <select id="user-dropdown" class="dropdown">
+                <option value="" disabled selected>-- Pilih Pengguna --</option>
+                <option value="fny">fny (Fenny)</option>
+                <option value="guest">Guest Account</option>
+            </select>
+            <button onclick="handleLogin()">Masuk</button>
+        </div>
+
+        <!-- VIEW 2: HOME PANEL DASHBOARD -->
+        <div id="view-menu" style="display: none;">
+            <h2 id="welcome-text">Halo! 👋</h2>
+            <p>Pilih mode belajar hari ini:</p>
+            <div class="btn-group">
+                <button id="btn-learn" onclick="switchView('view-learn')">📖 Belajar Materi</button>
+                <button id="btn-exercise" onclick="startExerciseMode()">📝 Conversational Challenge (50 Soal)</button>
+            </div>
+        </div>
+
+        <!-- VIEW 3: FLASHCARD MODALITY -->
+        <div id="view-learn" style="display: none;">
+            <h2>Materi: Possessive Adjectives</h2>
+            <p>Kata ganti penentu kepemilikan objek.</p>
+            
+            <div class="card-deck">
+                <div id="flashcard-element" class="flashcard">
+                    <span id="card-badge" class="pronoun-badge">Subject: I</span>
+                    <div id="card-poss" class="poss-word">my</div>
+                    <div id="card-indo" class="indo-trans">...saya</div>
+                    <div id="card-example" class="example-box">Loading...</div>
+                </div>
+            </div>
+
+            <div class="card-nav">
+                <button class="nav-arrow" onclick="flickCard('left')">←</button>
+                <span id="card-counter" style="font-weight: 700;">1 / 7</span>
+                <button class="nav-arrow" onclick="flickCard('right')">→</button>
+            </div>
+            <button class="menu-back" onclick="switchView('view-menu')">Kembali ke Menu</button>
+        </div>
+
+        <!-- VIEW 4: TESTING ENGINE CONTAINER -->
+        <div id="view-exercise" style="display: none;">
+            <div class="progress-indicator" id="exercise-progress">1 / 50</div>
+            <div class="section-tag">Conversational Dialogue</div>
+            
+            <!-- Conversational Block layout matching style frames of image.png -->
+            <div id="exercise-q-bubble" class="dialogue-bubble">Loading conversation context...</div>
+            
+            <div id="box-input">
+                <input type="text" id="blank-field" class="input-blank" placeholder="Ketik possessive adjective yang hilang...">
+                <button id="btn-submit" onclick="submitTypedAnswer()">Periksa Jawaban</button>
+            </div>
+
+            <div id="box-explanation" class="exp-box"></div>
+            <button id="btn-next-q" style="display: none;" onclick="advanceNextQuestion()">Lanjut →</button>
+            <br>
+            <button class="menu-back" onclick="switchView('view-menu')">Keluar Sesi</button>
+        </div>
+
+        <!-- VIEW 5: CELEBRATION SHIELD REPORT -->
+        <div id="view-complete" style="display: none;">
+            <h2>Misi Selesai! 🎉🏆</h2>
+            <p>Hebat sekali! Semua tantangan dialog percakapan berhasil diselesaikan.</p>
+            <h3 id="final-score-board" style="color: var(--text-dark);">Skor: 0 / 50</h3>
+            <button onclick="switchView('view-menu')">Kembali ke Beranda</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ========================================================
+        // CORE DATABASE & STRUCTURAL ARRAYS
+        // ========================================================
+        const studentData = {
+            "fny": { name: "Fenny", email: "60fenny@gmail.com" },
+            "guest": { name: "Guest", email: "none" }
+        };
+
+        const learnCards = [
+            { subject: "I (Saya)", possessive: "my", indo: "...saya", text: "This is my dog. 🐶<br>(Ini anjing saya.)" },
+            { subject: "You (Kamu)", possessive: "your", indo: "...kamu / ...kalian", text: "I like your blue pen. 🖊️<br>(Aku suka pulpen birumu.)" },
+            { subject: "He (Dia Laki-laki)", possessive: "his", indo: "...dia (lk)", text: "His father is a doctor. 👨‍⚕️<br>(Ayahnya adalah seorang dokter.)" },
+            { subject: "She (Dia Perempuan)", possessive: "her", indo: "...dia (pr)", text: "Her bag is yellow. 🎒<br>(Tasnya berwarna kuning.)" },
+            { subject: "It (Hewan/Benda)", possessive: "its", indo: "...nya", text: "The cat wags its tail. 🐱<br>(Kucing itu menggerakkan ekornya.)" },
+            { subject: "We (Kita/Kami)", possessive: "our", indo: "...kita / ...kami", text: "Welcome to our big house! 🏡<br>(Selamat datang di rumah besar kami!)" },
+            { subject: "They (Mereka)", possessive: "their", indo: "...mereka", text: "Their school is very clean. 🏫<br>(Sekolah mereka sangat bersih.)" }
+        ];
+
+        // The 50 conversational dialogue exercises derived from image.png style rules
+        const dialogueExercises = [
+            { id: "diag_1", text: "A: Hello, I'm Mark. What is ___ name?<br>B: Hi Mark, I'm David.", answer: "your", explanation: "A bertanya secara langsung kepada lawan bicaranya (B) mengenai namanya (What is your name?)." },
+            { id: "diag_2", text: "A: Are those your keys on the table, Lily?<br>B: No, they are not ___ keys. My keys are in my bag.", answer: "my", explanation: "Lily (B) menegaskan bahwa kunci di meja itu bukan milik saya (my keys)." },
+            { id: "diag_3", text: "A: Look at that beautiful bird over there!<br>B: Wow! ___ feathers are incredibly bright.", answer: "its", explanation: "Kata ganti kepemilikan untuk satu hewan tunggal (The bird/It) adalah 'its' (bulunya)." },
+            { id: "diag_4", text: "A: Where do Mr. and Mrs. Smith live?<br>B: ___ house is right down the street with the blue gate.", answer: "their", explanation: "Rumah tersebut adalah milik Mr. dan Mrs. Smith (mereka/They), maka gunakan 'their'." },
+            { id: "diag_5", text: "A: Is Lisa still at the school party?<br>B: Yes, she is over there talking with ___ brother.", answer: "her", explanation: "Lisa sedang berbicara dengan saudara laki-laki milik dia perempuan (Lisa/She), maka gunakan 'her'." },
+            { id: "diag_6", text: "A: John is running late at the airport terminal.<br>B: Oh dear. Is ___ flight on time?", answer: "his", explanation: "Menanyakan jadwal penerbangan milik John (dia laki-laki/He), maka gunakan kata ganti 'his'." },
+            { id: "diag_7", text: "A: Welcome to our brand new neighborhood cafe!<br>B: Thank you! ___ coffee smells absolutely amazing.", answer: "your", explanation: "B memuji kopi milik kafe tersebut (your coffee) langsung kepada sang pemilik (A)." },
+            { id: "diag_8", text: "A: We are completely lost in this city. We need to check ___ map.<br>B: Let me help you find the way.", answer: "our", explanation: "A menyatakan bahwa kita (We) tersesat dan harus memeriksa peta milik kita bersama ('our map')." },
+            { id: "diag_9", text: "A: Who are those two girls playing in the park?<br>B: They are my cousins. ___ names are Lily and Anna.", answer: "their", explanation: "Menyebutkan nama-nama milik anak perempuan tersebut (mereka/They), jadi gunakan 'their'." },
+            { id: "diag_10", text: "A: Hi Emma! Is this red jacket over here ___ jacket?<br>B: No, my jacket is black.", answer: "your", explanation: "A bertanya langsung kepada Emma apakah jaket itu milik kamu (your jacket)." },
+            { id: "diag_11", text: "A: Where is the puppy going?<br>B: Look, it is running into the garden with ___ favorite toy.", answer: "its", explanation: "Mainan favorit milik anak anjing itu (hewan tunggal/It) menggunakan kata ganti kepemilikan 'its'." },
+            { id: "diag_12", text: "A: Paul is currently in the kitchen cooking dinner.<br>B: Awesome, ___ food is always fantastic!", answer: "his", explanation: "Makanan buatan Paul (dia laki-laki/He) selalu enak, jadi gunakan 'his food'." },
+            { id: "diag_13", text: "A: Are you and Tommy ready for the weekend trip?<br>B: Yes, ___ bags are packed and ready in the car.", answer: "our", explanation: "B menjawab atas nama diri sendiri dan Tommy (kami/We), sehingga tas-tas milik kami menggunakan 'our'." },
+            { id: "diag_14", text: "A: Where exactly is Sarah's new office building?<br>B: ___ office is located on the third floor near the elevator.", answer: "her", explanation: "Kantor tempat kerja milik Sarah (dia perempuan/She) menggunakan kata ganti 'her'." },
+            { id: "diag_15", text: "A: I really like your new laptop, but ___ screen seems a bit dirty.<br>B: Oh, thank you. Let me clean it.", answer: "its", explanation: "Layar milik laptop (benda tunggal/It) agak kotor, jadi gunakan kata hubung 'its screen'." },
+            { id: "diag_16", text: "A: Is this Kevin's winter jacket?<br>B: Yes, it is ___ jacket.", answer: "his", explanation: "Jaket tersebut adalah milik Kevin (dia laki-laki/He), sehingga jawaban yang benar adalah 'his'." },
+            { id: "diag_17", text: "A: Where are Rachel and Monica?<br>B: They are in ___ room upstairs.", answer: "their", explanation: "Kamar tersebut adalah milik Rachel dan Monica (mereka/They), jadi gunakan 'their room'." },
+            { id: "diag_18", text: "A: I have a new cute puppy.<br>B: Really? What is ___ name?", answer: "its", explanation: "Menanyakan nama dari seekor anak anjing (hewan tunggal/It) menggunakan kepemilikan 'its'." },
+            { id: "diag_19", text: "A: Welcome to ___ classroom, kids!<br>B: Wow, it is very big, teacher!", answer: "our", explanation: "Guru (A) menyambut murid-murid ke dalam kelas milik kita bersama (our classroom)." },
+            { id: "diag_20", text: "A: Hi Linda, I love ___ new dress!<br>B: Thank you, it's a gift from my mom.", answer: "your", explanation: "A memuji gaun baru milik Linda (your dress) saat berbicara langsung dengannya." },
+            { id: "diag_21", text: "A: I can't find ___ keys anywhere.<br>B: Look, they are on your desk!", answer: "my", explanation: "A panik karena tidak bisa menemukan kunci milik saya sendiri (my keys)." },
+            { id: "diag_22", text: "A: Is that lady your English teacher?<br>B: Yes, ___ name is Mrs. Smith.", answer: "her", explanation: "Nama milik wanita/guru perempuan tersebut (She) menggunakan kata ganti 'her'." },
+            { id: "diag_23", text: "A: This laptop belongs to Tom.<br>B: Oh, so it is ___ laptop.", answer: "his", explanation: "Laptop tersebut kepunyaan Tom (dia laki-laki/He), jadi gunakan 'his laptop'." },
+            { id: "diag_24", text: "A: The house has a nice green door.<br>B: Yes, ___ door is very pretty.", answer: "its", explanation: "Pintu milik rumah tersebut (benda tunggal/It) menggunakan kata hubung 'its door'." },
+            { id: "diag_25", text: "A: Do you and your sister have a pet?<br>B: Yes, ___ pet is a small rabbit.", answer: "our", explanation: "B menjawab bahwa hewan peliharaan milik kami (saya dan kakak/We) adalah seekor kelinci ('our pet')." },
+            { id: "diag_26", text: "A: Look at the children in the garden.<br>B: Wow, ___ toys are so colorful!", answer: "their", explanation: "Mainan-mainan tersebut milik anak-anak (jamak/They), jadi gunakan kata ganti 'their'." },
+            { id: "diag_27", text: "A: Hello, ___ name's Thalia.<br>B: Hi, Thalia.", answer: "my", explanation: "Dialog dari nomor 1 di image.png. Thalia memperkenalkan dirinya (My name's Thalia)." },
+            { id: "diag_28", text: "A: What are ___ names?<br>B: I'm Adam and this is Janine.", answer: "your", explanation: "Dari nomor 1 di image.png. A bertanya langsung kepada Adam dan Janine tentang nama kalian ('your names')." },
+            { id: "diag_29", text: "A: This is a photo of children.<br>B: What are ___ names?<br>A: Maya and Penny.", answer: "their", explanation: "Dari nomor 2 di image.png. B menanyakan nama dari anak-anak tersebut (nama mereka / 'their names')." },
+            { id: "diag_30", text: "A: Is Lorraine married?<br>B: Yes, ___ husband's a businessman with a big company.", answer: "her", explanation: "Dari nomor 3 di image.png. Suami dari Lorraine (dia perempuan/She) menggunakan kata 'her husband'." },
+            { id: "diag_31", text: "A: Hi Liz, I'm at the airport, but ___ brother isn't here.", answer: "my", explanation: "Dari nomor 4 di image.png. A memberi tahu Liz bahwa saudara laki-laki saya ('my brother') belum datang." },
+            { id: "diag_32", text: "A: Oh, no. Just a moment. I have ___ phone number.<br>B: Thanks.", answer: "your", explanation: "Dari nomor 4 di image.png. Lawan bicara menyimpan nomor milik kamu ('your phone number') untuk membantu." },
+            { id: "diag_33", text: "A: David has a very expensive sports car.<br>B: Is ___ car fast?", answer: "his", explanation: "Menanyakan apakah mobil milik David (dia laki-laki/He) melaju cepat menggunakan 'his car'." },
+            { id: "diag_34", text: "A: My sister and I love listening to pop music.<br>B: Really? What is ___ favorite band?", answer: "your", explanation: "B bertanya langsung mengenai grup band favorit kalian (kamu dan kakakmu -> 'your favorite band')." },
+            { id: "diag_35", text: "A: The cat is drinking milk from the kitchen counter.<br>B: Look, ___ bowl is empty now!", answer: "its", explanation: "Mangkuk makan milik kucing tersebut (hewan tunggal/It) menggunakan kata ganti 'its'." },
+            { id: "diag_36", text: "A: Excuse me, is this ___ black bag left on the bench?<br>B: No, it's not mine.", answer: "your", explanation: "A bertanya langsung kepada seseorang di dekat bangku apakah ini tas milikmu ('your bag')." },
+            { id: "diag_37", text: "A: I need to call ___ mother right now.<br>B: Here, use my phone.", answer: "my", explanation: "A perlu menelepon ibu saya sendiri (my mother), sehingga B meminjamkan ponselnya." },
+            { id: "diag_38", text: "A: Mr. and Mrs. Baker are on vacation in Bali.<br>B: Where is ___ daughter staying?", answer: "their", explanation: "Menanyakan tempat tinggal anak perempuan dari Mr. dan Mrs. Baker (mereka/They), jadi gunakan 'their'." },
+            { id: "diag_39", text: "A: Jessica has a beautiful green garden.<br>B: Yes, ___ flowers are lovely.", answer: "her", explanation: "Bunga-bunga hias di kebun milik Jessica (dia perempuan/She) menggunakan kata ganti 'her'." },
+            { id: "diag_40", text: "A: This old textbook is great, but ___ cover is torn.<br>B: That's a shame.", answer: "its", explanation: "Sampul pelindung milik buku (benda tunggal/It) rusak, maka gunakan kata hubung 'its cover'." },
+            { id: "diag_41", text: "A: We live in a small countryside village.<br>B: Wow, ___ village must be very quiet.", answer: "your", explanation: "B berkomentar langsung mengenai desa tempat tinggal milik kalian (A dan keluarga -> 'your village')." },
+            { id: "diag_42", text: "A: Ben is currently playing football in the field.<br>B: Are those red shoes over there ___ boots?", answer: "his", explanation: "Menanyakan apakah sepatu sepak bola itu milik Ben (dia laki-laki/He) menggunakan kata ganti 'his'." },
+            { id: "diag_43", text: "A: Hi Peter, is this blue mechanical pencil ___ pencil?<br>B: Yes, thank you so much!", answer: "your", explanation: "A mengonfirmasi langsung kepada Peter apakah pensil ini adalah miliknya ('your pencil')." },
+            { id: "diag_44", text: "A: The birds are singing beautifully outside.<br>B: I love ___ songs in the morning.", answer: "their", explanation: "Kicauan lagu milik burung-burung (jamak/They) terdengar merdu, sehingga gunakan kata 'their songs'." },
+            { id: "diag_45", text: "A: Emma is sitting alone under the tree reading.<br>B: What is ___ book about?", answer: "her", explanation: "Menanyakan isi buku yang sedang dibaca oleh Emma (dia perempuan/She) menggunakan kata 'her book'." },
+            { id: "diag_46", text: "A: I love playing acoustic guitar in my free time.<br>B: Is that brown instrument over there ___ guitar?", answer: "your", explanation: "B bertanya langsung kepada A apakah alat musik itu adalah gitar milikmu ('your guitar')." },
+            { id: "diag_47", text: "A: Inside Medan is a very famous restaurant area.<br>B: Yes, ___ culinary places are amazing.", answer: "its", explanation: "Tempat kuliner milik kota Medan (benda/kota tunggal/It) sangat terkenal, gunakan kata hubung 'its'." },
+            { id: "diag_48", text: "A: Sam and Leo are twin brothers.<br>B: Really? ___ faces look exactly the same!", answer: "their", explanation: "Wajah milik Sam dan Leo (mereka/They) terlihat sangat mirip, maka gunakan kata ganti 'their'." },
+            { id: "diag_49", text: "A: We have a difficult English test tomorrow morning.<br>B: We must study ___ lesson seriously tonight.", answer: "our", explanation: "A dan B (We) harus mempelajari materi pelajaran milik kita bersama ('our lesson')." },
+            { id: "diag_50", text: "A: Is this white smartphone Henry's phone?<br>B: No, ___ phone is black.", answer: "his", explanation: "B menjelaskan bahwa ponsel genggam milik Henry (dia laki-laki/He) berwarna hitam ('his phone')." }
+        ];
+
+        // ========================================================
+        // ENGINE VARIABLES & CONTROL CORES
+        // ========================================================
+        let activeCardIdx = 0;
+        let exerciseIdx = 0;
+        let exerciseScore = 0;
+        let activeStudentId = "";
+        let currentStudent = null;
+
+        // 1. Firebase Initialization Using Valid Credentials Tracker
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmBvKTHhR_wivKKrwITyumig2TusrJLoE",
+            authDomain: "accents-with-grace.firebaseapp.com",
+            databaseURL: "https://accents-with-grace-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "accents-with-grace",
+            storageBucket: "accents-with-grace.firebasestorage.app",
+            messagingSenderId: "152119821350",
+            appId: "1:152119821350:web:0602eb24bf3abdc20b52e7"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        auth.onAuthStateChanged((user) => {
+            if (!user) auth.signInAnonymously();
+        });
+
+        function switchView(viewId) {
+            const views = ['view-login', 'view-menu', 'view-learn', 'view-exercise', 'view-complete'];
+            views.forEach(v => {
+                document.getElementById(v).style.display = (v === viewId) ? 'block' : 'none';
+            });
+        }
+
+        function handleLogin() {
+            const val = document.getElementById('user-dropdown').value;
+            if(!val) {
+                alert("Pilih nama pengguna terlebih dahulu!");
+                return;
+            }
+            activeStudentId = val;
+            currentStudent = studentData[val];
+            document.getElementById('welcome-text').innerText = `Halo, ${currentStudent.name}! 👋`;
+            switchView('view-menu');
+        }
+
+        // --- FLASHCARD ENGINE OPERATIONS ---
+        function updateCardUI() {
+            const card = learnCards[activeCardIdx];
+            document.getElementById('card-badge').innerText = `Subject: ${card.subject}`;
+            document.getElementById('card-poss').innerText = card.possessive;
+            document.getElementById('card-indo').innerText = card.indo;
+            document.getElementById('card-example').innerHTML = `<strong>Contoh:</strong><br>${card.text}`;
+            document.getElementById('card-counter').innerText = `${activeCardIdx + 1} / ${learnCards.length}`;
+        }
+
+        function flickCard(direction) {
+            const cardEl = document.getElementById('flashcard-element');
+            const classToAdd = (direction === 'left') ? 'flick-left' : 'flick-right';
+            
+            cardEl.classList.add(classToAdd);
+            
+            setTimeout(() => {
+                if (direction === 'right') {
+                    activeCardIdx = (activeCardIdx + 1) % learnCards.length;
+                } else {
+                    activeCardIdx = (activeCardIdx - 1 + learnCards.length) % learnCards.length;
+                }
+                updateCardUI();
+                cardEl.className = 'flashcard';
+            }, 400);
+        }
+
+        // --- TESTING ENGINE OPERATIONS ---
+        function startExerciseMode() {
+            exerciseIdx = 0;
+            exerciseScore = 0;
+            switchView('view-exercise');
+            loadExerciseQuestion();
+        }
+
+        function loadExerciseQuestion() {
+            if (exerciseIdx >= dialogueExercises.length) {
+                finishSessionReport();
+                return;
+            }
+
+            const q = dialogueExercises[exerciseIdx];
+            
+            document.getElementById('exercise-progress').innerText = `${exerciseIdx + 1} / ${dialogueExercises.length}`;
+            document.getElementById('box-explanation').style.display = 'none';
+            document.getElementById('btn-next-q').style.display = 'none';
+            document.getElementById('btn-submit').disabled = false;
+            
+            const field = document.getElementById('blank-field');
+            field.value = "";
+            field.disabled = false;
+
+            document.getElementById('exercise-q-bubble').innerHTML = q.text;
+        }
+
+        function submitTypedAnswer() {
+            const q = dialogueExercises[exerciseIdx];
+            const inputField = document.getElementById('blank-field');
+            const userText = inputField.value.trim().toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            const cleanAnswer = q.answer.trim().toLowerCase();
+            
+            inputField.disabled = true;
+            document.getElementById('btn-submit').disabled = true;
+
+            if (userText === cleanAnswer) {
+                inputField.style.borderColor = "var(--primary)";
+                exerciseScore++;
+            } else {
+                inputField.style.borderColor = "var(--wrong)";
+            }
+
+            const box = document.getElementById('box-explanation');
+            box.innerHTML = `<strong>Jawaban Benar:</strong> ${q.answer}<br><br><strong>Penjelasan:</strong> ${q.explanation}`;
+            box.style.display = 'block';
+            document.getElementById('btn-next-q').style.display = 'block';
+        }
+
+        function advanceNextQuestion() {
+            document.getElementById('blank-field').style.borderColor = "var(--primary)";
+            exerciseIdx++;
+            loadExerciseQuestion();
+        }
+
+        function finishSessionReport() {
+            switchView('view-complete');
+            document.getElementById('final-score-board').innerText = `Skor Akhir: ${exerciseScore} / ${dialogueExercises.length}`;
+            
+            // Save results tracking details back directly into active Firestore nodes
+            const user = auth.currentUser;
+            if (user && currentStudent) {
+                db.collection('results').add({
+                    userId: user.uid,
+                    studentId: activeStudentId,
+                    studentName: currentStudent.name,
+                    studentEmail: currentStudent.email,
+                    assignment: "hw-2_conversational",
+                    score: exerciseScore,
+                    totalQuestions: dialogueExercises.length,
+                    date: new Date().toISOString().split('T')[0],
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    console.log("Cloud sync completed successfully.");
+                }).catch(err => {
+                    console.error("Cloud syncing failed:", err);
+                });
+            }
+        }
+
+        window.onload = function() {
+            updateCardUI();
+        };
+    </script>
+</body>
+</html>
