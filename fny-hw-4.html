@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mastery Mission: Question Words + Be</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+
+    <style>
+        :root {
+            --bg-color: #f3e5f5; /* Pastel light lavender */
+            --card-bg: #ffffff;
+            --primary: #9c27b0; /* Cute lavender purple */
+            --primary-dark: #7b1fa2;
+            --secondary: #ffb74d; /* Soft pastel orange */
+            --text-dark: #4a148c;
+            --wrong: #ff8a80;
+            --accent-blue: #4fc3f7;
+            --correct-green: #66bb6a;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.05);
+            padding: 30px;
+            width: 100%;
+            max-width: 550px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        h2 { color: var(--text-dark); margin-bottom: 10px; font-weight: 700; }
+        p { color: #7b1fa2; margin-top: 0; font-weight: 600; }
+
+        .dropdown {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.1rem;
+            border: 2px solid var(--primary);
+            border-radius: 14px;
+            margin-bottom: 20px;
+            outline: none;
+            color: var(--text-dark);
+            background-color: #fdf7fe;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        button {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 14px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            width: 100%;
+        }
+        button:hover { transform: translateY(-2px); background-color: var(--primary-dark); }
+        button:active { transform: translateY(0); }
+        button:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        #btn-exercise { background-color: var(--secondary); color: white; }
+        #btn-exercise:hover { background-color: #ffa726; }
+
+        /* Word Bank Component from Image Reference */
+        .word-bank {
+            background-color: #faf5ff;
+            border: 2px dashed var(--primary);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .word-token {
+            background-color: #f3e5f5;
+            padding: 4px 8px;
+            border-radius: 8px;
+            color: var(--text-dark);
+        }
+
+        /* Flashcard Component Elements */
+        .card-deck {
+            position: relative;
+            height: 280px;
+            margin: 25px auto;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffffff 0%, #fdf7fe 100%);
+            border: 3px solid var(--primary);
+            border-radius: 20px;
+            padding: 25px;
+            box-sizing: border-box;
+            position: absolute;
+            top: 0; left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.04);
+            transition: transform 0.4s ease, opacity 0.4s ease;
+        }
+        .flashcard.flick-left { transform: translateX(-150%) rotate(-20deg); opacity: 0; }
+        .flashcard.flick-right { transform: translateX(150%) rotate(20deg); opacity: 0; }
+
+        .tag-badge {
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .word-title { font-size: 2.5rem; font-weight: 700; color: var(--text-dark); margin: 5px 0; }
+        .word-use { font-size: 1.1rem; font-weight: 600; color: #e65100; margin-bottom: 12px; }
+
+        .example-box {
+            background-color: white;
+            padding: 12px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            text-align: left;
+            width: 100%;
+            font-size: 0.95rem;
+        }
+
+        .card-nav { display: flex; justify-content: space-between; align-items: center; max-width: 250px; margin: 0 auto; }
+        .nav-arrow { border-radius: 50%; width: 45px; height: 45px; padding: 0; display: flex; justify-content: center; align-items: center; font-size: 1.3rem; }
+
+        /* Dialog & Quiz UI elements */
+        .dialogue-bubble {
+            background-color: #fcf8fe;
+            border: 2px solid #e1bee7;
+            border-radius: 16px;
+            padding: 20px;
+            text-align: left;
+            font-size: 1.25rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .opt-btn {
+            background-color: #fdf7fe;
+            color: var(--text-dark);
+            border: 2px solid #e1bee7;
+        }
+        .opt-btn:hover { background-color: #f3e5f5; }
+        .opt-btn.correct { background-color: var(--correct-green); color: white; border-color: #4caf50; }
+        .opt-btn.wrong { background-color: var(--wrong); color: white; border-color: #e57373; }
+
+        .input-blank {
+            width: 100%;
+            padding: 15px;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.25rem;
+            border: 2px solid var(--primary);
+            border-radius: 12px;
+            text-align: center;
+            outline: none;
+            margin-bottom: 15px;
+            background-color: #fdf7fe;
+            box-sizing: border-box;
+        }
+        .input-blank:focus { border-color: var(--secondary); background-color: #fff; }
+
+        .exp-box {
+            background-color: #fff9c4;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #fbc02d;
+            text-align: left;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+            display: none;
+            line-height: 1.4;
+        }
+
+        .progress-indicator { font-size: 0.95rem; font-weight: 700; color: var(--text-dark); margin-bottom: 15px; text-align: right; }
+        .menu-back { background: none; color: var(--primary-dark); box-shadow: none; padding: 5px; font-size: 0.95rem; text-decoration: underline; width: auto; margin-top: 15px; }
+        .menu-back:hover { background: none; color: var(--text-dark); transform: none; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div id="view-login">
+            <h2>Welcome Back! 🌟</h2>
+            <p>Pilih akunmu untuk memulai:</p>
+            <select id="user-dropdown" class="dropdown">
+                <option value="" disabled selected>-- Pilih Pengguna --</option>
+                <option value="fny">fny (Fenny)</option>
+                <option value="guest">Guest Account</option>
+            </select>
+            <button onclick="handleLogin()">Masuk</button>
+        </div>
+
+        <div id="view-menu" style="display: none;">
+            <h2 id="welcome-text">Halo! 👋</h2>
+            <p>Pilih aktivitas belajarmu:</p>
+            <div class="btn-group">
+                <button id="btn-learn" onclick="switchView('view-learn')">📖 Belajar Flashcards</button>
+                <button id="btn-exercise" onclick="startExerciseMode()">📝 Conversational Exercise (50 Soal)</button>
+            </div>
+        </div>
+
+        <div id="view-learn" style="display: none;">
+            <h2>Materi: Question Words + Be</h2>
+            <p>Membuat pertanyaan informasi level A1.</p>
+            
+            <div class="card-deck">
+                <div id="flashcard-element" class="flashcard">
+                    <span id="card-badge" class="tag-badge">What (Apa)</span>
+                    <div id="card-title" class="word-title">What's</div>
+                    <div id="card-use" class="word-use">Digunakan untuk objek tunggal</div>
+                    <div id="card-example" class="example-box">Loading...</div>
+                </div>
+            </div>
+
+            <div class="card-nav">
+                <button class="nav-arrow" onclick="flickCard('left')">←</button>
+                <span id="card-counter" style="font-weight: 700;">1 / 5</span>
+                <button class="nav-arrow" onclick="flickCard('right')">→</button>
+            </div>
+            <button id="btn-trigger-mini" style="margin-top:20px; display:none;" onclick="startMiniQuiz()">Mulai Quiz Konfirmasi Pemahaman! ✨</button>
+            <br>
+            <button class="menu-back" onclick="switchView('view-menu')">Kembali ke Menu</button>
+        </div>
+
+        <div id="view-mini-quiz" style="display: none;">
+            <div class="progress-indicator" id="mini-progress">1 / 3</div>
+            <div class="tag-badge" style="background-color: var(--secondary);">Confirmation Mini Quiz</div>
+            <h2>Uji Pemahaman Singkat</h2>
+            <div id="mini-q-text" class="dialogue-bubble">Loading question...</div>
+            <div class="options-grid" id="mini-options"></div>
+            <div id="mini-explanation" class="exp-box"></div>
+            <button id="btn-next-mini" style="display:none;" onclick="advanceMiniQuiz()">Lanjut →</button>
+        </div>
+
+        <div id="view-exercise" style="display: none;">
+            <div class="progress-indicator" id="exercise-progress">1 / 50</div>
+            
+            <div class="word-bank">
+                <div class="word-token">How's</div><div class="word-token">How are</div>
+                <div class="word-token">What's</div><div class="word-token">What are</div>
+                <div class="word-token">When's</div><div class="word-token">When</div>
+                <div class="word-token">Who's</div><div class="word-token">Who are</div>
+                <div class="word-token">Where's</div><div class="word-token">Where are</div>
+            </div>
+            
+            <div id="exercise-q-bubble" class="dialogue-bubble">Loading question...</div>
+            
+            <div id="box-input">
+                <input type="text" id="blank-field" class="input-blank" placeholder="Ketik kata tanya + be yang tepat...">
+                <button id="btn-submit" onclick="submitExerciseAnswer()">Periksa Jawaban</button>
+            </div>
+
+            <div id="box-explanation" class="exp-box"></div>
+            <button id="btn-next-q" style="display: none;" onclick="advanceNextQuestion()">Lanjut →</button>
+            <br>
+            <button class="menu-back" onclick="switchView('view-menu')">Keluar Sesi</button>
+        </div>
+
+        <div id="view-complete" style="display: none;">
+            <h2>Luar Biasa! 🎉🏆</h2>
+            <p>Misi pengerjaan 50 soal dialog interaktif selesai.</p>
+            <h3 id="final-score-board" style="color: var(--text-dark);">Skor: 0 / 50</h3>
+            <button onclick="switchView('view-menu')">Kembali ke Beranda</button>
+        </div>
+
+    </div>
+
+    <script>
+        // ========================================================
+        // COMPREHENSIVE REPOSITORY DATA SYSTEM
+        // ========================================================
+        const studentData = {
+            "fny": { name: "Fenny", email: "60fenny@gmail.com" },
+            "guest": { name: "Guest", email: "none" }
+        };
+
+        const learnCards = [
+            { category: "What (Apa / Informasi)", title: "What's / What are", use: "What's (tunggal), What are (jamak)", text: "• What's your name? (Siapa namamu?)<br>• What are the answers? (Apa jawaban-jawabannya?)" },
+            { category: "Where (Dimana / Lokasi)", title: "Where's / Where are", use: "Where's (tunggal), Where are (jamak)", text: "• Where's Verona? (Dimana Verona?)<br>• Where are your children? (Dimana anak-anakmu?)" },
+            { category: "Who (Siapa / Orang)", title: "Who's / Who are", use: "Who's (tunggal), Who are (jamak)", text: "• Who's Kiera? (Siapa Kiera?)<br>• Who are your parents? (Siapa orang tuamu?)" },
+            { category: "When (Kapan / Waktu)", title: "When's / When", use: "When's (hari/jam tertentu), When (umum)", text: "• When's our English class? (Kapan kelas bahasa Inggris kita?)<br>• When is the weekend? (Kapan hari libur akhir pekan?)" },
+            { category: "How (Bagaimana / Kabar/Kondisi)", title: "How's / How are", use: "How's (tunggal), How are (jamak)", text: "• How's your new car? (Bagaimana mobil barumu?)<br>• How are your classes? (Bagaimana kelas-kelasmu?)" }
+        ];
+
+        const miniQuizQuestions = [
+            { q: "A: ______ Italy?<br>B: It is in Europe.", a: "Where's", o: ["Where's", "Where are", "What's", "How's"], e: "Italy adalah negara tunggal (It), maka gunakan 'Where's'." },
+            { q: "A: ______ those girls near the door?<br>B: They are my sisters.", a: "Who are", o: ["Who's", "Who are", "What are", "How are"], e: "Subjeknya jamak ('those girls'), jadi kita menggunakan 'Who are'." },
+            { q: "A: ______ your mother today?<br>B: She is very well, thank you!", a: "How's", o: ["How's", "How are", "Who's", "When's"], e: "Menanyakan kabar satu orang (your mother) menggunakan 'How's'." }
+        ];
+
+        const dialogueExercises = [
+            { id: "e1", text: "A: ______ your email address?<br>B: It's domway34@hetmail.ac.com.", answer: "What's", explanation: "Menanyakan informasi tunggal berupa alamat email menggunakan 'What's'." },
+            { id: "e2", text: "A: ______ Verona?<br>B: It's in Italy.", answer: "Where's", explanation: "Menanyakan lokasi dari satu kota tunggal (Verona) menggunakan 'Where's'." },
+            { id: "e3", text: "A: ______ your parents?<br>B: They're Michael and Sheila.", answer: "Who are", explanation: "Menanyakan identitas orang tua (parents = jamak/plural), jadi gunakan 'Who are'." },
+            { id: "e4", text: "A: ______ your new car?<br>B: It's great! I'm very happy with it.", answer: "How's", explanation: "Menanyakan kondisi atau pendapat tentang mobil baru (tunggal) menggunakan 'How's'." },
+            { id: "e5", text: "A: ______ the answers to Exercise 3A?<br>B: Number 1 is 'a', number 2 is 'an'.", answer: "What are", explanation: "Menanyakan informasi jamak (the answers), maka gunakan 'What are'." },
+            { id: "e6", text: "A: ______ our English class?<br>B: It's on Wednesday.", answer: "When's", explanation: "Menanyakan waktu pelaksanaan kelas tunggal menggunakan singkatan 'When's'." },
+            { id: "e7", text: "A: ______ Kiera?<br>B: She's my wife.", answer: "Who's", explanation: "Menanyakan siapa identitas dari satu orang tunggal (Kiera) menggunakan 'Who's'." },
+            { id: "e8", text: "A: ______ your children?<br>B: They're at school.", answer: "Where are", explanation: "Menanyakan lokasi dari anak-anak (children = jamak/plural), gunakan 'Where are'." },
+            { id: "e9", text: "A: ______ your classes?<br>B: They're difficult, but they're great!", answer: "How are", explanation: "Menanyakan kondisi dari banyak kelas (classes = jamak), gunakan 'How are'." },
+            { id: "e10", text: "A: ______ the weekend in your country?<br>B: It's on Friday and Saturday.", answer: "When", explanation: "Menanyakan waktu umum struktur kalimat dasar tunggal utuh tanpa apostrof 's' karena sudah ada kata 'is' setelahnya." },
+            { id: "e11", text: "A: ______ my blue pen?<br>B: It's under your textbook.", answer: "Where's", explanation: "Menanyakan posisi lokasi dari satu pulpen tunggal, gunakan 'Where's'." },
+            { id: "e12", text: "A: ______ your brothers?<br>B: They are at the football stadium.", answer: "Where are", explanation: "Menanyakan lokasi dari subjek jamak (brothers), gunakan 'Where are'." },
+            { id: "e13", text: "A: ______ your favorite food?<br>B: It's fried rice.", answer: "What's", explanation: "Menanyakan jenis makanan kesukaan tunggal menggunakan 'What's'." },
+            { id: "e14", text: "A: ______ your hobbies?<br>B: They are swimming and reading.", answer: "What are", explanation: "Menanyakan hobi yang berjumlah lebih dari satu (hobbies = jamak) menggunakan 'What are'." },
+            { id: "e15", text: "A: ______ that tall man?<br>B: He is our new English teacher.", answer: "Who's", explanation: "Menanyakan orang tunggal (that tall man) menggunakan 'Who's'." },
+            { id: "e16", text: "A: ______ those boys?<br>B: They are my classmates.", answer: "Who are", explanation: "Menanyakan sekumpulan orang jamak (those boys) menggunakan 'Who are'." },
+            { id: "e17", text: "A: ______ your mother today?<br>B: She is much better, thank you.", answer: "How's", explanation: "Menanyakan kabar dari satu orang tunggal (mother) menggunakan 'How's'." },
+            { id: "e18", text: "A: ______ your grandparents?<br>B: They are very healthy.", answer: "How are", explanation: "Menanyakan kabar dari kakek nenek (jamak), gunakan 'How are'." },
+            { id: "e19", text: "A: ______ the concert?<br>B: It's next Saturday night.", answer: "When's", explanation: "Menanyakan waktu konser tunggal menggunakan 'When's'." },
+            { id: "e20", text: "A: ______ your flight to Jakarta?<br>B: It's at 9 AM tomorrow.", answer: "When's", explanation: "Menanyakan waktu keberangkatan penerbangan tunggal menggunakan 'When's'." },
+            { id: "e21", text: "A: ______ Tokyo?<br>B: It is in Japan.", answer: "Where's", explanation: "Tokyo adalah kota tunggal, maka gunakan 'Where's' untuk menanyakan lokasinya." },
+            { id: "e22", text: "A: ______ the keys?<br>B: They are in your black bag.", answer: "Where are", explanation: "Keys berbentuk jamak, maka gunakan kata ganti posisi lokasi 'Where are'." },
+            { id: "e23", text: "A: ______ your phone number?<br>B: It's 0812-3456-7890.", answer: "What's", explanation: "Menanyakan info nomor telepon tunggal memakai 'What's'." },
+            { id: "e24", text: "A: ______ your favorite movies?<br>B: They are Harry Potter and Star Wars.", answer: "What are", explanation: "Movies berbentuk jamak, maka kata tanya yang tepat adalah 'What are'." },
+            { id: "e25", text: "A: ______ the girl in the red dress?<br>B: She is my cousin, Sarah.", answer: "Who's", explanation: "Menanyakan satu orang perempuan tunggal menggunakan 'Who's'." },
+            { id: "e26", text: "A: ______ those actors?<br>B: They are from Canada.", answer: "Who are", explanation: "Actors berbentuk jamak, pasangannya adalah 'Who are'." },
+            { id: "e27", text: "A: ______ your holiday?<br>B: It's fantastic, I love the beach!", answer: "How's", explanation: "Menanyakan kondisi/kesan liburan tunggal menggunakan 'How's'." },
+            { id: "e28", text: "A: ______ your exams?<br>B: They are difficult but finished!", answer: "How are", explanation: "Exams berbentuk jamak, maka gunakan kata tanya 'How are'." },
+            { id: "e29", text: "A: ______ the birthday party?<br>B: It's at 7 PM on Friday.", answer: "When's", explanation: "Menanyakan waktu acara pesta tunggal menggunakan 'When's'." },
+            { id: "e30", text: "A: ______ the meeting?<br>B: It is on your schedule for Tuesday.", answer: "When", explanation: "Kalimat menggunakan kata kerja 'is' setelah subjek utama, maka gunakan kata tanya dasar 'When'." },
+            { id: "e31", text: "A: ______ the library?<br>B: It is next to the science lab.", answer: "Where's", explanation: "Menanyakan letak satu tempat gedung perpustakaan menggunakan 'Where's'." },
+            { id: "e32", text: "A: ______ my shoes?<br>B: They are near the front door.", answer: "Where are", explanation: "Shoes dianggap sepasang/jamak, maka gunakan 'Where are'." },
+            { id: "e33", text: "A: ______ his job?<br>B: He is a computer engineer.", answer: "What's", explanation: "Menanyakan satu jenis pekerjaan tunggal memakai kata ganti 'What's'." },
+            { id: "e34", text: "A: ______ your plans for tomorrow?<br>B: We want to visit the Medan zoo.", answer: "What are", explanation: "Plans berbentuk jamak, maka kata tanya pelengkapnya adalah 'What are'." },
+            { id: "e35", text: "A: ______ your best friend?<br>B: It's Kevin.", answer: "Who's", explanation: "Menanyakan satu orang sahabat tunggal menggunakan 'Who's'." },
+            { id: "e36", text: "A: ______ your teachers?<br>B: They are Mr. Ryan and Mrs. Nia.", answer: "Who are", explanation: "Teachers berjumlah jamak, gunakan 'Who are'." },
+            { id: "e37", text: "A: ______ your new smartphone?<br>B: It's amazing! The camera is great.", answer: "How's", explanation: "Menanyakan kualitas barang tunggal memakai 'How's'." },
+            { id: "e38", text: "A: ______ the children today?<br>B: They are very happy playing outside.", answer: "How are", explanation: "Children bermakna jamak, maka menanyakan kabarnya memakai 'How are'." },
+            { id: "e39", text: "A: ______ the flight departure?<br>B: It's in ten minutes!", answer: "When's", explanation: "Menanyakan waktu keberangkatan tunggal menggunakan 'When's'." },
+            { id: "e40", text: "A: ______ the next holiday?<br>B: It's in December.", answer: "When's", explanation: "Menanyakan bulan liburan tunggal menggunakan 'When's'." },
+            { id: "e41", text: "A: ______ the bathroom?<br>B: It's at the end of the hallway.", answer: "Where's", explanation: "Menanyakan satu lokasi ruangan tunggal memakai 'Where's'." },
+            { id: "e42", text: "A: ______ your bags?<br>B: They are inside the car trunk.", answer: "Where are", explanation: "Bags berbentuk jamak, pasangannya adalah 'Where are'." },
+            { id: "e43", text: "A: ______ that sound?<br>B: It's just the wind outside.", answer: "What's", explanation: "Menanyakan satu jenis suara tunggal memakai 'What's'." },
+            { id: "e44", text: "A: ______ the topics for the test?<br>B: Grammar and vocabulary.", answer: "What are", explanation: "Topics berbentuk jamak, pasangannya adalah 'What are'." },
+            { id: "e45", text: "A: ______ the captain of the team?<br>B: It's John.", answer: "Who's", explanation: "Menanyakan satu kapten tunggal menggunakan 'Who's'." },
+            { id: "e46", text: "A: ______ the new students?<br>B: They are over there in the yard.", answer: "Who are", explanation: "Students berbentuk jamak, gunakan 'Who are'." },
+            { id: "e47", text: "A: ______ your english class?<br>B: It's very fun and interesting!", answer: "How's", explanation: "Menanyakan kesan kondisi satu kelas tunggal menggunakan 'How's'." },
+            { id: "e48", text: "A: ______ your parents doing?<br>B: They are fine, thank you.", answer: "How are", explanation: "Menanyakan kabar orang tua (jamak), gunakan kata ganti 'How are'." },
+            { id: "e49", text: "A: ______ the train arrival?<br>B: It's at 4 PM.", answer: "When's", explanation: "Menanyakan waktu kedatangan kereta tunggal memakai 'When's'." },
+            { id: "e50", text: "A: ______ the school event?<br>B: It is scheduled for next Friday morning.", answer: "When", explanation: "Terdapat kata 'is' setelah kalimat subjek objek utuh, maka kata tanya dasar murni tanpa apostrof 's' adalah 'When'." }
+        ];
+
+        // ========================================================
+        // APPLICATION LOGIC CONTROLLER ENGINES
+        // ========================================================
+        let activeCardIdx = 0;
+        let miniQuizIdx = 0;
+        let exerciseIdx = 0;
+        let exerciseScore = 0;
+        let activeStudentId = "";
+        let currentStudent = null;
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCmBvKTHhR_wivKKrwITyumig2TusrJLoE",
+            authDomain: "accents-with-grace.firebaseapp.com",
+            databaseURL: "https://accents-with-grace-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "accents-with-grace",
+            storageBucket: "accents-with-grace.firebasestorage.app",
+            messagingSenderId: "152119821350",
+            appId: "1:152119821350:web:0602eb24bf3abdc20b52e7"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        
+        auth.onAuthStateChanged((user) => {
+            if (!user) auth.signInAnonymously();
+        });
+
+        function switchView(viewId) {
+            const views = ['view-login', 'view-menu', 'view-learn', 'view-mini-quiz', 'view-exercise', 'view-complete'];
+            views.forEach(v => {
+                document.getElementById(v).style.display = (v === viewId) ? 'block' : 'none';
+            });
+        }
+
+        function handleLogin() {
+            const val = document.getElementById('user-dropdown').value;
+            if(!val) {
+                alert("Pilih nama pengguna terlebih dahulu!");
+                return;
+            }
+            activeStudentId = val;
+            currentStudent = studentData[val];
+            document.getElementById('welcome-text').innerText = `Halo, ${currentStudent.name}! 👋`;
+            switchView('view-menu');
+        }
+
+        // --- FLASHCARD ENGINE OPERATIONS ---
+        function updateCardUI() {
+            const card = learnCards[activeCardIdx];
+            document.getElementById('card-badge').innerText = card.category;
+            document.getElementById('card-title').innerText = card.title;
+            document.getElementById('card-use').innerText = card.use;
+            document.getElementById('card-example').innerHTML = `<strong>Contoh Penggunaan:</strong><br>${card.text}`;
+            document.getElementById('card-counter').innerText = `${activeCardIdx + 1} / ${learnCards.length}`;
+            
+            // Jikalau sudah sampai kartu terakhir, tampilkan tombol pemicu mini quiz
+            if (activeCardIdx === learnCards.length - 1) {
+                document.getElementById('btn-trigger-mini').style.display = 'inline-block';
+            }
+        }
+
+        function flickCard(direction) {
+            const cardEl = document.getElementById('flashcard-element');
+            const classToAdd = (direction === 'left') ? 'flick-left' : 'flick-right';
+            
+            cardEl.classList.add(classToAdd);
+            
+            setTimeout(() => {
+                if (direction === 'right') {
+                    activeCardIdx = (activeCardIdx + 1) % learnCards.length;
+                } else {
+                    activeCardIdx = (activeCardIdx - 1 + learnCards.length) % learnCards.length;
+                }
+                updateCardUI();
+                cardEl.className = 'flashcard';
+            }, 400);
+        }
+
+        // --- MINI QUIZ ROUTINE (UNDERSTANDING CONFIRMATION) ---
+        function startMiniQuiz() {
+            miniQuizIdx = 0;
+            switchView('view-mini-quiz');
+            loadMiniQuizQuestion();
+        }
+
+        function loadMiniQuizQuestion() {
+            const q = miniQuizQuestions[miniQuizIdx];
+            document.getElementById('mini-progress').innerText = `${miniQuizIdx + 1} / ${miniQuizQuestions.length}`;
+            document.getElementById('mini-q-text').innerHTML = q.q;
+            document.getElementById('mini-explanation').style.display = 'none';
+            document.getElementById('btn-next-mini').style.display = 'none';
+
+            const optionsGrid = document.getElementById('mini-options');
+            optionsGrid.innerHTML = '';
+
+            q.o.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => checkMiniQuizAnswer(btn, opt, q.a, q.e);
+                optionsGrid.appendChild(btn);
+            });
+        }
+
+        function checkMiniQuizAnswer(btn, selected, correct, exp) {
+            const allBtns = document.querySelectorAll('#mini-options .opt-btn');
+            allBtns.forEach(b => b.disabled = true);
+
+            if (selected === correct) {
+                btn.classList.add('correct');
+            } else {
+                btn.classList.add('wrong');
+                allBtns.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+            }
+
+            const expBox = document.getElementById('mini-explanation');
+            expBox.innerHTML = `<strong>Penjelasan:</strong> ${exp}`;
+            expBox.style.display = 'block';
+            document.getElementById('btn-next-mini').style.display = 'block';
+        }
+
+        function advanceMiniQuiz() {
+            miniQuizIdx++;
+            if (miniQuizIdx >= miniQuizQuestions.length) {
+                alert("Selamat! Kamu berhasil menyelesaikan Quiz Konfirmasi Pemahaman. Sekarang tombol latihan utama terbuka! 🔓");
+                switchView('view-menu');
+            } else {
+                loadMiniQuizQuestion();
+            }
+        }
+
+        // --- EXERCISE MODULE ENGINES ---
+        function startExerciseMode() {
+            exerciseIdx = 0;
+            exerciseScore = 0;
+            switchView('view-exercise');
+            loadExerciseQuestion();
+        }
+
+        function loadExerciseQuestion() {
+            if (exerciseIdx >= dialogueExercises.length) {
+                finishExerciseSession();
+                return;
+            }
+
+            const q = dialogueExercises[exerciseIdx];
+            document.getElementById('exercise-progress').innerText = `${exerciseIdx + 1} / ${dialogueExercises.length}`;
+            document.getElementById('box-explanation').style.display = 'none';
+            document.getElementById('btn-next-q').style.display = 'none';
+            document.getElementById('btn-submit').disabled = false;
+
+            const field = document.getElementById('blank-field');
+            field.value = "";
+            field.disabled = false;
+
+            document.getElementById('exercise-q-bubble').innerHTML = q.text;
+        }
+
+        function submitExerciseAnswer() {
+            const q = dialogueExercises[exerciseIdx];
+            const inputField = document.getElementById('blank-field');
+            
+            // Text normalisasi toleransi A1 (bersihkan simbol tanda baca ekstra jikalau terketik)
+            const userText = inputField.value.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+            const cleanAnswer = q.answer.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+
+            inputField.disabled = true;
+            document.getElementById('btn-submit').disabled = true;
+
+            // Perbandingan Case-Insensitive (tidak sensitif huruf besar kecil agar ramah anak A1)
+            if (userText.toLowerCase() === cleanAnswer.toLowerCase()) {
+                inputField.style.borderColor = "var(--correct-green)";
+                exerciseScore++;
+            } else {
+                inputField.style.borderColor = "var(--wrong)";
+            }
+
+            const box = document.getElementById('box-explanation');
+            box.innerHTML = `<strong>Jawaban Benar:</strong> ${q.answer}<br><br><strong>Penjelasan:</strong> ${q.explanation}`;
+            box.style.display = 'block';
+            document.getElementById('btn-next-q').style.display = 'block';
+        }
+
+        function advanceNextQuestion() {
+            document.getElementById('blank-field').style.borderColor = "var(--primary)";
+            減
+            exerciseIdx++;
+            loadExerciseQuestion();
+        }
+
+        function finishExerciseSession() {
+            switchView('view-complete');
+            document.getElementById('final-score-board').innerText = `Skor Akhir: ${exerciseScore} / ${dialogueExercises.length}`;
+
+            // Sync with backend Firebase Firestore
+            const user = auth.currentUser;
+            if (user && currentStudent) {
+                db.collection('results').add({
+                    userId: user.uid,
+                    studentId: activeStudentId,
+                    studentName: currentStudent.name,
+                    studentEmail: currentStudent.email,
+                    assignment: "hw-3_question_words",
+                    score: exerciseScore,
+                    totalQuestions: dialogueExercises.length,
+                    date: new Date().toISOString().split('T')[0],
+                    timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    console.log("Cloud sync completed successfully.");
+                }).catch(err => {
+                    console.error("Cloud syncing failed:", err);
+                });
+            }
+        }
+
+        window.onload = function() {
+            updateCardUI();
+        };
+    </script>
+</body>
+</html>
