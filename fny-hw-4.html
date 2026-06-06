@@ -6,6 +6,7 @@
     <title>Mastery Mission: Question Words + Be</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -296,7 +297,8 @@
             <div id="exercise-q-bubble" class="dialogue-bubble">Loading question...</div>
             
             <div id="box-input">
-                <input type="text" id="blank-field" class="input-blank" placeholder="Ketik kata tanya + be yang tepat...">
+                <!-- Added keydown event for smooth mobile input submission -->
+                <input type="text" id="blank-field" class="input-blank" placeholder="Ketik kata tanya + be yang tepat..." onkeydown="handleKeyPress(event)">
                 <button id="btn-submit" onclick="submitExerciseAnswer()">Periksa Jawaban</button>
             </div>
 
@@ -447,7 +449,6 @@
             document.getElementById('card-example').innerHTML = `<strong>Contoh Penggunaan:</strong><br>${card.text}`;
             document.getElementById('card-counter').innerText = `${activeCardIdx + 1} / ${learnCards.length}`;
             
-            // Jikalau sudah sampai kartu terakhir, tampilkan tombol pemicu mini quiz
             if (activeCardIdx === learnCards.length - 1) {
                 document.getElementById('btn-trigger-mini').style.display = 'inline-block';
             }
@@ -541,6 +542,7 @@
             document.getElementById('exercise-progress').innerText = `${exerciseIdx + 1} / ${dialogueExercises.length}`;
             document.getElementById('box-explanation').style.display = 'none';
             document.getElementById('btn-next-q').style.display = 'none';
+            document.getElementById('btn-submit').style.display = 'block'; // Make sure submit button stays visible
             document.getElementById('btn-submit').disabled = false;
 
             const field = document.getElementById('blank-field');
@@ -550,18 +552,24 @@
             document.getElementById('exercise-q-bubble').innerHTML = q.text;
         }
 
+        function handleKeyPress(event) {
+            // Allows mobile users to submit by tapping 'Enter/Go' on virtual keyboard
+            if (event.key === "Enter" && !document.getElementById('btn-submit').disabled) {
+                submitExerciseAnswer();
+            }
+        }
+
         function submitExerciseAnswer() {
             const q = dialogueExercises[exerciseIdx];
             const inputField = document.getElementById('blank-field');
             
-            // Text normalisasi toleransi A1 (bersihkan simbol tanda baca ekstra jikalau terketik)
             const userText = inputField.value.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
             const cleanAnswer = q.answer.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
 
             inputField.disabled = true;
             document.getElementById('btn-submit').disabled = true;
+            document.getElementById('btn-submit').style.display = 'none'; // Clear space for the Lanjut button
 
-            // Perbandingan Case-Insensitive (tidak sensitif huruf besar kecil agar ramah anak A1)
             if (userText.toLowerCase() === cleanAnswer.toLowerCase()) {
                 inputField.style.borderColor = "var(--correct-green)";
                 exerciseScore++;
@@ -577,7 +585,7 @@
 
         function advanceNextQuestion() {
             document.getElementById('blank-field').style.borderColor = "var(--primary)";
-            減
+            // Rogue character removed completely here!
             exerciseIdx++;
             loadExerciseQuestion();
         }
@@ -586,7 +594,6 @@
             switchView('view-complete');
             document.getElementById('final-score-board').innerText = `Skor Akhir: ${exerciseScore} / ${dialogueExercises.length}`;
 
-            // Sync with backend Firebase Firestore
             const user = auth.currentUser;
             if (user && currentStudent) {
                 db.collection('results').add({
