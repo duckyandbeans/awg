@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Mastery Quiz (Units 21-30)</title>
+    <style>
+        :root {
+            --primary-color: #2b6cb0;
+            --secondary-color: #edf2f7;
+            --success-color: #48bb78;
+            --error-color: #f56565;
+            --text-color: #2d3748;
+            --border-radius: 8px;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: #f7fafc;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 15px;
+        }
+
+        .segment {
+            margin-bottom: 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+        }
+
+        .segment-header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 15px 20px;
+            margin: 0;
+            font-size: 1.25rem;
+        }
+
+        .question-container {
+            padding: 20px;
+            border-bottom: 1px solid #edf2f7;
+            background-color: #fff;
+        }
+
+        .question-container:last-child {
+            border-bottom: none;
+        }
+
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .options-route {
+            display: grid;
+            gap: 10px;
+            margin-left: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .option-label:hover {
+            background-color: #edf2f7;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+        }
+
+        .fill-input-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .initial-letter {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--primary-color);
+        }
+
+        .fill-input {
+            padding: 8px 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 200px;
+            transition: border-color 0.2s;
+        }
+
+        .fill-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: background-color 0.2s;
+        }
+
+        .submit-btn:hover {
+            background-color: #2b6cb0;
+        }
+
+        #results-panel {
+            display: none;
+            margin-top: 30px;
+            padding: 25px;
+            background-color: #ebf8ff;
+            border: 2px solid #bee3f8;
+            border-radius: var(--border-radius);
+            text-align: center;
+        }
+
+        .score-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin: 15px 0;
+        }
+
+        .correct-answer {
+            background-color: #f0fff4 !important;
+            border-color: var(--success-color) !important;
+        }
+
+        .incorrect-answer {
+            background-color: #fff5f5 !important;
+            border-color: var(--error-color) !important;
+        }
+
+        .feedback-text {
+            font-size: 0.9rem;
+            margin-top: 6px;
+            font-weight: bold;
+        }
+        
+        .feedback-success { color: var(--success-color); }
+        .feedback-error { color: var(--error-color); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Vocabulary Mastery Assessment</h1>
+    
+    <div id="quiz-form">
+        </div>
+
+    <button type="button" class="submit-btn" onclick="gradeQuiz()">Submit Assessment</button>
+
+    <div id="results-panel">
+        <h2>Your Results</h2>
+        <div class="score-display" id="score-text">0 / 100</div>
+        <p id="percentage-text" style="font-size: 1.2rem; font-weight: 500;"></p>
+        <p id="feedback-summary"></p>
+    </div>
+</div>
+
+<script>
+    const quizData = [
+        {
+            segment: 1,
+            title: "Segment 1: Phrasal Verbs & Time Conditions (Unit 21)",
+            questions: [
+                { id: 1, type: "mcq", q: "All of you must ________ your homework assignments tomorrow morning without delay.", options: ["set off", "hand in", "come along", "hold on"], a: "hand in" },
+                { id: 2, type: "mcq", q: "We must ________ on our long expedition into the mountains early in the morning.", options: ["pull up", "cut off", "set off", "passed on"], a: "set off" },
+                { id: 3, type: "mcq", q: "I simply cannot ________ with her continuous bullying and toxic actions any longer.", options: ["put up", "come by", "go ahead", "cut up"], a: "put up" },
+                { id: 4, type: "mcq", q: "During the severe thunderstorm, our electricity supply was suddenly ________.", options: ["passed on", "hand in", "cut off", "pull up"], a: "cut off" },
+                { id: 5, type: "mcq", q: "The ancient myth and folklore was ________ from one historical generation to another.", options: ["carried out", "passed on", "come along", "go ahead"], a: "passed on" },
+                { id: 6, type: "fill", q: "The total absence of rain for a remarkably long period caused a nationwide water shortage.", i: "d", a: "drought" },
+                { id: 7, type: "fill", q: "The friendly people who live next door are always incredibly supportive and helpful.", i: "n", a: "neighbors" },
+                { id: 8, type: "fill", q: "Please return home without any delay because your mother has fallen seriously ill.", i: "i", a: "immediately" },
+                { id: 9, type: "fill", q: "The research laboratory is planning to execution or ________ out an experiment using the new method.", i: "c", a: "carry" },
+                { id: 10, type: "fill", q: "The brave young boy managed to ________ on tightly to the stone ledge until rescuers arrived.", i: "h", a: "hold" }
+            ]
+        },
+        {
+            segment: 2,
+            title: "Segment 2: Advanced Idioms & Expressions (Unit 22)",
+            questions: [
+                { id: 11, type: "mcq", q: "If you neglect to attend this mandatory board meeting, you will find yourself in hot ________.", options: ["water", "soup", "mud", "oil"], a: "soup" },
+                { id: 12, type: "mcq", q: "Do not lose ________ even if you fail the examination; try your best again next time.", options: ["mind", "heart", "head", "soul"], a: "heart" },
+                { id: 13, type: "mcq", q: "The heroic firefighters reached the burning flat in the ________ of time to save the trapped family.", options: ["nick", "blink", "edge", "tick"], a: "nick" },
+                { id: 14, type: "mcq", q: "You must give your child a piece of your ________ whenever they act aggressively or rudely.", options: ["heart", "brain", "mind", "thought"], a: "mind" },
+                { id: 15, type: "mcq", q: "Our family residence is located well within a stone's ________ from the local public school.", options: ["throw", "drop", "roll", "cast"], a: "throw" },
+                { id: 16, type: "fill", q: "The youngest daughter is loved unconditionally and is clearly the ________ of her father's eye.", i: "a", a: "apple" },
+                { id: 17, type: "fill", q: "At the ________ hour, right before the deadline, she changed her mind about withdrawing from the show.", i: "e", a: "eleventh" },
+                { id: 18, type: "fill", q: "As she has just joined our corporate office, she is still considered an inexperienced ________.", i: "g", a: "greenhorn" },
+                { id: 19, type: "fill", q: "The neighbors had to pass the ________ around to collect emergency financial donations for the victim.", i: "h", a: "hat" },
+                { id: 20, type: "fill", q: "The poor toddler was severely ________ when the boiling water accidentally spilled across her arm.", i: "s", a: "scalded" }
+            ]
+        },
+        {
+            segment: 3,
+            title: "Segment 3: Wildlife Comprehension & Descriptions (Unit 23)",
+            questions: [
+                { id: 21, type: "mcq", q: "The blue whale lives entirely within the deep sea, yet it is classified as a true ________.", options: ["fish", "amphibian", "reptile", "mammal"], a: "mammal" },
+                { id: 22, type: "mcq", q: "The massive blue whale is recognized globally as the largest ________ on Planet Earth.", options: ["creature", "reptile", "insect", "plant"], a: "creature" },
+                { id: 23, type: "mcq", q: "An adult blue whale is incredibly heavy and ________ well over a hundred thousand kilograms.", options: ["measures", "weighs", "extends", "loads"], a: "weighs" },
+                { id: 24, type: "mcq", q: "Whales cannot process oxygen underwater using gills; instead, they must surface to ________.", options: ["breathe", "consume", "filter", "absorb"], a: "breathe" },
+                { id: 25, type: "mcq", q: "To store oxygen for long dives, whales are equipped with massive, highly efficient ________.", options: ["gills", "fins", "scales", "lungs"], a: "lungs" },
+                { id: 26, type: "fill", q: "The blue whale is unique because it is the ________ living animal to ever exist.", i: "b", a: "biggest" },
+                { id: 27, type: "fill", q: "A single powerful blow from a whale's massive ________ can easily capsize a small fishing boat.", i: "t", a: "tail" },
+                { id: 28, type: "fill", q: "Unlike cold-blooded fish, marine mammals are ________-blooded creatures with stable internal temperatures.", i: "w", a: "warm" },
+                { id: 29, type: "fill", q: "The massive mother whale consistently ________ and nurses her young calf with nutrient-rich milk.", i: "f", a: "feeds" },
+                { id: 30, type: "fill", q: "If the torrential rainstorms do not stop soon, the dangerous floodwaters will not ________.", i: "s", a: "subside" }
+            ]
+        },
+        {
+            segment: 4,
+            title: "Segment 4: Verbs & Actions (Unit 24)",
+            questions: [
+                { id: 31, type: "mcq", q: "The disgruntled old lady spent the entire afternoon ________ about the hot weather conditions.", options: ["grumbling", "whispering", "chattering", "singing"], a: "grumbling" },
+                { id: 32, type: "mcq", q: "The heavy delivery lorry suddenly ________ off the slick, wet road and crashed into a lamp post.", options: ["slid", "skidded", "glided", "rolled"], a: "skidded" },
+                { id: 33, type: "mcq", q: "Because the herbal tea was still boiling hot, he chose to gently ________ it very slowly.", options: ["sip", "gulp", "swallow", "gargle"], a: "sip" },
+                { id: 34, type: "mcq", q: "The desperate young boy emotional ________ with his strict teacher, begging her not to call his parents.", options: ["pleaded", "demanded", "asked", "ordered"], a: "pleaded" },
+                { id: 35, type: "mcq", q: "The security watchman walked diligently around the perimeter of the factory to ________ for intrusion.", options: ["locate", "explore", "check", "investigate"], a: "check" }
+            ]
+        },
+        {
+            segment: 5,
+            title: "Segment 5: Advanced Contextual Vocabulary (Unit 25)",
+            questions: [
+                { id: 41, type: "mcq", q: "We have unfortunately been ________ by our company because they can no longer afford our wages.", options: ["sacked", "retrenched", "retired", "promoted"], a: "retrenched" },
+                { id: 42, type: "mcq", q: "The doctor prescribed a soothing, medicated ________ to apply topically over my dry skin rash.", options: ["powder", "liquid", "lotion", "ointment"], a: "lotion" },
+                { id: 43, type: "mcq", q: "I purchased this weekly informative magazine from the local ________ down the street corner.", options: ["newsagent", "grocer", "godown", "butcher"], a: "newsagent" },
+                { id: 44, type: "mcq", q: "The old farm donkey ________ slowly and peacefully along the open pathways of the grassy field.", options: ["trotted", "galloped", "styled", "raced"], a: "trotted" },
+                { id: 45, type: "mcq", q: "The peaceful monks living inside the isolated ________ spent their mornings praying.", options: ["nursery", "monastery", "parsonage", "convent"], a: "monastery" },
+                { id: 46, type: "fill", q: "Mr. Shen built a small wooden hutch over the underground ________ dug out by his pet rabbit.", i: "b", a: "burrow" },
+                { id: 47, type: "fill", q: "As dusk approached, we could hear the soft, rhythmic ________ sounds of wild pigeons in the trees.", i: "c", a: "cooing" },
+                { id: 48, type: "fill", q: "The vintage red wine was carefully decanted and poured directly into an elegant glass ________.", i: "d", a: "decanter" },
+                { id: 49, type: "fill", q: "A beautiful, highly fragrant aroma of blooming lilies slowly ________ into the open dining room.", i: "w", a: "wafted" },
+                { id: 50, type: "fill", q: "The prime front-row theater seating options are strictly ________ for our VIP guests.", i: "r", a: "reserved" }
+            ]
+        },
+        {
+            segment: 6,
+            title: "Segment 6: Antonyms & Word Meanings (Unit 26)",
+            questions: [
+                { id: 51, type: "mcq", q: "Select the word that means the exact opposite of the underlined word: 'A **barren** piece of land.'", options: ["fertile", "dry", "empty", "rocky"], a: "fertile" },
+                { id: 52, type: "mcq", q: "Select the word that means the exact opposite of the underlined word: 'The jury found him **guilty**.'", options: ["innocent", "responsible", "shameful", "honest"], a: "innocent" },
+                { id: 53, type: "mcq", q: "She finally ________ to her close friends that she knew about their surprise plans all along.", options: ["admitted", "denied", "forgot", "hid"], a: "admitted" },
+                { id: 54, type: "mcq", q: "The hikers realized it was getting dark and decided to quickly ________ the steep mountain.", options: ["ascend", "descend", "climb", "scale"], a: "descend" },
+                { id: 55, type: "mcq", q: "Our strict parents explicitly ________ us from going outdoors during the severe thunderstorm.", options: ["forbid", "allowed", "invited", "encouraged"], a: "forbid" },
+                { id: 56, type: "fill", q: "The dynamic audience was absolutely ________ with joy by the theatrical team's brilliant performance.", i: "d", a: "delighted" },
+                { id: 57, type: "fill", q: "I am thoroughly ________ and uncertain about what academic path I ought to follow in the future.", i: "c", a: "confused" },
+                { id: 58, type: "fill", q: "She requested her sister to assist her in pulling up the stuck ________ on the back of her dress.", i: "z", a: "zip" },
+                { id: 59, type: "fill", q: "The elderly headmistress complained that her rowdy class made her feel incredibly ________.", i: "d", a: "dizzy" },
+                { id: 60, type: "fill", q: "The careful librarian arranged the literature books neatly onto the wooden storage ________.", i: "s", a: "shelves" }
+            ]
+        },
+        {
+            segment: 7,
+            title: "Segment 7: Core Idioms & Structural Phrases (Unit 27)",
+            questions: [
+                { id: 61, type: "mcq", q: "Her academic performance and immaculate character are perfect and entirely beyond ________.", options: ["reproach", "repair", "incorrigible", "inaccurate"], a: "reproach" },
+                { id: 62, type: "mcq", q: "It has been raining heavily without a single break, or ________, for three consecutive days.", options: ["daily", "repeatedly", "continuously", "intermittently"], a: "continuously" },
+                { id: 63, type: "mcq", q: "My grandfather loves to tell us fascinating stories about his dangerous wartime ________.", options: ["trips", "mysteries", "journeys", "adventures"], a: "adventures" },
+                { id: 64, type: "mcq", q: "The intense clinical medical treatment did not do her any good and was largely ________.", options: ["ineffective", "efficient", "incurable", "inadequate"], a: "ineffective" },
+                { id: 65, type: "mcq", q: "On catching sight of the patrolling police officers, the panicked thief quickly took to his ________.", options: ["heels", "hands", "boots", "legs"], a: "heels" },
+                { id: 66, type: "fill", q: "The expensive electronic equipment was left completely ________ in the hallway, risking theft.", i: "u", a: "unattended" },
+                { id: 67, type: "fill", q: "The structural damage to the vintage sports vehicle was severe and completely ________.", i: "i", a: "irreparable" },
+                { id: 68, type: "fill", q: "The young boy tried to copy exactly what his elder brother was doing at the table.", i: "c", a: "copy" },
+                { id: 69, type: "fill", q: "After taking a quick, casual ________ at the fashion magazine, she decided to purchase it.", i: "g", a: "glance" },
+                { id: 70, type: "fill", q: "________ long ago, I unexpectedly ran into a dear childhood friend at the international airport.", i: "r", a: "recently" }
+            ]
+        },
+        {
+            segment: 8,
+            title: "Segment 8: Word Forms & Derivatives (Unit 28)",
+            questions: [
+                { id: 71, type: "mcq", q: "The brave soldiers fought ________ until the invading enemy forces were completely defeated.", options: ["courageously", "fearfully", "quietly", "hesitantly"], a: "courageously" },
+                { id: 72, type: "mcq", q: "Ants and honeybees are globally recognized by biologists as highly ________ insects.", options: ["industrious", "lazy", "destructive", "isolated"], a: "industrious" },
+                { id: 73, type: "mcq", q: "After a long and stressful career, our grandfather passed away very ________ in his sleep.", options: ["peacefully", "painfully", "noisily", "suddenly"], a: "peacefully" },
+                { id: 74, type: "mcq", q: "A dedicated and premium employee always arrives at the office in a ________ manner.", options: ["punctual", "tardy", "careless", "slow"], a: "punctual" },
+                { id: 75, type: "mcq", q: "The disciplined students listened ________ to the school principal's graduation speech.", options: ["attentively", "distractedly", "loudly", "indifferently"], a: "attentively" },
+                { id: 76, type: "fill", q: "Would you please be ________ enough to share the complete assignment answers with me?", i: "k", a: "kindly" },
+                { id: 77, type: "fill", q: "Because of the store's massive supply, I have no choice but to pick from a vast range.", i: "c", a: "choice" },
+                { id: 78, type: "fill", q: "The little girl received an exquisitely constructed, ________ handmade doll from her aunt.", i: "b", a: "beautiful" },
+                { id: 79, type: "fill", q: "The major departmental store sells a vast, diverse ________ of consumer goods.", i: "v", a: "variety" },
+                { id: 80, type: "fill", q: "The scorching ________ of the direct afternoon sun was so intense that the streets were empty.", i: "h", a: "heat" }
+            ]
+        },
+        {
+            segment: 9,
+            title: "Segment 9: Advanced Idioms & Contextual Words (Unit 28-29)",
+            questions: [
+                { id: 81, type: "mcq", q: "My mischievous older brother always loves to pull my ________ by telling me fake stories.", options: ["arm", "leg", "hair", "ear"], a: "leg" },
+                { id: 82, type: "mcq", q: "The vast, desolate Sahara desert is completely dry and largely ________ by humans.", options: ["uninhabited", "populated", "cultivated", "occupied"], a: "uninhabited" },
+                { id: 83, type: "mcq", q: "The royal palace assigned two muscular bodyguards to ________ the princess wherever she goes.", options: ["save", "guard", "protect", "follow"], a: "guard" },
+                { id: 84, type: "mcq", q: "Every single week, my supportive father grants me a generous financial pocket ________.", options: ["allowance", "interest", "salary", "bonus"], a: "allowance" },
+                { id: 85, type: "mcq", q: "The forensic police team questioned him extensively about the red blood ________ on his shirt.", options: ["spot", "speck", "stain", "mark"], a: "stain" },
+                { id: 86, type: "fill", q: "The defense wall was weak and proved easily ________ by the opposing team's attackers.", i: "p", a: "penetrable" },
+                { id: 87, type: "fill", q: "He is a very ________ child who constantly plays tricks on his classmates.", i: "m", a: "mischievous" },
+                { id: 88, type: "fill", q: "She is a highly negative individual who always seeks to find ________ with everyone else's work.", i: "f", a: "fault" },
+                { id: 89, type: "fill", q: "The defendant was officially declared completely ________ and free of any criminal wrongdoing.", i: "i", a: "innocent" },
+                { id: 90, type: "fill", q: "The polite young lady began her speech by ________ her teachers for their guidance.", i: "t", a: "thanking" }
+            ]
+        },
+        {
+            segment: 10,
+            title: "Segment 10: Science, Environment & Life Essentials (Unit 30)",
+            questions: [
+                { id: 91, type: "mcq", q: "The medical scientists spent months working inside the sterile chemical ________ to develop a cure.", options: ["laboratory", "lavatory", "studio", "workshop"], a: "laboratory" },
+                { id: 92, type: "mcq", q: "The early pioneers experienced great physical ________ before achieving business success.", options: ["problems", "hardship", "experiences", "comfort"], a: "hardship" },
+                { id: 93, type: "mcq", q: "The excited ________ clapped loudly as soon as the star performer stepped onto the stage.", options: ["audience", "spectators", "onlookers", "witnesses"], a: "audience" },
+                { id: 94, type: "mcq", q: "Rivers provide essential water resources for agricultural crop ________ and farming purposes.", options: ["irrigation", "pollution", "destruction", "wasting"], a: "irrigation" },
+                { id: 95, type: "mcq", q: "In times of severe water scarcity, valuable water supplies must never be carelessly ________.", options: ["wasted", "saved", "stored", "cleaned"], a: "wasted" },
+                { id: 96, type: "fill", q: "Clean, fresh water is absolutely fundamental and vital to all ________ organisms on Earth.", i: "l", a: "living" },
+                { id: 97, type: "fill", q: "Human beings require fresh drinking water to safely ________ their physiological thirst.", i: "s", a: "satisfy" },
+                { id: 98, type: "fill", q: "Water is also widely utilized for domestic ________ such as cooking, washing, and sanitation.", i: "p", a: "purposes" },
+                { id: 99, type: "fill", q: "When rainfall drops below average levels, communities face a severe ________ of clean water.", i: "s", a: "shortage" },
+                { id: 100, type: "fill", q: "During emergencies, the government introduces strict ________ measures to manage resources.", i: "r", a: "rationing" }
+            ]
+        }
+    ];
+
+    function initQuiz() {
+        const formContainer = document.getElementById('quiz-form');
+        quizData.forEach(seg => {
+            const segDiv = document.createElement('div');
+            segDiv.className = 'segment';
+            
+            const header = document.createElement('h3');
+            header.className = 'segment-header';
+            header.innerText = seg.title;
+            segDiv.appendChild(header);
+
+            seg.questions.forEach((q, idx) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question-container';
+                qDiv.id = `q-container-${q.id}`;
+
+                const qText = document.createElement('div');
+                qText.className = 'question-text';
+                qText.innerText = `${idx + 1}. ${q.q}`;
+                qDiv.appendChild(qText);
+
+                if (q.type === 'mcq') {
+                    const optionsDiv = document.createElement('div');
+                    optionsDiv.className = 'options-route';
+                    q.options.forEach(opt => {
+                        const label = document.createElement('label');
+                        label.className = 'option-label';
+                        
+                        const input = document.createElement('input');
+                        input.type = 'radio';
+                        input.name = `question-${q.id}`;
+                        input.value = opt;
+                        
+                        label.appendChild(input);
+                        label.appendChild(document.createTextNode(opt));
+                        optionsDiv.appendChild(label);
+                    });
+                    qDiv.appendChild(optionsDiv);
+                } else if (q.type === 'fill') {
+                    const fillWrapper = document.createElement('div');
+                    fillWrapper.className = 'fill-input-wrapper';
+                    
+                    const initialSpan = document.createElement('span');
+                    initialSpan.className = 'initial-letter';
+                    initialSpan.innerText = q.i.toUpperCase() + '...';
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'fill-input';
+                    input.id = `fill-${q.id}`;
+                    input.placeholder = "Complete the word";
+                    
+                    fillWrapper.appendChild(initialSpan);
+                    fillWrapper.appendChild(input);
+                    qDiv.appendChild(fillWrapper);
+                }
+
+                // Placeholder for local question feedback
+                const feedbackDiv = document.createElement('div');
+                feedbackDiv.id = `feedback-${q.id}`;
+                feedbackDiv.className = 'feedback-text';
+                qDiv.appendChild(feedbackDiv);
+
+                segDiv.appendChild(qDiv);
+            });
+
+            formContainer.appendChild(segDiv);
+        });
+    }
+
+    function gradeQuiz() {
+        let totalScore = 0;
+
+        quizData.forEach(seg => {
+            seg.questions.forEach(q => {
+                const container = document.getElementById(`q-container-${q.id}`);
+                const feedback = document.getElementById(`feedback-${q.id}`);
+                let isCorrect = false;
+                let userAns = "";
+
+                if (q.type === 'mcq') {
+                    const selected = document.querySelector(`input[name="question-${q.id}"]:checked`);
+                    userAns = selected ? selected.value : "";
+                    isCorrect = (userAns === q.a);
+                } else if (q.type === 'fill') {
+                    const inputElem = document.getElementById(`fill-${q.id}`);
+                    userAns = inputElem.value.trim().toLowerCase();
+                    
+                    // Accept full word input regardless of whether student re-typed the initial letter or omitted it
+                    let target = q.a.toLowerCase();
+                    isCorrect = (userAns === target || userAns === target.substring(1));
+                }
+
+                if (isCorrect) {
+                    totalScore++;
+                    container.className = "question-container correct-answer";
+                    feedback.innerHTML = "✓ Correct";
+                    feedback.className = "feedback-text feedback-success";
+                } else {
+                    container.className = "question-container incorrect-answer";
+                    const displayCorrect = q.type === 'mcq' ? q.a : q.a;
+                    feedback.innerHTML = `✗ Incorrect. Correct answer: <strong>${displayCorrect}</strong>`;
+                    feedback.className = "feedback-text feedback-error";
+                }
+            });
+        });
+
+        // Display dashboard results
+        const resultsPanel = document.getElementById('results-panel');
+        const scoreText = document.getElementById('score-text');
+        const percentageText = document.getElementById('percentage-text');
+        const summaryText = document.getElementById('feedback-summary');
+
+        scoreText.innerText = `${totalScore} / 100`;
+        const percentage = (totalScore / 100) * 100;
+        percentageText.innerText = `Percentage Score: ${percentage}%`;
+
+        if (percentage >= 85) {
+            summaryText.innerText = "Excellent! You have demonstrated exceptional mastery of Units 21-30 vocabulary words.";
+            summaryText.style.color = "var(--success-color)";
+        } else if (percentage >= 60) {
+            summaryText.innerText = "Good job! You passed, but review the highlighted incorrect items to solidify your knowledge base.";
+            summaryText.style.color = "#dd6b20";
+        } else {
+            summaryText.innerText = "Needs Improvement. Please review the textbook exercises from Units 21-30 and retake the quiz.";
+            summaryText.style.color = "var(--error-color)";
+        }
+
+        resultsPanel.style.display = 'block';
+        window.scrollTo({ top: resultsPanel.offsetTop, behavior: 'smooth' });
+    }
+
+    // Initialize the quiz layout on window load
+    window.onload = initQuiz;
+</script>
+
+</body>
+</html>
